@@ -13,6 +13,8 @@ target 'FirebaseAuthentification' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'MessageKit'
+  pod 'InputBarAccessoryView'
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods
 end

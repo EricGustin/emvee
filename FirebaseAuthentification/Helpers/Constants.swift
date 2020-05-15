@@ -14,6 +14,7 @@ struct Constants {
     static let welcomeViewController = "welcomeViewController"
     static let profileViewController = "profileViewController"
     static let settingsViewController = "settingsViewController"
+    static let basicExampleViewController = "basicExampleViewController"
   }
   
   struct Dates {

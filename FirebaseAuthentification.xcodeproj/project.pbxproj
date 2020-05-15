@@ -24,6 +24,10 @@
 		FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC0C24666A0C008227FE /* ProfileViewController.swift */; };
 		FA54DC132467A64D008227FE /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC122467A64D008227FE /* PopAnimator.swift */; };
 		FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC142467C168008227FE /* SettingsViewController.swift */; };
+		FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FA246F49F500895098 /* TextChatViewController.swift */; };
+		FA91C5FD246F4ADE00895098 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FC246F4ADE00895098 /* Message.swift */; };
+		FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */; };
+		FA91C601246F5BA900895098 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C600246F5BA800895098 /* Channel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +52,10 @@
 		FA54DC0C24666A0C008227FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FA54DC122467A64D008227FE /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
 		FA54DC142467C168008227FE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		FA91C5FA246F49F500895098 /* TextChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextChatViewController.swift; sourceTree = "<group>"; };
+		FA91C5FC246F4ADE00895098 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
+		FA91C600246F5BA800895098 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +108,9 @@
 		FA54DBE724661C99008227FE /* FirebaseAuthentification */ = {
 			isa = PBXGroup;
 			children = (
+				FA91C5EB246E1ABC00895098 /* Extensions */,
+				FA91C5E6246E153C00895098 /* Views */,
+				FA91C5DA246E062000895098 /* Models */,
 				FA54DC032466229F008227FE /* Helpers */,
 				FA54DC0224661D07008227FE /* View Controllers */,
 				FA54DBE824661C99008227FE /* AppDelegate.swift */,
@@ -123,6 +134,7 @@
 				FA54DC0024661D01008227FE /* HomeViewController.swift */,
 				FA54DC0C24666A0C008227FE /* ProfileViewController.swift */,
 				FA54DC142467C168008227FE /* SettingsViewController.swift */,
+				FA91C5FA246F49F500895098 /* TextChatViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -135,6 +147,30 @@
 				FA54DC0A24663B37008227FE /* Constants.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		FA91C5DA246E062000895098 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FA91C5FC246F4ADE00895098 /* Message.swift */,
+				FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */,
+				FA91C600246F5BA800895098 /* Channel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FA91C5E6246E153C00895098 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FA91C5EB246E1ABC00895098 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,8 +290,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA54DBED24661C99008227FE /* WelcomeViewController.swift in Sources */,
+				FA91C601246F5BA900895098 /* Channel.swift in Sources */,
 				FA54DBE924661C99008227FE /* AppDelegate.swift in Sources */,
 				FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */,
+				FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */,
 				FA54DC132467A64D008227FE /* PopAnimator.swift in Sources */,
 				FA54DC052466232D008227FE /* StyleUtilities.swift in Sources */,
 				FA54DBFD24661CDF008227FE /* SignUpViewController.swift in Sources */,
@@ -263,8 +301,10 @@
 				FA54DBEB24661C99008227FE /* SceneDelegate.swift in Sources */,
 				FA54DC0724662352008227FE /* FormUtilities.swift in Sources */,
 				FA54DC0124661D01008227FE /* HomeViewController.swift in Sources */,
+				FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */,
 				FA54DC0B24663B37008227FE /* Constants.swift in Sources */,
 				FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */,
+				FA91C5FD246F4ADE00895098 /* Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

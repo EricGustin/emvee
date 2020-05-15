@@ -296,14 +296,24 @@
                                     <action selector="profileButtonClicked:" destination="SMW-XE-un6" eventType="touchUpInside" id="IEU-6p-kfu"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wRk-HW-k3N">
+                                <rect key="frame" x="39.5" y="754" width="335" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="Go to Chat ViewController"/>
+                                <connections>
+                                    <action selector="goToTextChatVC:" destination="SMW-XE-un6" eventType="touchUpInside" id="exR-in-kJx"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="qZq-8R-vuv" firstAttribute="centerX" secondItem="QX7-fE-lyG" secondAttribute="centerX" id="9cp-k7-8Y8"/>
                             <constraint firstItem="qZq-8R-vuv" firstAttribute="centerY" secondItem="QX7-fE-lyG" secondAttribute="centerY" id="AAe-9J-2Fn"/>
+                            <constraint firstItem="Kmr-og-I3S" firstAttribute="bottom" secondItem="wRk-HW-k3N" secondAttribute="bottom" constant="60" id="DU0-qM-OgO"/>
                             <constraint firstItem="NBu-y1-0bY" firstAttribute="leading" secondItem="Kmr-og-I3S" secondAttribute="leading" constant="20" id="SLq-ye-b5g"/>
                             <constraint firstItem="NBu-y1-0bY" firstAttribute="top" secondItem="Kmr-og-I3S" secondAttribute="top" constant="20" id="guw-LH-nNm"/>
+                            <constraint firstItem="wRk-HW-k3N" firstAttribute="centerX" secondItem="QX7-fE-lyG" secondAttribute="centerX" id="oqc-B2-etp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Kmr-og-I3S"/>
                     </view>
@@ -314,6 +324,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zk9-9A-Sat" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3300" y="268.9655172413793"/>
+        </scene>
+        <!--Basic Example View Controller-->
+        <scene sceneID="4Ct-hG-1ka">
+            <objects>
+                <viewController storyboardIdentifier="basicExampleViewController" id="QgQ-qV-skT" customClass="BasicExampleViewController" customModule="FirebaseAuthentification" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="i6F-XM-eBd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="97a-6N-GVc"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AfD-0e-mam" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4017" y="269"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="lgn-fm-pc1">

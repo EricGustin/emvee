@@ -7,13 +7,21 @@
 //
 
 import UIKit
+import InputBarAccessoryView
+import MessageKit
 
 class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
  @IBOutlet weak var profileButton: UIButton!
  @IBAction func profileButtonClicked(_ sender: UIButton) {
   transitionToProfile()
  }
- 
+  @IBAction func goToTextChatVC(_ sender: UIButton) {
+    let basicExampleViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.basicExampleViewController) as? BasicExampleViewController
+    // Make profile ViewController appear fullscrean
+    view.window?.rootViewController = basicExampleViewController
+    view.window?.makeKeyAndVisible()
+  }
+  
  //let transition = PopAnimator()
 
 
