@@ -23,7 +23,6 @@ final class TextChatViewController: MessagesViewController {
   private var messageListener: ListenerRegistration?
   
   init(user: User, channel: Channel) {
-    
     self.user = user
     self.channel = channel
     super.init(nibName: nil, bundle: nil)
@@ -34,14 +33,39 @@ final class TextChatViewController: MessagesViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  deinit {
+    messageListener?.remove()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.becomeFirstResponder()
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    print("view did disappear")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    print("TextChatViewController")
     guard let id = channel.id else {
       navigationController?.popViewController(animated: true)
       return
     }
     
     reference = db.collection(["channels", id, "thread"].joined(separator: "/"))
+    
+    messageListener = reference?.addSnapshotListener({ (querySnapshot, error) in
+      guard let snapshot = querySnapshot else {
+        print("Error when listening for channel updates \(error?.localizedDescription ?? "No error")")
+        return
+      }
+      
+      snapshot.documentChanges.forEach { change in
+        self.handleDocumentChange(change)
+      }
+    })
     
     navigationItem.largeTitleDisplayMode = .never
     
@@ -54,35 +78,224 @@ final class TextChatViewController: MessagesViewController {
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
     
+    print("end of viewdidload")
+    
   }
 
-}
 
-extension TextChatViewController: InputBarAccessoryViewDelegate {
+
+  // MARK: - Helpers
+  
+  private func save(_ message: Message) {
+    reference?.addDocument(data: message.representation) { error in
+      if let e = error {
+        print("Error sending message: \(e.localizedDescription)")
+        return
+      }
+      
+      self.messagesCollectionView.scrollToBottom()
+    }
+  }
+
+  private func insertNewMessage(_ message: Message) {
+    print("insert new message entered")
+    guard !messages.contains(message) else {
+      return
+    }
+    
+    messages.append(message)
+    messages.sort()
+    
+    let isLatestMessage = messages.firstIndex(of: message) == (messages.count - 1)
+    let shouldScrollToBottom = isLatestMessage // && messagesCollectionView.isAtBottom
+    
+    messagesCollectionView.reloadData()
+    
+    if shouldScrollToBottom {
+      DispatchQueue.main.async {
+        self.messagesCollectionView.scrollToBottom(animated: true)
+      }
+    }
+    print("insert new message exited")
+  }
+  
+  private func handleDocumentChange(_ change: DocumentChange) {
+    print("enter handleDocumentChange")
+    guard let message = Message(document: change.document) else {
+      return
+    }
+    print("document change with message: \(message)")
+    
+    switch change.type {
+      case .added:
+      insertNewMessage(message)
+      default: break
+    }
+  }
+
   
 }
 
-extension TextChatViewController: MessagesLayoutDelegate {
-  
-}
+// MARK: - MessagesDataSource
 
 extension TextChatViewController: MessagesDataSource {
   
+
+  // 1
   func currentSender() -> SenderType {
-    <#code#>
+    return Sender(senderId: user.uid, displayName: "eric")
   }
-  
-  func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
-    <#code#>
-  }
-  
+
+  // 2
   func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
-    <#code#>
+    return messages.count
   }
-  
-  
+
+  // 3
+  func messageForItem(at indexPath: IndexPath,
+    in messagesCollectionView: MessagesCollectionView) -> MessageType {
+
+    return messages[indexPath.section]
+  }
+
+  // 4
+  func cellTopLabelAttributedText(for message: MessageType,
+    at indexPath: IndexPath) -> NSAttributedString? {
+    print("celltoplabel entered")
+    let name = message.sender.displayName
+    return NSAttributedString(
+      string: name,
+      attributes: [
+        .font: UIFont.preferredFont(forTextStyle: .caption1),
+        .foregroundColor: UIColor(white: 0.3, alpha: 1)
+      ]
+    )
+  }
 }
+
 
 extension TextChatViewController: MessagesDisplayDelegate {
   
+  func backgroundColor(for message: MessageType, at indexPath: IndexPath,
+    in messagesCollectionView: MessagesCollectionView) -> UIColor {
+    
+    // 1
+    return isFromCurrentSender(message: message) ? .blue : .gray
+  }
+
+  func shouldDisplayHeader(for message: MessageType, at indexPath: IndexPath,
+    in messagesCollectionView: MessagesCollectionView) -> Bool {
+
+    // 2
+    print("display header entered/exited")
+    return true // you can use this method to display things like timestamp of a message
+  }
+
+  func messageStyle(for message: MessageType, at indexPath: IndexPath,
+    in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+
+    let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
+
+    // 3
+    return .bubbleTail(corner, .curved)
+  }
+}
+
+
+// MARK: - MessagesLayoutDelegate
+
+extension TextChatViewController: MessagesLayoutDelegate {
+
+  func avatarSize(for message: MessageType, at indexPath: IndexPath,
+    in messagesCollectionView: MessagesCollectionView) -> CGSize {
+
+    // 1
+    return .zero // returning zero for the avatar will hide it from the view
+  }
+
+  func footerViewSize(for message: MessageType, at indexPath: IndexPath,
+    in messagesCollectionView: MessagesCollectionView) -> CGSize {
+    print("size of footer entered")
+    // 2
+    return CGSize(width: 0, height: 8) // add padding for better readability
+  }
+
+  func heightForLocation(message: MessageType, at indexPath: IndexPath,
+    with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+
+    // 3
+    print("height entered/exit")
+    return 0 // probably won't need to use location messages so just make the height zero for now
+  }
+}
+
+
+// MARK: - MessageInputBarDelegate
+
+extension TextChatViewController: InputBarAccessoryViewDelegate {
+  
+  @objc(inputBar:didPressSendButtonWith:) func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
+
+    // 1
+    print("inputbar entered")
+    let message = Message(user: user, content: text)
+
+    // 2
+    save(message)
+
+    // 3
+    inputBar.inputTextView.text = ""
+    print("inputbar exit")
+  }
+  
+  @objc(inputBar:didChangeIntrinsicContentTo:) func inputBar(_ inputBar: InputBarAccessoryView, didChangeIntrinsicContentTo size: CGSize) {
+    print("Intrinsic content changed")
+  }
+  
+  @objc(inputBar:textViewTextDidChangeTo:) func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {
+    print("textViewDidChangeTo")
+  }
+
+}
+
+// MARK: - UIImagePickerControllerDelegate
+
+extension TextChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  
+}
+
+extension TextChatViewController: MessageLabelDelegate {
+    
+    func didSelectAddress(_ addressComponents: [String: String]) {
+        print("Address Selected: \(addressComponents)")
+    }
+    
+    func didSelectDate(_ date: Date) {
+        print("Date Selected: \(date)")
+    }
+    
+    func didSelectPhoneNumber(_ phoneNumber: String) {
+        print("Phone Number Selected: \(phoneNumber)")
+    }
+    
+    func didSelectURL(_ url: URL) {
+        print("URL Selected: \(url)")
+    }
+    
+    func didSelectTransitInformation(_ transitInformation: [String: String]) {
+        print("TransitInformation Selected: \(transitInformation)")
+    }
+
+    func didSelectHashtag(_ hashtag: String) {
+        print("Hashtag selected: \(hashtag)")
+    }
+
+    func didSelectMention(_ mention: String) {
+        print("Mention selected: \(mention)")
+    }
+
+    func didSelectCustom(_ pattern: String, match: String?) {
+        print("Custom data detector patter selected: \(pattern)")
+    }
+
 }

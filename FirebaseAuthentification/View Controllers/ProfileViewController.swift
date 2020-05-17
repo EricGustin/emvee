@@ -171,7 +171,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     // Download profile picture in memory  with a maximum allowed size of 1MB
     profilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
       if error != nil {
-        print("Error getting data from Firebase Storage")
+        print("Error getting profile picture from Firebase Storage")
         return
       } else {
         let profileImage = UIImage(data: data!)

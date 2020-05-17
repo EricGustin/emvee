@@ -22,6 +22,7 @@ class WelcomeViewController: UIViewController {
  override func viewDidAppear(_ animated: Bool) {
  print("In WelcomeViewController")
   print("User is signed in?: \(UserDefaults.standard.bool(forKey: "isUserSignedIn"))")
+  //UserDefaults.standard.set(false, forKey: "isUserSignedIn")
   if Auth.auth().currentUser?.uid == nil { // check if as user is signed in 
     UserDefaults.standard.set(false, forKey: "isUserSignedIn")
   }

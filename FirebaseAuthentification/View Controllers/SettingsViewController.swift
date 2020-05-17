@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SettingsViewController: UIViewController {
   
@@ -15,6 +16,9 @@ class SettingsViewController: UIViewController {
   }
   @IBAction func logoutButtonClicked(_ sender: UIButton) {
     UserDefaults.standard.set(false, forKey: "isUserSignedIn")
+    do {
+      try Auth.auth().signOut()
+    } catch { print("Error logging out") }
     transitionToWelcome()
   }
   override func viewDidLoad() {

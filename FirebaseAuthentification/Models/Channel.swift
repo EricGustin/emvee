@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 struct Channel {
   
-  let id: String?
+  var id: String?
   let name: String
   
   init(name: String) {

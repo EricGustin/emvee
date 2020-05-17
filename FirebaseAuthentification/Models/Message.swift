@@ -10,19 +10,19 @@ import Firebase
 import MessageKit
 import FirebaseFirestore
 
-struct Message {
-  
-  let id: String?
+struct Message : MessageType {
+
+  let messageID: String?
   let content: String
   let sentDate: Date
   let sender: SenderType
   
-  var data: MessageKind {
+  var kind: MessageKind {
       return .text(content)
   }
   
   var messageId: String {
-    return id ?? UUID().uuidString
+    return messageID ?? UUID().uuidString
   }
   
   var downloadURL: URL? = nil
@@ -30,7 +30,7 @@ struct Message {
   init(user: User, content: String) {
     sender = Sender(senderId: user.uid, displayName: "eric")
     self.content = content
-    id = nil
+    messageID = nil
     sentDate = Date()
   }
   
@@ -47,7 +47,7 @@ struct Message {
       return nil
     }
     
-    id = document.documentID
+    messageID = document.documentID
     self.sentDate = sentDate
     sender = Sender(senderId: senderID, displayName: senderName)
     
@@ -83,7 +83,7 @@ extension Message: DatabaseRepresentation {
 
 extension Message: Comparable {
   static func == (lhs: Message, rhs: Message) -> Bool {
-    return lhs.id == rhs.id
+    return lhs.messageID == rhs.messageID
   }
   
   static func < (lhs: Message, rhs: Message) -> Bool {
