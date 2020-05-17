@@ -121,6 +121,7 @@ final class TextChatViewController: MessagesViewController {
   
   private func handleDocumentChange(_ change: DocumentChange) {
     print("enter handleDocumentChange")
+    print("change: \(change.document)")
     guard let message = Message(document: change.document) else {
       return
     }
