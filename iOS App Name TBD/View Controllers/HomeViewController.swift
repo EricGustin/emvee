@@ -19,21 +19,15 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
  }
 
   @IBAction func goToTextChatVC(_ sender: Any) {
-    //    guard let textChatViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.textChatViewController) as? TextChatViewController else { return }
-    //    self.navigationController?.pushViewController(textChatViewController, animated: true)
-    //    // Make profile ViewController appear fullscrean
-    //    view.window?.rootViewController = textChatViewController
-    //    view.window?.makeKeyAndVisible()
     var channel = Channel(name: "\(currentUser!.uid)Channel")
     channel.id = currentUser!.uid
+    
     let vc = TextChatViewController(user: currentUser!, channel: channel)
-    //navigationController?.pushViewController(vc, animated: true)
-    view.window?.rootViewController = vc
-    //        addChild(vc)
-    //        self.view.addSubview(vc.view)
-    //        vc.didMove(toParent: self)
-    //        self.becomeFirstResponder()
-    //    view.window?.makeKeyAndVisible()
+//    view.window?.rootViewController = vc
+//    view.window?.makeKeyAndVisible()
+    vc.modalPresentationStyle = .fullScreen
+    self.present(vc, animated: true, completion: nil)
+    
   }
   
  //let transition = PopAnimator()

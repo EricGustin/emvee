@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:FirebaseAuthentification.xcodeproj">
+      location = "group:/Users/ericgustin/Personal/Programming/iOSDevelopment/iOSDatingApp/iOS App Name TBD.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

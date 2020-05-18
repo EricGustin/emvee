@@ -35,7 +35,7 @@
 		1DD6C80516D350B9AF075916 /* Pods-FirebaseAuthentification.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseAuthentification.release.xcconfig"; path = "Target Support Files/Pods-FirebaseAuthentification/Pods-FirebaseAuthentification.release.xcconfig"; sourceTree = "<group>"; };
 		789B5EF268ECD969116BCD66 /* Pods_FirebaseAuthentification.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirebaseAuthentification.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F14BE25128F6B3AB279C7699 /* Pods-FirebaseAuthentification.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseAuthentification.debug.xcconfig"; path = "Target Support Files/Pods-FirebaseAuthentification/Pods-FirebaseAuthentification.debug.xcconfig"; sourceTree = "<group>"; };
-		FA54DBE524661C99008227FE /* FirebaseAuthentification.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseAuthentification.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA54DBE524661C99008227FE /* iOS App Name TBD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS App Name TBD.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA54DBE824661C99008227FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA54DBEA24661C99008227FE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FA54DBEC24661C99008227FE /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 		FA54DBDC24661C99008227FE = {
 			isa = PBXGroup;
 			children = (
-				FA54DBE724661C99008227FE /* FirebaseAuthentification */,
+				FA54DBE724661C99008227FE /* iOS App Name TBD */,
 				FA54DBE624661C99008227FE /* Products */,
 				4716F8D841E487BE20A85BB6 /* Pods */,
 				8FD1FEABCC246CE8F834946B /* Frameworks */,
@@ -102,12 +102,12 @@
 		FA54DBE624661C99008227FE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FA54DBE524661C99008227FE /* FirebaseAuthentification.app */,
+				FA54DBE524661C99008227FE /* iOS App Name TBD.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FA54DBE724661C99008227FE /* FirebaseAuthentification */ = {
+		FA54DBE724661C99008227FE /* iOS App Name TBD */ = {
 			isa = PBXGroup;
 			children = (
 				FA91C5EB246E1ABC00895098 /* Extensions */,
@@ -124,7 +124,7 @@
 				FA54DC0824662681008227FE /* GoogleService-Info.plist */,
 				FA54DC122467A64D008227FE /* PopAnimator.swift */,
 			);
-			path = FirebaseAuthentification;
+			path = "iOS App Name TBD";
 			sourceTree = "<group>";
 		};
 		FA54DC0224661D07008227FE /* View Controllers */ = {
@@ -179,9 +179,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FA54DBE424661C99008227FE /* FirebaseAuthentification */ = {
+		FA54DBE424661C99008227FE /* iOS App Name TBD */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FA54DBF924661C9A008227FE /* Build configuration list for PBXNativeTarget "FirebaseAuthentification" */;
+			buildConfigurationList = FA54DBF924661C9A008227FE /* Build configuration list for PBXNativeTarget "iOS App Name TBD" */;
 			buildPhases = (
 				88F9C42BB04A27BE6E7DEDB6 /* [CP] Check Pods Manifest.lock */,
 				FA54DBE124661C99008227FE /* Sources */,
@@ -193,9 +193,9 @@
 			);
 			dependencies = (
 			);
-			name = FirebaseAuthentification;
+			name = "iOS App Name TBD";
 			productName = FirebaseAuthentification;
-			productReference = FA54DBE524661C99008227FE /* FirebaseAuthentification.app */;
+			productReference = FA54DBE524661C99008227FE /* iOS App Name TBD.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -213,7 +213,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FA54DBE024661C99008227FE /* Build configuration list for PBXProject "FirebaseAuthentification" */;
+			buildConfigurationList = FA54DBE024661C99008227FE /* Build configuration list for PBXProject "iOS App Name TBD" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -226,7 +226,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FA54DBE424661C99008227FE /* FirebaseAuthentification */,
+				FA54DBE424661C99008227FE /* iOS App Name TBD */,
 			);
 		};
 /* End PBXProject section */
@@ -455,7 +455,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X6KK3Y5QZJ;
-				INFOPLIST_FILE = FirebaseAuthentification/Info.plist;
+				INFOPLIST_FILE = "iOS App Name TBD/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -474,7 +474,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X6KK3Y5QZJ;
-				INFOPLIST_FILE = FirebaseAuthentification/Info.plist;
+				INFOPLIST_FILE = "iOS App Name TBD/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -489,7 +489,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FA54DBE024661C99008227FE /* Build configuration list for PBXProject "FirebaseAuthentification" */ = {
+		FA54DBE024661C99008227FE /* Build configuration list for PBXProject "iOS App Name TBD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA54DBF724661C9A008227FE /* Debug */,
@@ -498,7 +498,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA54DBF924661C9A008227FE /* Build configuration list for PBXNativeTarget "FirebaseAuthentification" */ = {
+		FA54DBF924661C9A008227FE /* Build configuration list for PBXNativeTarget "iOS App Name TBD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA54DBFA24661C9A008227FE /* Debug */,

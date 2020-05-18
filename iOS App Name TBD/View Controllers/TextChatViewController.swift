@@ -51,8 +51,18 @@ final class TextChatViewController: MessagesViewController {
     print("TextChatViewController")
     guard let id = channel.id else {
       navigationController?.popViewController(animated: true)
+      print("Uh oh. Pop view controller: There is no channel.id")
       return
     }
+    
+    let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
+    view.addSubview(navBar)
+
+    let navItem = UINavigationItem(title: "Messages")
+    let backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
+    navItem.rightBarButtonItem = backItem
+    navBar.setItems([navItem], animated: false)
+    print(view.safeAreaInsets.bottom)
     
     reference = db.collection(["channels", id, "thread"].joined(separator: "/"))
     
@@ -83,7 +93,15 @@ final class TextChatViewController: MessagesViewController {
   }
 
 
-
+  // MARK: - Actions
+  @objc func backToHome() {
+//    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+//    // Make profile ViewController appear fullscrean
+//    view.window?.rootViewController = homeViewController
+//    view.window?.makeKeyAndVisible()
+    dismiss(animated: true, completion: nil)
+  }
+  
   // MARK: - Helpers
   
   private func save(_ message: Message) {
