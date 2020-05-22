@@ -17,13 +17,25 @@ final class TextChatViewController: MessagesViewController {
   
   private let db = Firestore.firestore()
   private var reference: CollectionReference? // reference to database
+  private let chatRoomID: String
+  private let conversationID: String
   
   private let user: User
   private var messages: [Message] = []
   private var messageListener: ListenerRegistration?
   
-  init(user: User) {
+  init(user: User, chatRoomID: String, conversationID: String) {
     self.user = user
+    self.chatRoomID = chatRoomID
+    self.conversationID = conversationID
+    super.init(nibName: nil, bundle: nil)
+    title = "Time left"
+  }
+  init(user: User, reference: CollectionReference?) {
+    self.user = user
+    self.reference = reference
+    self.chatRoomID = ""
+    self.conversationID = ""
     super.init(nibName: nil, bundle: nil)
     title = "Time left"
   }
@@ -52,19 +64,22 @@ final class TextChatViewController: MessagesViewController {
     navItem.rightBarButtonItem = backItem
     navBar.setItems([navItem], animated: false)
     
-    let aChatRoomID = UUID().uuidString
-    let aConversationID = UUID().uuidString
-    reference = db.collection(["activeChatRooms", aChatRoomID, aConversationID].joined(separator: "/"))
-    reference?.parent!.setData([
-      "isFull": false,
-      "person0uid": "\(user.uid)",
-      "person1uid": ""
-    ]) { err in
-      if let err = err {
-        print("Error adding document: \(err)")
-      }
+//    let aChatRoomID = UUID().uuidString
+//    let aConversationID = UUID().uuidString
+//    reference = db.collection(["activeChatRooms", aChatRoomID, aConversationID].joined(separator: "/"))
+//    reference?.parent!.setData([
+//      "isFull": false,
+//      "person0uid": "\(user.uid)",
+//      "person1uid": ""
+//    ]) { err in
+//      if let err = err {
+//        print("Error adding document: \(err)")
+//      }
+//    }
+    print("The value of reference is: \(String(describing: reference))")
+    if reference == nil {
+      reference = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
     }
-
     // the chat's id is ref!.documentID
     messageListener = reference?.addSnapshotListener({ (querySnapshot, error) in
       guard let snapshot = querySnapshot else {
