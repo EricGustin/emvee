@@ -24,14 +24,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   @IBAction func joinChatRoom(_ sender: Any) {
     findingPerfectMatchLabel.text = "Finding you the perfect match"
     
-    // 1. iterate through the activeChatrooms collection
-    
-    
-    
-    var chatRoom = ChatRoom(name: "\(currentUser!.uid)Channel")
-    chatRoom.id = currentUser!.uid
-    
-    let vc = TextChatViewController(user: currentUser!, chatRoom: chatRoom)
+    let vc = TextChatViewController(user: currentUser!)
 //    view.window?.rootViewController = vc
 //    view.window?.makeKeyAndVisible()
     vc.modalPresentationStyle = .fullScreen

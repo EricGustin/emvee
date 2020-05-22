@@ -19,13 +19,11 @@ final class TextChatViewController: MessagesViewController {
   private var reference: CollectionReference? // reference to database
   
   private let user: User
-  private let chatRoom: ChatRoom
   private var messages: [Message] = []
   private var messageListener: ListenerRegistration?
   
-  init(user: User, chatRoom: ChatRoom) {
+  init(user: User) {
     self.user = user
-    self.chatRoom = chatRoom
     super.init(nibName: nil, bundle: nil)
     title = "Time left"
   }
@@ -45,12 +43,6 @@ final class TextChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    guard let id = chatRoom.id else {
-      navigationController?.popViewController(animated: true)
-      print("Uh oh. Pop view controller: There is no channel.id")
-      return
-    }
     
     let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
     view.addSubview(navBar)
