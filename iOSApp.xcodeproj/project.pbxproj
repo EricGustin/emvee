@@ -23,10 +23,11 @@
 		FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC0C24666A0C008227FE /* ProfileViewController.swift */; };
 		FA54DC132467A64D008227FE /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC122467A64D008227FE /* PopAnimator.swift */; };
 		FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC142467C168008227FE /* SettingsViewController.swift */; };
+		FA76570B2477213A0022C644 /* MultiSimConfig.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA76570A2477213A0022C644 /* MultiSimConfig.txt */; };
 		FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FA246F49F500895098 /* TextChatViewController.swift */; };
 		FA91C5FD246F4ADE00895098 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FC246F4ADE00895098 /* Message.swift */; };
 		FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */; };
-		FA91C601246F5BA900895098 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C600246F5BA800895098 /* Channel.swift */; };
+		FA91C601246F5BA900895098 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C600246F5BA800895098 /* ChatRoom.swift */; };
 		FA91C60324709FF000895098 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C60224709FF000895098 /* NavigationController.swift */; };
 		FA91C65B2470E24400895098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA91C6592470E24400895098 /* Main.storyboard */; };
 		FA91C65F24749F2E00895098 /* UIRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C65E24749F2E00895098 /* UIRadioButton.swift */; };
@@ -55,10 +56,12 @@
 		FA54DC0C24666A0C008227FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FA54DC122467A64D008227FE /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
 		FA54DC142467C168008227FE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		FA76570A2477213A0022C644 /* MultiSimConfig.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = MultiSimConfig.txt; sourceTree = "<group>"; };
+		FA76570E247721DB0022C644 /* launch_multiple_simulators.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = launch_multiple_simulators.sh; sourceTree = "<group>"; };
 		FA91C5FA246F49F500895098 /* TextChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextChatViewController.swift; sourceTree = "<group>"; };
 		FA91C5FC246F4ADE00895098 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
-		FA91C600246F5BA800895098 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		FA91C600246F5BA800895098 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		FA91C60224709FF000895098 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		FA91C65A2470E24400895098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA91C65E24749F2E00895098 /* UIRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRadioButton.swift; sourceTree = "<group>"; };
@@ -98,6 +101,8 @@
 		FA54DBDC24661C99008227FE = {
 			isa = PBXGroup;
 			children = (
+				FA76570E247721DB0022C644 /* launch_multiple_simulators.sh */,
+				FA76570A2477213A0022C644 /* MultiSimConfig.txt */,
 				FA54DBE724661C99008227FE /* iOSApp */,
 				FA54DBE624661C99008227FE /* Products */,
 				4716F8D841E487BE20A85BB6 /* Pods */,
@@ -163,7 +168,7 @@
 			children = (
 				FA91C5FC246F4ADE00895098 /* Message.swift */,
 				FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */,
-				FA91C600246F5BA800895098 /* Channel.swift */,
+				FA91C600246F5BA800895098 /* ChatRoom.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -195,6 +200,7 @@
 				FA54DBE224661C99008227FE /* Frameworks */,
 				FA54DBE324661C99008227FE /* Resources */,
 				E720B172F4A9675F948CFE30 /* [CP] Embed Pods Frameworks */,
+				FA76570F247722760022C644 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -243,6 +249,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA76570B2477213A0022C644 /* MultiSimConfig.txt in Resources */,
 				FA54DBF524661C9A008227FE /* LaunchScreen.storyboard in Resources */,
 				FA54DC0924662681008227FE /* GoogleService-Info.plist in Resources */,
 				FA54DBF224661C9A008227FE /* Assets.xcassets in Resources */,
@@ -292,6 +299,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOSApp/Pods-iOSApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		FA76570F247722760022C644 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncustom_sim=`xcrun simctl list | grep 'Custom Simulators' | awk -F'[()]' '{print $2}'`\nif [ ! -z \"${custom_sim}\" ] && [ \"${TARGET_DEVICE_IDENTIFIER}\" = \"${custom_sim}\" ]; then\n/bin/sh launch_multiple_simulators.sh\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -300,7 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA54DBED24661C99008227FE /* WelcomeViewController.swift in Sources */,
-				FA91C601246F5BA900895098 /* Channel.swift in Sources */,
+				FA91C601246F5BA900895098 /* ChatRoom.swift in Sources */,
 				FA54DBE924661C99008227FE /* AppDelegate.swift in Sources */,
 				FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */,
 				FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */,

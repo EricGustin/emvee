@@ -28,7 +28,7 @@ struct Message : MessageType {
   var downloadURL: URL? = nil
   
   init(user: User, content: String) {
-    sender = Sender(senderId: user.uid, displayName: "eric")
+    sender = Sender(senderId: user.uid, displayName: user.displayName ?? "Anonymous")
     self.content = content
     messageID = nil
     sentDate = Date()

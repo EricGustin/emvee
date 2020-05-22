@@ -11,6 +11,7 @@ import Firebase
 import MessageKit
 import FirebaseFirestore
 import InputBarAccessoryView
+import FirebaseAuth
 
 final class TextChatViewController: MessagesViewController {
   
@@ -18,13 +19,13 @@ final class TextChatViewController: MessagesViewController {
   private var reference: CollectionReference? // reference to database
   
   private let user: User
-  private let channel: Channel
+  private let chatRoom: ChatRoom
   private var messages: [Message] = []
   private var messageListener: ListenerRegistration?
   
-  init(user: User, channel: Channel) {
+  init(user: User, chatRoom: ChatRoom) {
     self.user = user
-    self.channel = channel
+    self.chatRoom = chatRoom
     super.init(nibName: nil, bundle: nil)
     title = "Time left"
   }
@@ -45,7 +46,7 @@ final class TextChatViewController: MessagesViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    guard let id = channel.id else {
+    guard let id = chatRoom.id else {
       navigationController?.popViewController(animated: true)
       print("Uh oh. Pop view controller: There is no channel.id")
       return
@@ -58,16 +59,26 @@ final class TextChatViewController: MessagesViewController {
     let backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
     navItem.rightBarButtonItem = backItem
     navBar.setItems([navItem], animated: false)
-    print(view.safeAreaInsets.bottom)
     
-    reference = db.collection(["channels", id, "thread"].joined(separator: "/"))
-    
+    let aChatRoomID = UUID().uuidString
+    let aConversationID = UUID().uuidString
+    reference = db.collection(["activeChatRooms", aChatRoomID, aConversationID].joined(separator: "/"))
+    reference?.parent!.setData([
+      "isFull": false,
+      "person0uid": "\(user.uid)",
+      "person1uid": ""
+    ]) { err in
+      if let err = err {
+        print("Error adding document: \(err)")
+      }
+    }
+
+    // the chat's id is ref!.documentID
     messageListener = reference?.addSnapshotListener({ (querySnapshot, error) in
       guard let snapshot = querySnapshot else {
         print("Error when listening for channel updates \(error?.localizedDescription ?? "No error")")
         return
       }
-      
       snapshot.documentChanges.forEach { change in
         self.handleDocumentChange(change)
       }
@@ -83,6 +94,11 @@ final class TextChatViewController: MessagesViewController {
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
+    
+//    print(messagesCollectionView.frame.height)
+//    messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+//    messagesCollectionView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 20).isActive = true
+//    print(messagesCollectionView.frame.height)
     
     let whiteColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1.0)
     view.backgroundColor = whiteColor
@@ -115,13 +131,11 @@ final class TextChatViewController: MessagesViewController {
     guard !messages.contains(message) else {
       return
     }
-    
     messages.append(message)
     messages.sort()
     
     let isLatestMessage = messages.firstIndex(of: message) == (messages.count - 1)
     let shouldScrollToBottom = isLatestMessage // && messagesCollectionView.isAtBottom
-    
     messagesCollectionView.reloadData()
     
     if shouldScrollToBottom {
@@ -135,7 +149,7 @@ final class TextChatViewController: MessagesViewController {
     guard let message = Message(document: change.document) else {
       return
     }
-    
+    print(change.type)
     switch change.type {
       case .added:
         insertNewMessage(message)
@@ -149,7 +163,13 @@ final class TextChatViewController: MessagesViewController {
 extension TextChatViewController: MessagesDataSource {
   // 1
   func currentSender() -> SenderType {
-    return Sender(senderId: user.uid, displayName: "eric")
+    var displayName: String = ""
+    db.collection("users").document(user.uid).getDocument { (snapshot, error) in
+    if let document = snapshot {
+      displayName = document.get("firstName") as! String
+      }
+    }
+    return Sender(senderId: user.uid, displayName: displayName)
   }
   
   // 2

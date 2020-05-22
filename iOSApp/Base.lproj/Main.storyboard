@@ -280,8 +280,91 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="JIB-tE-STR">
+                                <rect key="frame" x="39.999999999999993" y="80" width="84.333333333333314" height="97.333333333333314"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPr-eX-alM">
+                                        <rect key="frame" x="0.0" y="0.0" width="84.333333333333329" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="mE6-yw-2be">
+                                        <rect key="frame" x="0.0" y="25.333333333333329" width="84.333333333333329" height="72"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="pTH-CW-06Q">
+                                                <rect key="frame" x="0.0" y="0.0" width="16" height="72"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hou-rL-x6x">
+                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="22"/>
+                                                        <state key="normal" image="radioOff"/>
+                                                        <state key="selected" image="radioOn"/>
+                                                        <connections>
+                                                            <action selector="radioButton1Clicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="gBv-FP-OqT"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ini-yp-Uxh">
+                                                        <rect key="frame" x="0.0" y="25.000000000000014" width="16" height="22"/>
+                                                        <state key="normal" image="radioOff"/>
+                                                        <state key="selected" image="radioOn"/>
+                                                        <connections>
+                                                            <action selector="radioButton2Clicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="8ug-nc-HzL"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PNF-Sg-ZRS">
+                                                        <rect key="frame" x="0.0" y="50.000000000000014" width="16" height="22"/>
+                                                        <state key="normal" image="radioOff"/>
+                                                        <state key="selected" image="radioOn"/>
+                                                        <connections>
+                                                            <action selector="radioButton3Clicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="Um2-P8-8TC"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ww1-Wl-6L2">
+                                                <rect key="frame" x="26.000000000000004" y="0.0" width="58.333333333333343" height="72"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Men" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceg-OM-MmL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="58.333333333333336" height="22"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Women" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2c-kP-tgo">
+                                                        <rect key="frame" x="0.0" y="22" width="58.333333333333336" height="28"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAd-X4-CoZ">
+                                                        <rect key="frame" x="0.0" y="50.000000000000014" width="58.333333333333336" height="22"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="ceg-OM-MmL" firstAttribute="centerY" secondItem="hou-rL-x6x" secondAttribute="centerY" id="42j-LB-JZg"/>
+                                            <constraint firstItem="c2c-kP-tgo" firstAttribute="centerY" secondItem="Ini-yp-Uxh" secondAttribute="centerY" id="7iW-Ad-WUL"/>
+                                            <constraint firstItem="OAd-X4-CoZ" firstAttribute="centerY" secondItem="PNF-Sg-ZRS" secondAttribute="centerY" id="yHz-nG-iMU"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nlt-K0-pVI">
+                                <rect key="frame" x="40" y="343" width="334" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="ERr-Tq-eGk"/>
+                                </constraints>
+                                <state key="normal" title="Save Settings"/>
+                                <connections>
+                                    <action selector="saveSettingsButtonClicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="SdM-ry-cUc"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sJM-s8-Pgh">
-                                <rect key="frame" x="183" y="353" width="48" height="30"/>
+                                <rect key="frame" x="40" y="433" width="334" height="50"/>
                                 <state key="normal" title="Logout">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -292,15 +375,30 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="centerY" secondItem="Vel-bX-b47" secondAttribute="centerY" id="FVY-AT-bKN"/>
-                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="centerX" secondItem="Vel-bX-b47" secondAttribute="centerX" id="V8o-M1-ILR"/>
+                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="centerX" secondItem="Nlt-K0-pVI" secondAttribute="centerX" id="Ecf-dT-KA9"/>
+                            <constraint firstItem="JIB-tE-STR" firstAttribute="top" secondItem="Bfk-2E-dk3" secondAttribute="top" constant="80" id="GHM-3K-oyJ"/>
+                            <constraint firstItem="Nlt-K0-pVI" firstAttribute="centerY" secondItem="Vel-bX-b47" secondAttribute="centerY" id="Htc-oE-iCl"/>
+                            <constraint firstItem="Nlt-K0-pVI" firstAttribute="centerX" secondItem="Vel-bX-b47" secondAttribute="centerX" id="NLv-bE-0v2"/>
+                            <constraint firstItem="Bfk-2E-dk3" firstAttribute="trailing" secondItem="Nlt-K0-pVI" secondAttribute="trailing" constant="40" id="W9S-aQ-Wr4"/>
+                            <constraint firstItem="Nlt-K0-pVI" firstAttribute="leading" secondItem="Bfk-2E-dk3" secondAttribute="leading" constant="40" id="dlx-Zz-X1N"/>
+                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="top" secondItem="Nlt-K0-pVI" secondAttribute="bottom" constant="40" id="iiA-fB-3Un"/>
+                            <constraint firstItem="JIB-tE-STR" firstAttribute="leading" secondItem="Bfk-2E-dk3" secondAttribute="leading" constant="40" id="jTW-nR-cuB"/>
+                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="width" secondItem="Nlt-K0-pVI" secondAttribute="width" id="pPz-X1-WBF"/>
+                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="height" secondItem="Nlt-K0-pVI" secondAttribute="height" id="vDs-33-14l"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bfk-2E-dk3"/>
                     </view>
+                    <connections>
+                        <outlet property="logoutButton" destination="sJM-s8-Pgh" id="kIS-Tq-ERM"/>
+                        <outlet property="radioButton1" destination="hou-rL-x6x" id="0Qc-sl-4tT"/>
+                        <outlet property="radioButton2" destination="Ini-yp-Uxh" id="HlU-Fd-Ycy"/>
+                        <outlet property="radioButton3" destination="PNF-Sg-ZRS" id="Grc-8I-z7n"/>
+                        <outlet property="saveSettingsButton" destination="Nlt-K0-pVI" id="9Po-5K-kc4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Owx-tt-eAr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2575" y="933"/>
+            <point key="canvasLocation" x="2573.913043478261" y="932.60869565217399"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="iFQ-gd-uN5">
@@ -311,7 +409,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZq-8R-vuv">
-                                <rect key="frame" x="166.66666666666663" y="357.66666666666669" width="81" height="21"/>
+                                <rect key="frame" x="166.66666666666666" y="357.66666666666669" width="81" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -332,11 +430,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BSy-bB-310">
-                                <rect key="frame" x="135" y="478.66666666666669" width="144" height="48.000000000000057"/>
+                                <rect key="frame" x="54" y="478.66666666666669" width="306" height="48.000000000000057"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="Go To Chat"/>
+                                <state key="normal" title="Talk to a random person"/>
                                 <connections>
-                                    <action selector="goToTextChatVC:" destination="SMW-XE-un6" eventType="touchUpInside" id="Svz-CE-Y51"/>
+                                    <action selector="joinChatRoom:" destination="SMW-XE-un6" eventType="touchUpInside" id="Svz-CE-Y51"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -353,6 +451,7 @@
                         <viewLayoutGuide key="safeArea" id="Kmr-og-I3S"/>
                     </view>
                     <connections>
+                        <outlet property="findingPerfectMatchLabel" destination="qZq-8R-vuv" id="mfe-M3-b8G"/>
                         <outlet property="profileButton" destination="NBu-y1-0bY" id="GoJ-Sv-ojY"/>
                     </connections>
                 </viewController>
@@ -492,5 +591,7 @@
         <image name="gear" catalog="system" width="128" height="119"/>
         <image name="house" catalog="system" width="128" height="110"/>
         <image name="person.circle" catalog="system" width="128" height="121"/>
+        <image name="radioOff" width="16" height="16"/>
+        <image name="radioOn" width="16" height="16"/>
     </resources>
 </document>

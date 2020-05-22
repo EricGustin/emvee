@@ -40,11 +40,11 @@ class UIRadioButton: UIButton {
     uncheckedView?.removeFromSuperview()
     removeConstraints(self.constraints)
     
-    let view = isChecked == true ? checkedView : uncheckedView
-    if let view = view {
-      addSubview(view)
-      translatesAutoresizingMaskIntoConstraints = false // prevent the view's auto-resizing mask to be translated into Auto Layout contstraints and affecting my programmatic constraints
-    }
+//    let view = isChecked == true ? checkedView : uncheckedView
+//    if let view = view {
+//      addSubview(view)
+//      translatesAutoresizingMaskIntoConstraints = false // prevent the view's auto-resizing mask to be translated into Auto Layout contstraints and affecting my programmatic constraints
+//    }
   }
   
   @objc func onClick(sender: UIButton) {

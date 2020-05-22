@@ -1,0 +1,97 @@
+Scenario: Joe clicks a button which sends him into an empty chatroom.
+After a couple seconds, Jane clicks a button which sends her into the chatroom
+which Joe is in.
+
+•Structure of the Database (Cloud Firestore) before Joe clicks the button:
+
+  *There exists two users for the app, neither are actively looking to match with
+  someone else and neither are in a chatroom. The structure now looks like:
+
+    users
+      uid0
+        name: "Joe"
+        age: 22
+      uid1
+        name: "Jane"
+        age: 22
+
+    activeChatrooms
+      // empty
+
+
+•Structure of the Database (Cloud Firestore) after Joe clicks the button but before
+Jane does:
+
+  *Program iterates through activeChatrooms. Notices that there are no
+  activeChatrooms that have their isFull field == to false, thus creates a new chatroom.
+
+    users
+      uid0
+        name: "Joe"
+        age: 22
+      uid1
+        name: "Jane"
+        age: 22
+
+    activeChatrooms
+      chat0
+        isFull: false
+        person0uid: uid0
+
+
+•Structure of the Database (Cloud Firestore) after Jane clicks the button:
+    *Once Jane clicks the button, the program iterates through the activeChatrooms
+    and sees that chat0's isFull field == false, thus Jane is sent into chat0.
+    chat0 is now full.
+
+    users
+      uid0
+        name: "Joe"
+        age: 22
+      uid1
+        name: "Jane"
+        age: 22
+
+    activeChatrooms
+      chat0
+        isFull: true
+        person0uid: uid0
+	       person1uid: uid1
+
+  *Both Joe and Jane are now in the same chatroom. They can talk to eachother
+  all they want.
+
+    users
+      uid0
+        name: "Joe"
+        age: 22
+      uid1
+        name: "Jane"
+        age: 22
+
+    activeChatrooms
+      chat0
+        isFull: true
+        person0uid: uid0
+        person1uid: uid1
+        conversation
+          message0
+            content: "Hello!"
+            created: May 21, 2020 at 3:11:11 PM UTC-7
+            senderID: uid0
+            sendername: "Joe"
+          message1
+            content: "Hey!"
+            created: May 21, 2020 at 3:11:18 PM UTC-7
+            senderID: uid1
+            sendername: "Jane"
+
+
+
+activeChatRooms
+  chat0
+    isFull: true
+    person0uid: dsfgdfg
+    Person1uid: dfgdfg
+    conversation
+  

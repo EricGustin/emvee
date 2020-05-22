@@ -8,7 +8,7 @@
 
 import FirebaseFirestore
 
-struct Channel {
+struct ChatRoom {
   
   var id: String?
   let name: String
@@ -29,7 +29,7 @@ struct Channel {
   }
 }
 
-extension Channel: DatabaseRepresentation {
+extension ChatRoom: DatabaseRepresentation {
   var representation: [String : Any] {
     var rep = ["name": name]
     
@@ -41,13 +41,13 @@ extension Channel: DatabaseRepresentation {
   
 }
 
-extension Channel: Comparable {
+extension ChatRoom: Comparable {
   
-    static func == (lhs: Channel, rhs: Channel) -> Bool {
+    static func == (lhs: ChatRoom, rhs: ChatRoom) -> Bool {
     return lhs.id == rhs.id
   }
   
-  static func < (lhs: Channel, rhs: Channel) -> Bool {
+  static func < (lhs: ChatRoom, rhs: ChatRoom) -> Bool {
     return lhs.name < rhs.name
   }
 }

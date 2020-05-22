@@ -90,6 +90,7 @@ class SignUpViewController: UIViewController {
           // User created successfully. Store relevent informastion
           let db = Firestore.firestore() // initialize an instance of Cloud Firestore
           let userID = Auth.auth().currentUser?.uid
+
           // Add a new document with a custom ID
           db.collection("users").document(userID!).setData([
             "firstName": firstName,

@@ -10,19 +10,28 @@ import UIKit
 import InputBarAccessoryView
 import MessageKit
 import FirebaseAuth
+import Firebase
 
 class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
   let currentUser = Auth.auth().currentUser
- @IBOutlet weak var profileButton: UIButton!
- @IBAction func profileButtonClicked(_ sender: UIButton) {
-  transitionToProfile()
- }
+  @IBOutlet weak var profileButton: UIButton!
+  @IBOutlet weak var findingPerfectMatchLabel: UILabel!
+  
+  @IBAction func profileButtonClicked(_ sender: UIButton) {
+    transitionToProfile()
+  }
 
-  @IBAction func goToTextChatVC(_ sender: Any) {
-    var channel = Channel(name: "\(currentUser!.uid)Channel")
-    channel.id = currentUser!.uid
+  @IBAction func joinChatRoom(_ sender: Any) {
+    findingPerfectMatchLabel.text = "Finding you the perfect match"
     
-    let vc = TextChatViewController(user: currentUser!, channel: channel)
+    // 1. iterate through the activeChatrooms collection
+    
+    
+    
+    var chatRoom = ChatRoom(name: "\(currentUser!.uid)Channel")
+    chatRoom.id = currentUser!.uid
+    
+    let vc = TextChatViewController(user: currentUser!, chatRoom: chatRoom)
 //    view.window?.rootViewController = vc
 //    view.window?.makeKeyAndVisible()
     vc.modalPresentationStyle = .fullScreen
