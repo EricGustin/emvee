@@ -64,18 +64,6 @@ final class TextChatViewController: MessagesViewController {
     navItem.rightBarButtonItem = backItem
     navBar.setItems([navItem], animated: false)
     
-//    let aChatRoomID = UUID().uuidString
-//    let aConversationID = UUID().uuidString
-//    reference = db.collection(["activeChatRooms", aChatRoomID, aConversationID].joined(separator: "/"))
-//    reference?.parent!.setData([
-//      "isFull": false,
-//      "person0uid": "\(user.uid)",
-//      "person1uid": ""
-//    ]) { err in
-//      if let err = err {
-//        print("Error adding document: \(err)")
-//      }
-//    }
     print("The value of reference is: \(String(describing: reference))")
     if reference == nil {
       reference = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
