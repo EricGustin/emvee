@@ -65,7 +65,7 @@ final class TextChatViewController: MessagesViewController {
     navItem.rightBarButtonItem = backItem
     navBar.setItems([navItem], animated: false)
 //    adjustScrollViewTopInset()
-    var topInset: CGFloat = navBar.frame.maxY
+    let topInset: CGFloat = navBar.frame.maxY
 //    if view.safeAreaInsets.top < 44 {
 //      topInset = 44
 //      print("Inset is zero, new inset is: \(topInset)")
@@ -174,6 +174,13 @@ final class TextChatViewController: MessagesViewController {
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
+    
+    // Get rid of the white space that the avatar occupies. Since avatar.isHidden == true, we don't need this whitespace
+    if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+      layout.setMessageIncomingAvatarSize(.zero)
+      layout.setMessageOutgoingAvatarSize(.zero)
+    }
+    
 //    print(messagesCollectionView.frame.height)
 //    messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
 //    messagesCollectionView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 20).isActive = true
@@ -218,11 +225,9 @@ final class TextChatViewController: MessagesViewController {
     }
     messages.append(message)
     messages.sort()
-    
     let isLatestMessage = messages.firstIndex(of: message) == (messages.count - 1)
     let shouldScrollToBottom = isLatestMessage // && messagesCollectionView.isAtBottom
     messagesCollectionView.reloadData()
-    
     if shouldScrollToBottom {
       DispatchQueue.main.async {
         self.messagesCollectionView.scrollToBottom(animated: true)
@@ -309,7 +314,7 @@ extension TextChatViewController: MessagesDisplayDelegate {
   func shouldDisplayHeader(for message: MessageType, at indexPath: IndexPath,
                            in messagesCollectionView: MessagesCollectionView) -> Bool {
     // 2
-    return true // you can use this method to display things like timestamp of a message
+    return false // you can use this method to display things like timestamp of a message
   }
   
   func messageStyle(for message: MessageType, at indexPath: IndexPath,
@@ -317,6 +322,10 @@ extension TextChatViewController: MessagesDisplayDelegate {
     let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
     // 3
     return .bubbleTail(corner, .curved)
+  }
+  
+  func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+    avatarView.isHidden = true
   }
 }
 
@@ -328,6 +337,8 @@ extension TextChatViewController: MessagesLayoutDelegate {
   func avatarSize(for message: MessageType, at indexPath: IndexPath,
                   in messagesCollectionView: MessagesCollectionView) -> CGSize {
     // 1
+    print("in avatar size")
+    
     return .zero // returning zero for the avatar will hide it from the view
   }
   
