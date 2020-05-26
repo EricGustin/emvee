@@ -31,7 +31,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         print("Error when fetching documents in activeChatRooms")
       } else {
         if querySnapshot!.documents.count == 0 {
-          print("There are no empty chat rooms. Creating a new one now.")
           var reference: CollectionReference? = nil
           let aChatRoomID = UUID().uuidString
           let aConversationID = UUID().uuidString
@@ -47,12 +46,14 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
             }
           }
           
-          let vc = TextChatViewController(user: self.currentUser!, reference: reference)
+//          let vc = TextChatViewController(user: self.currentUser!, reference: reference)
+//          self.view.window?.rootViewController = vc
+//          self.view.window?.makeKeyAndVisible()
+          let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
           vc.modalPresentationStyle = .fullScreen
           self.present(vc, animated: true, completion: nil)
         }
         else {
-          print("Joining an already existing chat room.")
           let aChatRoom = querySnapshot!.documents[querySnapshot!.count-1] // the last in the array AKA the chat room that has been waiting the longest
           let aChatRoomID = aChatRoom.documentID
           db.collection("activeChatRooms").document(aChatRoomID).updateData([
@@ -66,12 +67,15 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           //          print("\(document.documentID) => \(document.data())")
           //db.collection("users").document(userID).updateData([fieldName: newValue])
           //        }
-          
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
           vc.modalPresentationStyle = .fullScreen
           self.present(vc, animated: true, completion: nil)
         }
       }
+//      let profileViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.profileViewController) as? ProfileViewController
+//      // Make profile ViewController appear fullscrean
+//      view.window?.rootViewController = profileViewController
+//      view.window?.makeKeyAndVisible()
     }
   }
   

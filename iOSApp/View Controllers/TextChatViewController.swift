@@ -23,15 +23,21 @@ final class TextChatViewController: MessagesViewController {
   private let user: User
   private var messages: [Message] = []
   private var messageListener: ListenerRegistration?
+  private var userJoinedListener: ListenerRegistration?
   
-  init(user: User, chatRoomID: String, conversationID: String) {
+  private var navBar = UINavigationBar()
+  private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
+  private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
+  
+  init(user: User, chatRoomID: String, conversationID: String) { // initializer for joining an already existing chat room
     self.user = user
     self.chatRoomID = chatRoomID
     self.conversationID = conversationID
     super.init(nibName: nil, bundle: nil)
     title = "Time left"
   }
-  init(user: User, reference: CollectionReference?) {
+  
+  init(user: User, reference: CollectionReference?) { // initializer for a new chat room
     self.user = user
     self.reference = reference
     self.chatRoomID = ""
@@ -53,31 +59,110 @@ final class TextChatViewController: MessagesViewController {
     self.becomeFirstResponder()
   }
   
+  override func viewSafeAreaInsetsDidChange() {
+    navBar = UINavigationBar(frame: CGRect(x: 0, y: view.safeAreaInsets.top, width: view.frame.size.width, height: 44))
+    view.addSubview(navBar)
+    navItem.rightBarButtonItem = backItem
+    navBar.setItems([navItem], animated: false)
+//    adjustScrollViewTopInset()
+    var topInset: CGFloat = navBar.frame.maxY
+//    if view.safeAreaInsets.top < 44 {
+//      topInset = 44
+//      print("Inset is zero, new inset is: \(topInset)")
+//    } else {
+//      topInset = view.safeAreaInsets.top
+//      print("Inset is not zero, new inset is: \(topInset)")
+//    }
+    messagesCollectionView.contentInset.top = topInset
+    messagesCollectionView.scrollIndicatorInsets.top = topInset
+  }
+  
+//  func adjustScrollViewTopInset() {
+//      if #available(iOS 11.0, *) {
+//          // No need to add to the top contentInset
+//        let topInset = view.safeAreaInsets.top
+//        messagesCollectionView.contentInset.top = topInset
+//        messagesCollectionView.scrollIndicatorInsets.top = topInset
+//      } else {
+//          let topInset = view.safeAreaInsets.top
+//          messagesCollectionView.contentInset.top = topInset
+//          messagesCollectionView.scrollIndicatorInsets.top = topInset
+//      }
+//  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
-    view.addSubview(navBar)
-    
-    let navItem = UINavigationItem(title: "Messages")
-    let backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
-    navItem.rightBarButtonItem = backItem
-    navBar.setItems([navItem], animated: false)
-    
-    print("The value of reference is: \(String(describing: reference))")
     if reference == nil {
       reference = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
     }
     // the chat's id is ref!.documentID
     messageListener = reference?.addSnapshotListener({ (querySnapshot, error) in
       guard let snapshot = querySnapshot else {
-        print("Error when listening for channel updates \(error?.localizedDescription ?? "No error")")
+        print("Error when listening for conversation updates \(error?.localizedDescription ?? "ERROR")")
         return
       }
       snapshot.documentChanges.forEach { change in
         self.handleDocumentChange(change)
       }
     })
+    
+//    let chatRoomRef = db.collection("activeChatRooms").document(chatRoomID)
+//    chatRoomRef.getDocument { (document, err) in
+//      if let document = document, document.exists {
+//        guard let uid0 = document.get("person0uid") else { return }
+//        if uid0 as! String != self.user.uid { // case where if this is the second person in the chat
+//          // then this user is the second person to join, so we can get the other person's name and info without using a listener
+//          let otherUserRef = self.db.collection("users").document("\(uid0)")
+//          otherUserRef.getDocument { (userDoc, err) in
+//            if let userDoc = userDoc, userDoc.exists {
+//              // Display the other user's name and age
+//              let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
+//              let otherUserBirthday = userDoc.get("birthday") ?? ""
+//              let date = Date()
+//              let dateFormatter = DateFormatter()
+//              dateFormatter.dateFormat = "MMMM dd yyyy"
+//              let currentDate = dateFormatter.string(from: date)
+//              self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+//            }
+//          }
+//        }  else { // case where if this is a new chat room and they're the only one in it. Need to add a listener so that when the next person joins, we can get their name and age
+//          print("in a new chat room about to make snapshot listener")
+//          chatRoomRef.addSnapshotListener { (documentSnapshot, err) in
+//            guard let document = documentSnapshot else {
+//              print("Error fetching document \(err!)")
+//              return
+//            }
+//            print("Checkmark 1")
+//            guard let uid1 = document.get("person1uid") else { return }
+//            print("Checkmark 2")
+//            let otherUserRef = self.db.collection("users").document("\(uid1)")
+//            print("checkmark 3")
+//            otherUserRef.getDocument { (userDoc, err) in
+//              if let userDoc = userDoc, userDoc.exists {
+//                // Display the other user's name and age
+//                let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
+//                let otherUserBirthday = userDoc.get("birthday") ?? ""
+//                let date = Date()
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "MMMM dd yyyy"
+//                let currentDate = dateFormatter.string(from: date)
+//                navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+//              } else {
+//                print("if let userDoc = userDoc, userDoc.exists { failed for new chat room")
+//              }
+//            }
+//          }
+//        }
+//      }
+//    }
+//    userJoinedListener = reference?.parent?.addSnapshotListener({ (querySnapshot, err) in
+//      guard let snapshot = querySnapshot else {
+//        print("Error when listening for ")
+//        return
+//      }
+//      if snapshot.
+//    })
     
     navigationItem.largeTitleDisplayMode = .never
     
@@ -89,7 +174,6 @@ final class TextChatViewController: MessagesViewController {
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
-    
 //    print(messagesCollectionView.frame.height)
 //    messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
 //    messagesCollectionView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 20).isActive = true
@@ -97,15 +181,21 @@ final class TextChatViewController: MessagesViewController {
     
     let whiteColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1.0)
     view.backgroundColor = whiteColor
+    
+//    guard let flowLayout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout else {
+//        print("Can't get flowLayout")
+//        return
+//    }
+//    flowLayout.collectionView?.backgroundColor = whiteColor
   }
-  
   
   // MARK: - Actions
   @objc func backToHome() {
-    //    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-    //    // Make profile ViewController appear fullscrean
-    //    view.window?.rootViewController = homeViewController
-    //    view.window?.makeKeyAndVisible()
+//        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+//        // Make profile ViewController appear fullscrean
+//        view.window?.rootViewController = homeViewController
+//        view.window?.makeKeyAndVisible()
+    
     dismiss(animated: true, completion: nil)
   }
   
@@ -150,6 +240,21 @@ final class TextChatViewController: MessagesViewController {
         insertNewMessage(message)
       default: break
     }
+  }
+  
+  // MARK: Calculations
+  func getOtherUserAge(currentDate: String, dateOfBirth: String) -> Int {
+    let currentDateArray: [String] = currentDate.wordList
+    let dateOfBirthArray: [String] = dateOfBirth.wordList
+    var age = Int(currentDateArray[2])! - Int(dateOfBirthArray[2])!
+    if (Constants.Dates.months[dateOfBirthArray[0]] ?? 0 > Constants.Dates.months[currentDateArray[0]] ?? 0) {
+      age -= 1
+    } else if (dateOfBirthArray[0] == currentDateArray[0]) {
+      if (dateOfBirthArray[1] > currentDateArray[1]) {
+        age -= 1
+      }
+    }
+    return age
   }
 }
 
@@ -300,5 +405,5 @@ extension TextChatViewController: MessageLabelDelegate {
   func didSelectCustom(_ pattern: String, match: String?) {
     print("Custom data detector patter selected: \(pattern)")
   }
-  
+
 }
