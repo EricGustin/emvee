@@ -55,12 +55,12 @@ open class MessagesCollectionView: UICollectionView {
 
     // MARK: - Initializers
 
-    public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(frame: frame, collectionViewLayout: layout)
-        backgroundColor = .backgroundColor
-        registerReusableViews()
-        setupGestureRecognizers()
-    }
+  public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+    super.init(frame: frame, collectionViewLayout: layout)
+    backgroundColor = .backgroundColor
+    registerReusableViews()
+    setupGestureRecognizers()
+  }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(frame: .zero, collectionViewLayout: MessagesCollectionViewFlowLayout())

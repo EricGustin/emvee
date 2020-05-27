@@ -36,7 +36,6 @@ struct Message : MessageType {
   
   init?(document: QueryDocumentSnapshot) {
     let data = document.data()
-    print("Created: \(String(describing: data["created"] as? Date))")
 //    guard let sentDate = data["created"] as? Date else {
 //      return nil
 //    }
@@ -46,6 +45,7 @@ struct Message : MessageType {
       dateFormatter.dateFormat = "yyyy-MM-dd"
       date = dateFormatter.date(from: dateString) ?? Date(timeIntervalSince1970: 0)
     }
+    print("Created: \(String(describing: data["created"] as? Date))")
     
     print("SenderID: \(String(describing: data["senderID"]))")
     guard let senderID = data["senderID"] as? String else {

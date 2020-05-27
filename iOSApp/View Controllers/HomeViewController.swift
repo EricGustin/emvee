@@ -46,9 +46,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
             }
           }
           
-//          let vc = TextChatViewController(user: self.currentUser!, reference: reference)
-//          self.view.window?.rootViewController = vc
-//          self.view.window?.makeKeyAndVisible()
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
           vc.modalPresentationStyle = .fullScreen
           self.present(vc, animated: true, completion: nil)
@@ -62,27 +59,19 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           ])
           print(aChatRoom.data())
           let aConversationID = aChatRoom.get("conversationID") as? String ?? "noConversationID"
-          print(aConversationID)
-          //        for document in querySnapshot!.documents {
-          //          print("\(document.documentID) => \(document.data())")
-          //db.collection("users").document(userID).updateData([fieldName: newValue])
-          //        }
+
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
           vc.modalPresentationStyle = .fullScreen
           self.present(vc, animated: true, completion: nil)
         }
       }
-//      let profileViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.profileViewController) as? ProfileViewController
-//      // Make profile ViewController appear fullscrean
-//      view.window?.rootViewController = profileViewController
-//      view.window?.makeKeyAndVisible()
     }
   }
   
- //let transition = PopAnimator()
-
-
-
+  override func viewWillAppear(_ animated: Bool) {
+    findingPerfectMatchLabel.text = "Welcome!"
+  }
+  
  override func viewDidLoad() {
   super.viewDidLoad()
   print("In homeViewController")

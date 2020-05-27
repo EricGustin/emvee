@@ -16,9 +16,11 @@ import FirebaseAuth
 final class TextChatViewController: MessagesViewController {
   
   private let db = Firestore.firestore()
-  private var reference: CollectionReference? // reference to database
+  private var conversationRef: CollectionReference? // reference to database
   private let chatRoomID: String
   private let conversationID: String
+  
+  private let chatRoomRef: DocumentReference?
   
   private let user: User
   private var messages: [Message] = []
@@ -33,17 +35,8 @@ final class TextChatViewController: MessagesViewController {
     self.user = user
     self.chatRoomID = chatRoomID
     self.conversationID = conversationID
+    self.chatRoomRef = db.collection("activeChatRooms").document(chatRoomID)
     super.init(nibName: nil, bundle: nil)
-    title = "Time left"
-  }
-  
-  init(user: User, reference: CollectionReference?) { // initializer for a new chat room
-    self.user = user
-    self.reference = reference
-    self.chatRoomID = ""
-    self.conversationID = ""
-    super.init(nibName: nil, bundle: nil)
-    title = "Time left"
   }
   
   required init?(coder: NSCoder) {
@@ -52,6 +45,7 @@ final class TextChatViewController: MessagesViewController {
   
   deinit {
     messageListener?.remove()
+    userJoinedListener?.remove()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -64,40 +58,20 @@ final class TextChatViewController: MessagesViewController {
     view.addSubview(navBar)
     navItem.rightBarButtonItem = backItem
     navBar.setItems([navItem], animated: false)
-//    adjustScrollViewTopInset()
+    
     let topInset: CGFloat = navBar.frame.maxY
-//    if view.safeAreaInsets.top < 44 {
-//      topInset = 44
-//      print("Inset is zero, new inset is: \(topInset)")
-//    } else {
-//      topInset = view.safeAreaInsets.top
-//      print("Inset is not zero, new inset is: \(topInset)")
-//    }
     messagesCollectionView.contentInset.top = topInset
     messagesCollectionView.scrollIndicatorInsets.top = topInset
   }
   
-//  func adjustScrollViewTopInset() {
-//      if #available(iOS 11.0, *) {
-//          // No need to add to the top contentInset
-//        let topInset = view.safeAreaInsets.top
-//        messagesCollectionView.contentInset.top = topInset
-//        messagesCollectionView.scrollIndicatorInsets.top = topInset
-//      } else {
-//          let topInset = view.safeAreaInsets.top
-//          messagesCollectionView.contentInset.top = topInset
-//          messagesCollectionView.scrollIndicatorInsets.top = topInset
-//      }
-//  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    if reference == nil {
-      reference = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
+    //self.view.backgroundColor = UIColor.white
+    if conversationRef == nil {
+      conversationRef = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
     }
     // the chat's id is ref!.documentID
-    messageListener = reference?.addSnapshotListener({ (querySnapshot, error) in
+    messageListener = conversationRef?.addSnapshotListener({ (querySnapshot, error) in
       guard let snapshot = querySnapshot else {
         print("Error when listening for conversation updates \(error?.localizedDescription ?? "ERROR")")
         return
@@ -107,55 +81,71 @@ final class TextChatViewController: MessagesViewController {
       }
     })
     
-//    let chatRoomRef = db.collection("activeChatRooms").document(chatRoomID)
-//    chatRoomRef.getDocument { (document, err) in
-//      if let document = document, document.exists {
-//        guard let uid0 = document.get("person0uid") else { return }
-//        if uid0 as! String != self.user.uid { // case where if this is the second person in the chat
-//          // then this user is the second person to join, so we can get the other person's name and info without using a listener
-//          let otherUserRef = self.db.collection("users").document("\(uid0)")
-//          otherUserRef.getDocument { (userDoc, err) in
-//            if let userDoc = userDoc, userDoc.exists {
-//              // Display the other user's name and age
-//              let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
-//              let otherUserBirthday = userDoc.get("birthday") ?? ""
-//              let date = Date()
-//              let dateFormatter = DateFormatter()
-//              dateFormatter.dateFormat = "MMMM dd yyyy"
-//              let currentDate = dateFormatter.string(from: date)
-//              self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
-//            }
-//          }
-//        }  else { // case where if this is a new chat room and they're the only one in it. Need to add a listener so that when the next person joins, we can get their name and age
-//          print("in a new chat room about to make snapshot listener")
-//          chatRoomRef.addSnapshotListener { (documentSnapshot, err) in
-//            guard let document = documentSnapshot else {
-//              print("Error fetching document \(err!)")
-//              return
-//            }
-//            print("Checkmark 1")
-//            guard let uid1 = document.get("person1uid") else { return }
-//            print("Checkmark 2")
-//            let otherUserRef = self.db.collection("users").document("\(uid1)")
-//            print("checkmark 3")
-//            otherUserRef.getDocument { (userDoc, err) in
-//              if let userDoc = userDoc, userDoc.exists {
-//                // Display the other user's name and age
-//                let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
-//                let otherUserBirthday = userDoc.get("birthday") ?? ""
-//                let date = Date()
-//                let dateFormatter = DateFormatter()
-//                dateFormatter.dateFormat = "MMMM dd yyyy"
-//                let currentDate = dateFormatter.string(from: date)
-//                navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
-//              } else {
-//                print("if let userDoc = userDoc, userDoc.exists { failed for new chat room")
-//              }
-//            }
-//          }
-//        }
-//      }
-//    }
+    userJoinedListener = chatRoomRef?.addSnapshotListener({ (querySnapshot, error) in
+      guard let snapshot = querySnapshot else {
+        print("Error when listening for isActive updates \(error?.localizedDescription ?? "ERROR")")
+        return
+      }
+      
+      if self.view.window != nil {
+        if snapshot.get("isActive") != nil {
+          let userLeftAlert = UIAlertController(title: "The stanger left the chat", message: "", preferredStyle: .alert)
+          let userLeftAction = UIAlertAction(title: "OK", style: .default, handler: {
+            action in self.backToHome()
+          })
+          userLeftAlert.addAction(userLeftAction)
+          self.present(userLeftAlert, animated: true, completion: nil)
+        }
+      }
+    })
+    
+    let chatRoomRef = db.collection("activeChatRooms").document(chatRoomID)
+    chatRoomRef.getDocument { (document, err) in
+      if let document = document, document.exists {
+        guard let uid0 = document.get("person0uid") else { return }
+        if uid0 as! String != self.user.uid { // case where if this is the second person in the chat
+          // then this user is the second person to join, so we can get the other person's name and info without using a listener
+          let otherUserRef = self.db.collection("users").document("\(uid0)")
+          otherUserRef.getDocument { (userDoc, err) in
+            if let userDoc = userDoc, userDoc.exists {
+              // Display the other user's name and age
+              let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
+              let otherUserBirthday = userDoc.get("birthday") ?? ""
+              let date = Date()
+              let dateFormatter = DateFormatter()
+              dateFormatter.dateFormat = "MMMM dd yyyy"
+              let currentDate = dateFormatter.string(from: date)
+              self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+            }
+          }
+        } else { // case where if this is a new chat room and they're the only one in it. Need to add a listener so that when the next person joins, we can get their name and age
+          chatRoomRef.addSnapshotListener { (documentSnapshot, err) in
+            guard let document = documentSnapshot else {
+              print("Error fetching document \(err!)")
+              return
+            }
+            guard let uid1 = document.get("person1uid") else { return }
+            if uid1 as! String != "" {
+              let otherUserRef = self.db.collection("users").document("\(uid1)")
+              otherUserRef.getDocument { (userDoc, err) in
+                if let userDoc = userDoc, userDoc.exists {
+                  // Display the other user's name and age
+                  let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
+                  let otherUserBirthday = userDoc.get("birthday") ?? ""
+                  let date = Date()
+                  let dateFormatter = DateFormatter()
+                  dateFormatter.dateFormat = "MMMM dd yyyy"
+                  let currentDate = dateFormatter.string(from: date)
+                  self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+                } else {
+                  print("if let userDoc = userDoc, userDoc.exists { failed for new chat room")
+                }
+              }
+            }
+          }
+        }
+      }
+    }
 //    userJoinedListener = reference?.parent?.addSnapshotListener({ (querySnapshot, err) in
 //      guard let snapshot = querySnapshot else {
 //        print("Error when listening for ")
@@ -198,18 +188,15 @@ final class TextChatViewController: MessagesViewController {
   
   // MARK: - Actions
   @objc func backToHome() {
-//        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-//        // Make profile ViewController appear fullscrean
-//        view.window?.rootViewController = homeViewController
-//        view.window?.makeKeyAndVisible()
-    
+    print("isFull set to true. no longer joinable")
+    chatRoomRef?.updateData(["isFull": true, "isActive": false])
     dismiss(animated: true, completion: nil)
   }
   
   // MARK: - Helpers
   
   private func save(_ message: Message) {
-    reference?.addDocument(data: message.representation) { error in
+    conversationRef?.addDocument(data: message.representation) { error in
       if let e = error {
         print("Error sending message: \(e.localizedDescription)")
         return
@@ -239,7 +226,6 @@ final class TextChatViewController: MessagesViewController {
     guard let message = Message(document: change.document) else {
       return
     }
-    print(change.type)
     switch change.type {
       case .added:
         insertNewMessage(message)
