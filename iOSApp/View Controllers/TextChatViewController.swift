@@ -31,6 +31,9 @@ final class TextChatViewController: MessagesViewController {
   private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
   private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
   
+  private var timeLeft = 10
+  private var timer: Timer!
+  
   init(user: User, chatRoomID: String, conversationID: String) { // initializer for joining an already existing chat room
     self.user = user
     self.chatRoomID = chatRoomID
@@ -116,6 +119,9 @@ final class TextChatViewController: MessagesViewController {
               dateFormatter.dateFormat = "MMMM dd yyyy"
               let currentDate = dateFormatter.string(from: date)
               self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+              
+              // Start countdown to video chat
+              self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
             }
           }
         } else { // case where if this is a new chat room and they're the only one in it. Need to add a listener so that when the next person joins, we can get their name and age
@@ -137,6 +143,8 @@ final class TextChatViewController: MessagesViewController {
                   dateFormatter.dateFormat = "MMMM dd yyyy"
                   let currentDate = dateFormatter.string(from: date)
                   self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+                  // Start countdown to video chat
+                  self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
                 } else {
                   print("if let userDoc = userDoc, userDoc.exists { failed for new chat room")
                 }
@@ -184,6 +192,7 @@ final class TextChatViewController: MessagesViewController {
 //        return
 //    }
 //    flowLayout.collectionView?.backgroundColor = whiteColor
+    
   }
   
   // MARK: - Actions
@@ -191,6 +200,17 @@ final class TextChatViewController: MessagesViewController {
     print("isFull set to true. no longer joinable")
     chatRoomRef?.updateData(["isFull": true, "isActive": false])
     dismiss(animated: true, completion: nil)
+  }
+  
+  @objc func counter() {
+    timeLeft -= 1
+    if timeLeft <= 5 {
+    navItem.title = "Time until video chat: \(timeLeft)"
+    }
+    if timeLeft == 0 {
+      print("transition!")
+      transitionToVideoChat()
+    }
   }
   
   // MARK: - Helpers
@@ -247,6 +267,21 @@ final class TextChatViewController: MessagesViewController {
     }
     return age
   }
+  
+  // MARK: Transition
+  func transitionToVideoChat() {
+//    //dismiss(animated: true, completion: nil)
+//    let videoChatViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.videoChatViewController) as? VideoChatViewController
+//    // Make profile ViewController appear fullscrean
+//    videoChatViewController?.roomName = chatRoomID
+//    view.window?.rootViewController = videoChatViewController
+//    view.window?.makeKeyAndVisible()
+    
+    let vc = VideoChatViewController(chatRoomID: chatRoomID)
+    vc.modalPresentationStyle = .fullScreen
+    self.present(vc, animated: true, completion: nil)
+  }
+
 }
 
 // MARK: - MessagesDataSource

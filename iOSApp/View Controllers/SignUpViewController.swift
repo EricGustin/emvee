@@ -19,6 +19,14 @@ class SignUpViewController: UIViewController {
   @IBOutlet weak var signUpButton: UIButton!
   @IBOutlet weak var errorLabel: UILabel!
   @IBOutlet weak var datePicker: UIDatePicker!
+  @IBAction func cancelButtonClicked(_ sender: UIButton) {
+    let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
+    
+    view.window?.rootViewController = welcomeViewController
+    view.window?.makeKeyAndVisible()
+  }
+  
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -29,10 +37,10 @@ class SignUpViewController: UIViewController {
   
   func setUpElements() {
     errorLabel.alpha = 0
-    StyleUtilities.styleTextField(firstNameTextField)
-    StyleUtilities.styleTextField(lastNameTextField)
-    StyleUtilities.styleTextField(emailTextField)
-    StyleUtilities.styleTextField(passwordTextField)
+    StyleUtilities.styleTextField(firstNameTextField, firstNameTextField.placeholder ?? "")
+    StyleUtilities.styleTextField(lastNameTextField, lastNameTextField.placeholder ?? "")
+    StyleUtilities.styleTextField(emailTextField, emailTextField.placeholder ?? "")
+    StyleUtilities.styleTextField(passwordTextField, passwordTextField.placeholder ?? "")
     StyleUtilities.styleFilledButton(signUpButton)
   }
   

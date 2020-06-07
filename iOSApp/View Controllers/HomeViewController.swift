@@ -16,11 +16,17 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   let currentUser = Auth.auth().currentUser
   @IBOutlet weak var profileButton: UIButton!
   @IBOutlet weak var findingPerfectMatchLabel: UILabel!
+  @IBOutlet weak var enterChatRoomButton: UIButton!
+  @IBOutlet weak var enterVideoChatRoomButton: UIButton!
   
   @IBAction func profileButtonClicked(_ sender: UIButton) {
     transitionToProfile()
   }
 
+  @IBAction func joinVideoChatRoom(_ sender: Any) {
+    transitionToVideoChat()
+  }
+  
   @IBAction func joinChatRoom(_ sender: Any) {
     findingPerfectMatchLabel.text = "Finding you the perfect match"
     let db = Firestore.firestore()
@@ -72,16 +78,30 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     findingPerfectMatchLabel.text = "Welcome!"
   }
   
- override func viewDidLoad() {
-  super.viewDidLoad()
-  print("In homeViewController")
-  UserDefaults.standard.set(true, forKey: "isUserSignedIn")
- }
- 
- func transitionToProfile() {
-  let profileViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.profileViewController) as? ProfileViewController
-  // Make profile ViewController appear fullscrean
-  view.window?.rootViewController = profileViewController
-  view.window?.makeKeyAndVisible()
- }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    print("In homeViewController")
+    UserDefaults.standard.set(true, forKey: "isUserSignedIn")
+    StyleUtilities.styleFilledButton(enterChatRoomButton)
+  }
+  
+  func transitionToProfile() {
+    let profileViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.profileViewController) as? ProfileViewController
+    // Make profile ViewController appear fullscrean
+    view.window?.rootViewController = profileViewController
+    view.window?.makeKeyAndVisible()
+  }
+  
+  func transitionToVideoChat() {
+//    let videoChatViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.videoChatViewController) as? VideoChatViewController
+//    // Make profile ViewController appear fullscrean
+//    videoChatViewController?.roomName = "234"
+//    view.window?.rootViewController = videoChatViewController
+//    view.window?.makeKeyAndVisible()
+    
+    let vc = VideoChatViewController(chatRoomID: "234")
+    vc.modalPresentationStyle = .fullScreen
+    self.present(vc, animated: true, completion: nil)
+  }
+  
 }

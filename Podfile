@@ -9,12 +9,14 @@ target 'iOSApp' do
   # add the Firebase pod for Google Analytics
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'
+  pod 'GoogleSignIn'
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'MessageKit'
   pod 'InputBarAccessoryView'
+  pod 'TwilioVideo', '~>3.3'
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods
 end

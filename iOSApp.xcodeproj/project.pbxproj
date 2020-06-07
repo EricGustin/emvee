@@ -23,6 +23,7 @@
 		FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC0C24666A0C008227FE /* ProfileViewController.swift */; };
 		FA54DC132467A64D008227FE /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC122467A64D008227FE /* PopAnimator.swift */; };
 		FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC142467C168008227FE /* SettingsViewController.swift */; };
+		FA5AD8C5248AF991001DFAB6 /* VideoChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */; };
 		FA76570B2477213A0022C644 /* MultiSimConfig.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA76570A2477213A0022C644 /* MultiSimConfig.txt */; };
 		FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FA246F49F500895098 /* TextChatViewController.swift */; };
 		FA91C5FD246F4ADE00895098 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FC246F4ADE00895098 /* Message.swift */; };
@@ -56,6 +57,7 @@
 		FA54DC0C24666A0C008227FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FA54DC122467A64D008227FE /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
 		FA54DC142467C168008227FE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoChatViewController.swift; sourceTree = "<group>"; };
 		FA76570A2477213A0022C644 /* MultiSimConfig.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = MultiSimConfig.txt; sourceTree = "<group>"; };
 		FA76570E247721DB0022C644 /* launch_multiple_simulators.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = launch_multiple_simulators.sh; sourceTree = "<group>"; };
 		FA91C5FA246F49F500895098 /* TextChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextChatViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				FA54DC142467C168008227FE /* SettingsViewController.swift */,
 				FA91C5FA246F49F500895098 /* TextChatViewController.swift */,
 				FA91C60224709FF000895098 /* NavigationController.swift */,
+				FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 				FA54DBE324661C99008227FE /* Resources */,
 				E720B172F4A9675F948CFE30 /* [CP] Embed Pods Frameworks */,
 				FA76570F247722760022C644 /* ShellScript */,
+				025D3D1ECB8ECBE01A9D0DB9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -260,6 +264,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		025D3D1ECB8ECBE01A9D0DB9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOSApp/Pods-iOSApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOSApp/Pods-iOSApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOSApp/Pods-iOSApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		88F9C42BB04A27BE6E7DEDB6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -339,6 +360,7 @@
 				FA54DC0124661D01008227FE /* HomeViewController.swift in Sources */,
 				FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */,
 				FA54DC0B24663B37008227FE /* Constants.swift in Sources */,
+				FA5AD8C5248AF991001DFAB6 /* VideoChatViewController.swift in Sources */,
 				FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */,
 				FA91C5FD246F4ADE00895098 /* Message.swift in Sources */,
 			);

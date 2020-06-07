@@ -17,17 +17,32 @@ class LoginViewController: UIViewController {
   @IBOutlet weak var passwordTextField: UITextField!
   @IBOutlet weak var loginButton: UIButton!
   @IBOutlet weak var errorLabel: UILabel!
+  @IBOutlet weak var emailTextFieldBackground: UITextField!
+  
+  @IBAction func cancelButtonClicked(_ sender: UIButton) {
+    let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
+    
+    view.window?.rootViewController = welcomeViewController
+    view.window?.makeKeyAndVisible()
+  }
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In loginViewController")
     setUpElements()
+    
+    // DISMISS KEYBOARD WHEN THE USER CLICKS SOMEWHERE ELSE
+//    let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+//    self.view.addGestureRecognizer(tap)
+    
+    //addTextFieldTargets()
+
     // Do any additional setup after loading the view.
   }
   
   func setUpElements() {
     errorLabel.alpha = 0
-    StyleUtilities.styleTextField(emailTextField)
-    StyleUtilities.styleTextField(passwordTextField)
+    StyleUtilities.styleTextField(emailTextField, emailTextField.placeholder ?? "")
+    StyleUtilities.styleTextField(passwordTextField, passwordTextField.placeholder ?? "")
     StyleUtilities.styleFilledButton(loginButton)
   }
   
@@ -66,7 +81,7 @@ class LoginViewController: UIViewController {
       // create cleaned text
       let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-      
+      print(email)
       Auth.auth().signIn(withEmail: email, password: password ) { (result, error) in
         if error != nil {
           // Coudln't sign in
@@ -88,5 +103,24 @@ class LoginViewController: UIViewController {
       }
     }
   }
+  
+//  @objc func textFieldInitialClick(_ textfield: UITextField) {
+//    if textfield.text == "" {
+//    //  textfield.text = "   "
+//    }
+//  }
+//
+//  @objc func textFieldDidChange(_ textfield: UITextField) {
+//    if textfield.text == "  " {
+//      textfield.text = "   "
+//    }
+//  }
+//
+//  func addTextFieldTargets() {
+//    emailTextField.addTarget(self, action: #selector(textFieldInitialClick(_:)), for: .editingDidBegin)
+//    emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+//    passwordTextField.addTarget(self, action: #selector(textFieldInitialClick(_:)), for: .editingDidBegin)
+//    passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+//  }
   
 }

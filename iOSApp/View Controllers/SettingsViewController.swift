@@ -16,9 +16,9 @@ class SettingsViewController: UIViewController {
 //  let menLabel = UILabel()
 //  let womenLabel = UILabel()
 //  let allLabel = UILabel()
-  // Radio Buttons
+//   Radio Buttons
 //  var genderRadioButtons = [UIRadioButton(), UIRadioButton(), UIRadioButton()]
-  // Vertical Stacks
+//   Vertical Stacks
 //  let radioButtonVStack = UIStackView()
 //  let genderVStack = UIStackView()
 //  let radioGenderHStack = UIStackView()
@@ -169,7 +169,7 @@ class SettingsViewController: UIViewController {
     // Set Constraints
 //    genderVStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
 //    genderVStack.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 40).isActive = true
-//    NSLayoutConstraint(item: genderRadioButtons[0], attribute: .top, relatedBy: .equal, toItem: navBar, attribute: .bottom, multiplier: 1, constant: 40).isActive = true
+//    let constraint = NSLayoutConstraint(item: genderRadioButtons[0], attribute: .top, relatedBy: .equal, toItem: navBar, attribute: .bottom, multiplier: 1, constant: 40)
 //    NSLayoutConstraint(item: genderRadioButtons[0], attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 20).isActive = true
 //    print(genderRadioButtons[0].superview?.convert(genderRadioButtons[0].frame, to: nil))
 //    print(showMeLabel.superview?.convert(showMeLabel.frame, to: nil))
