@@ -47,6 +47,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     present(picker, animated: true, completion: nil)
   }
   
+  @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
+    if gesture.direction == .left {
+      transitionToHome()
+    } else if gesture.direction == .right {
+      transitionToSettings()
+    }
+  }
+  
   // MARK: - Navigation
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -55,6 +63,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     profilePicture.isUserInteractionEnabled = true
     
     aboutMeTextView.delegate = self
+    
+    
+    let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
+    leftSwipeGesture.direction = .left
+    view.addGestureRecognizer(leftSwipeGesture)
+    let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
+    rightSwipeGesture.direction = .right
+    view.addGestureRecognizer(rightSwipeGesture)
   }
   
   override func viewWillAppear(_ animated: Bool) {

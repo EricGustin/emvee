@@ -41,7 +41,14 @@ class SettingsViewController: UIViewController {
     print("In settingsViewController")
     setViews()
     setUpElements()
+    
+    let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
+    swipeGesture.direction = .left
+    view.addGestureRecognizer(swipeGesture)
   }
+
+  
+
 
   // MARK: - Transistions
   func transitionToWelcome() {
@@ -59,7 +66,11 @@ class SettingsViewController: UIViewController {
     view.window?.makeKeyAndVisible()
   }
   
-  // MARK: - IBActions
+  // MARK: - Actions
+  @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
+    transitionToProfile()
+  }
+  
   @IBAction func radioButton1Clicked(_ sender: UIButton) { onClick(sender) }
   @IBAction func radioButton2Clicked(_ sender: UIButton) { onClick(sender) }
   @IBAction func radioButton3Clicked(_ sender: UIButton) { onClick(sender) }

@@ -15,6 +15,8 @@ import FirebaseAuth
 
 final class TextChatViewController: MessagesViewController {
   
+  
+  
   private let db = Firestore.firestore()
   private var conversationRef: CollectionReference? // reference to database
   private let chatRoomID: String
@@ -31,7 +33,7 @@ final class TextChatViewController: MessagesViewController {
   private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
   private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
   
-  private var timeLeft = 10
+  private var timeLeft = 2
   private var timer: Timer!
   
   init(user: User, chatRoomID: String, conversationID: String) { // initializer for joining an already existing chat room
@@ -51,8 +53,16 @@ final class TextChatViewController: MessagesViewController {
     userJoinedListener?.remove()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    if UserDefaults.standard.bool(forKey: "isComingFromVideoChat") {
+      UserDefaults.standard.set(false, forKey: "isComingFromVideoChat")
+      dismiss(animated: false, completion: nil)
+    }
+  }
+  
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    
     self.becomeFirstResponder()
   }
   
@@ -69,6 +79,7 @@ final class TextChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     //self.view.backgroundColor = UIColor.white
     if conversationRef == nil {
       conversationRef = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
@@ -204,12 +215,13 @@ final class TextChatViewController: MessagesViewController {
   
   @objc func counter() {
     timeLeft -= 1
-    if timeLeft <= 5 {
-    navItem.title = "Time until video chat: \(timeLeft)"
-    }
-    if timeLeft == 0 {
-      print("transition!")
-      transitionToVideoChat()
+    if timeLeft >= 0 {
+      if timeLeft <= 5 {
+        navItem.title = "Time until video chat: \(timeLeft)"
+      }
+      if timeLeft == 0 {
+        transitionToVideoChat()
+      }
     }
   }
   
@@ -270,12 +282,10 @@ final class TextChatViewController: MessagesViewController {
   
   // MARK: Transition
   func transitionToVideoChat() {
-//    //dismiss(animated: true, completion: nil)
-//    let videoChatViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.videoChatViewController) as? VideoChatViewController
-//    // Make profile ViewController appear fullscrean
-//    videoChatViewController?.roomName = chatRoomID
-//    view.window?.rootViewController = videoChatViewController
-//    view.window?.makeKeyAndVisible()
+    // hide views so that when the user transitions from video -> text -> home, they don't see their old conversation
+    navBar.isHidden = true
+    messageInputBar.isHidden = true
+    messagesCollectionView.isHidden = true
     
     let vc = VideoChatViewController(chatRoomID: chatRoomID)
     vc.modalPresentationStyle = .fullScreen

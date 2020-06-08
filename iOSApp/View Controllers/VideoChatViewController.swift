@@ -14,7 +14,7 @@ import UIKit
 import TwilioVideo
 
 class VideoChatViewController: UIViewController {
-  
+   
   var accessToken: String = ""
   var room: Room?
   var localVideoTrack: LocalVideoTrack?
@@ -25,9 +25,9 @@ class VideoChatViewController: UIViewController {
   
   var roomName: String
   
-  //@IBOutlet weak var previewView: VideoView!
-  //@IBOutlet weak var disconnectButton: UIButton!
-  //@IBOutlet weak var muteButton: UIButton!
+  var previewView: VideoView?
+  var disconnectButton: UIButton?
+  var muteButton: UIButton?
   
   init(chatRoomID: String) { // initializer for joining an already existing chat room
     self.roomName = chatRoomID
@@ -38,21 +38,22 @@ class VideoChatViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  @IBAction func disconnectButtonClicked(_ sender: UIButton) {
+  @objc func disconnect() {
     room?.disconnect()
-    // and then transition
+    transitionToHome()
+    
   }
   
-  @IBAction func muteButtonClicked(_ sender: UIButton) {
+  @objc func muteButtonClicked(_ sender: UIButton) {
     print("mute button clicked")
     if (self.localAudioTrack != nil) {
       self.localAudioTrack?.isEnabled = !(self.localAudioTrack?.isEnabled)!
       
       // Update the button title
       if (self.localAudioTrack?.isEnabled == true) {
-  //      self.muteButton.setImage(UIImage(named: "mute@4x"), for: .normal)
+       // self.muteButton.setImage(UIImage(named: "mute@4x"), for: .normal)
       } else {
-   //     self.muteButton.setImage(UIImage(named: "unmute@4x"), for: .normal)
+       // self.muteButton.setImage(UIImage(named: "unmute@4x"), for: .normal)
       }
     }
   }
@@ -63,6 +64,7 @@ class VideoChatViewController: UIViewController {
     print("in video view controller")
     
     requestAccessToken()
+    setupViews()
     
     while accessToken == "" {
     }
@@ -89,7 +91,7 @@ class VideoChatViewController: UIViewController {
   }
   
   func requestAccessToken() {
-    let tokenURL = "http://fdd7bffe31bf.ngrok.io"
+    let tokenURL = "http://c129e9720d90.ngrok.io"
     if let url = URL(string: tokenURL) {
       let task = URLSession.shared.dataTask(with: url) {
         data, response, error in
@@ -116,7 +118,7 @@ class VideoChatViewController: UIViewController {
       localVideoTrack = LocalVideoTrack(source: camera!, enabled: true, name: "Camera")
       
       // Add renderer to video track for local preview
-     //   localVideoTrack!.addRenderer(self.previewView)
+      localVideoTrack!.addRenderer(previewView!)
       
       //          if (frontCamera != nil && backCamera != nil) {
       //              // We will flip camera on tap.
@@ -128,7 +130,7 @@ class VideoChatViewController: UIViewController {
         if error != nil {
           print("couldn't capture preview video")
         } else {
-      //    self.previewView.shouldMirror = (captureDevice.position == .front)
+        // self.previewView.shouldMirror = (captureDevice.position == .front)
         }
       }
     }
@@ -136,47 +138,54 @@ class VideoChatViewController: UIViewController {
       print("No front or back capture device found!")
     }
   }
-  func setupRemoteVideoView() {
-    // Creating `VideoView` programmatically
-    self.remoteView = VideoView(frame: CGRect.zero, delegate: self)
-    self.view.insertSubview(self.remoteView!, at: 1)
-    print("setting up remote view")
-    // `VideoView` supports scaleToFill, scaleAspectFill and scaleAspectFit
-    // scaleAspectFit is the default mode when you create `VideoView` programmatically.
-    self.remoteView!.contentMode = .scaleAspectFit
+  
+  // set up, initialize and set constraints for programmatic views
+  func setupViews() {
+    // Preview View
+    previewView = VideoView.init(frame: CGRect.zero, delegate: self)
+    view.addSubview(previewView!)
+    previewView?.translatesAutoresizingMaskIntoConstraints = false
+    let previewViewWidth = NSLayoutConstraint(item: previewView!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 120);
+    let previewViewHeight = NSLayoutConstraint(item: previewView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 160);
+    let previewViewHorizontal = NSLayoutConstraint(item: previewView!, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: 20)
+    let previewViewVertical = NSLayoutConstraint(item: previewView!, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 20)
+    view.addConstraints([previewViewWidth, previewViewHeight, previewViewHorizontal, previewViewVertical])
     
-    let centerX = NSLayoutConstraint(item: self.remoteView!,
-                                     attribute: NSLayoutConstraint.Attribute.centerX,
-                                     relatedBy: NSLayoutConstraint.Relation.equal,
-                                     toItem: self.view,
-                                     attribute: NSLayoutConstraint.Attribute.centerX,
-                                     multiplier: 1,
-                                     constant: 0);
-    self.view.addConstraint(centerX)
-    let centerY = NSLayoutConstraint(item: self.remoteView!,
-                                     attribute: NSLayoutConstraint.Attribute.centerY,
-                                     relatedBy: NSLayoutConstraint.Relation.equal,
-                                     toItem: self.view,
-                                     attribute: NSLayoutConstraint.Attribute.centerY,
-                                     multiplier: 1,
-                                     constant: 0);
-    self.view.addConstraint(centerY)
-    let width = NSLayoutConstraint(item: self.remoteView!,
-                                   attribute: NSLayoutConstraint.Attribute.width,
-                                   relatedBy: NSLayoutConstraint.Relation.equal,
-                                   toItem: self.view,
-                                   attribute: NSLayoutConstraint.Attribute.width,
-                                   multiplier: 1,
-                                   constant: 0);
-    self.view.addConstraint(width)
-    let height = NSLayoutConstraint(item: self.remoteView!,
-                                    attribute: NSLayoutConstraint.Attribute.height,
-                                    relatedBy: NSLayoutConstraint.Relation.equal,
-                                    toItem: self.view,
-                                    attribute: NSLayoutConstraint.Attribute.height,
-                                    multiplier: 1,
-                                    constant: 0);
-    self.view.addConstraint(height)
+    // Disconnect Button
+    disconnectButton = UIButton(type: .custom)
+    disconnectButton!.setImage(UIImage(named: "end@4x"), for: .normal)
+    disconnectButton!.setImage(UIImage(named: "end_pressed@4x"), for: .selected)
+    disconnectButton!.addTarget(self, action: #selector(disconnect), for: .touchUpInside)
+    view.addSubview(disconnectButton!)
+    disconnectButton?.translatesAutoresizingMaskIntoConstraints = false
+    let disconnectButtonWidth = NSLayoutConstraint(item: disconnectButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 64);
+    let disconnectButtonHeight = NSLayoutConstraint(item: disconnectButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 64);
+    let disconnectButtonHorizontal = NSLayoutConstraint(item: disconnectButton!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1, constant: 0)
+    let disconnectButtonVertical = NSLayoutConstraint(item: disconnectButton!, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: -20)
+    view.addConstraints([disconnectButtonWidth, disconnectButtonHeight, disconnectButtonHorizontal, disconnectButtonVertical])
+    
+    // Mute Button
+    muteButton = UIButton(type: .custom)
+    muteButton!.setImage(UIImage(named: "mute@4x"), for: .normal)
+    muteButton!.setImage(UIImage(named: "unmute@4x"), for: .selected)
+    view.addSubview(muteButton!)
+    muteButton?.translatesAutoresizingMaskIntoConstraints = false
+    let muteButtonWidth = NSLayoutConstraint(item: muteButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56);
+    let muteButtonHeight = NSLayoutConstraint(item: muteButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56);
+    let muteButtonHorizontal = NSLayoutConstraint(item: muteButton!, attribute: .trailing, relatedBy: .equal, toItem: disconnectButton, attribute: .leading, multiplier: 1, constant: -40)
+    let muteButtonVertical = NSLayoutConstraint(item: muteButton!, attribute: .centerY, relatedBy: .equal, toItem: disconnectButton, attribute: .centerY, multiplier: 1, constant: 0)
+    view.addConstraints([muteButtonWidth, muteButtonHeight, muteButtonHorizontal, muteButtonVertical])
+  }
+  
+  // MARK: Transitions
+  func transitionToHome() {
+    UserDefaults.standard.set(true, forKey: "isComingFromVideoChat")
+    self.dismiss(animated: false, completion: nil)
+  }
+  
+  func exitAlert() {
+    self.dismiss(animated: true, completion: nil)
+    transitionToHome()
   }
 }
 
@@ -206,6 +215,13 @@ extension VideoChatViewController : RoomDelegate {
   
   func participantDidDisconnect(room: Room, participant: RemoteParticipant) {
     print ("Participant \(participant.identity) has left Room \(room.name)")
+    // create alert
+    let userLeftAlert = UIAlertController(title: "Your new friend left the chat", message: "", preferredStyle: .alert)
+    let userLeftAction = UIAlertAction(title: "OK", style: .default, handler: {
+      action in self.exitAlert()
+    })
+    userLeftAlert.addAction(userLeftAction)
+    self.present(userLeftAlert, animated: true, completion: nil)
   }
   
 }
@@ -226,7 +242,6 @@ extension VideoChatViewController : RemoteParticipantDelegate {
       print("remote view alternate setup")
       view.sendSubviewToBack(self.remoteView!)
     }
-    //   setupRemoteVideoView()
   }
   
 }

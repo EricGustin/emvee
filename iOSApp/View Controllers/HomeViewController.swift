@@ -82,7 +82,17 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     super.viewDidLoad()
     print("In homeViewController")
     UserDefaults.standard.set(true, forKey: "isUserSignedIn")
+    UserDefaults.standard.set(false, forKey: "isComingFromVideo")
+    
     StyleUtilities.styleFilledButton(enterChatRoomButton)
+    
+    let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
+    swipeGesture.direction = .right
+    view.addGestureRecognizer(swipeGesture)
+  }
+  
+  @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
+    transitionToProfile()
   }
   
   func transitionToProfile() {
@@ -92,13 +102,9 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     view.window?.makeKeyAndVisible()
   }
   
+  
+  // MARK: -- NOTE THIS IS A TESTING FUNCTION AND NOT FOR PRODUCTION USE
   func transitionToVideoChat() {
-//    let videoChatViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.videoChatViewController) as? VideoChatViewController
-//    // Make profile ViewController appear fullscrean
-//    videoChatViewController?.roomName = "234"
-//    view.window?.rootViewController = videoChatViewController
-//    view.window?.makeKeyAndVisible()
-    
     let vc = VideoChatViewController(chatRoomID: "234")
     vc.modalPresentationStyle = .fullScreen
     self.present(vc, animated: true, completion: nil)
