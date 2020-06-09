@@ -38,8 +38,12 @@ class StyleUtilities {
     // Add the line to the text field
     // textfield.layer.addSublayer(bottomLine)
   }
+  
+  static func styleCircularButton(_ button: UIButton) {
+    button.layer.cornerRadius = button.frame.width / 2
+  }
  
- static func styleFilledButton(_ button:UIButton) {
+ static func styleFilledButton(_ button: UIButton) {
   
   // Filled rounded corner style
   button.backgroundColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
@@ -47,7 +51,7 @@ class StyleUtilities {
   button.tintColor = UIColor.white
  }
  
- static func styleHollowButton(_ button:UIButton) {
+ static func styleHollowButton(_ button: UIButton) {
   
   // Hollow rounded corner style
   button.layer.borderWidth = 2

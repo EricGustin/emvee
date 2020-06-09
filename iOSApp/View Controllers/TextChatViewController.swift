@@ -15,8 +15,6 @@ import FirebaseAuth
 
 final class TextChatViewController: MessagesViewController {
   
-  
-  
   private let db = Firestore.firestore()
   private var conversationRef: CollectionReference? // reference to database
   private let chatRoomID: String

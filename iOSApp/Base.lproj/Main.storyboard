@@ -67,13 +67,13 @@
                                 </constraints>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo@4x" translatesAutoresizingMaskIntoConstraints="NO" id="pzE-OQ-QyB">
-                                <rect key="frame" x="104.66666666666669" y="345.66666666666669" width="204.66666666666663" height="204.66666666666669"/>
+                                <rect key="frame" x="104.66666666666667" y="345.66666666666669" width="204.66666666666663" height="204.66666666666669"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="pzE-OQ-QyB" secondAttribute="height" id="aqM-TH-60G"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Don't worry this isn't the actual logo)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47L-tJ-Rub">
-                                <rect key="frame" x="63.666666666666629" y="520.33333333333337" width="286.66666666666674" height="20.333333333333371"/>
+                                <rect key="frame" x="63.666666666666657" y="520.33333333333337" width="286.66666666666674" height="20.333333333333371"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

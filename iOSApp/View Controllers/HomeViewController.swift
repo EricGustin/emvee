@@ -80,7 +80,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    print("In homeViewController")
+    print("In HomeViewController")
     UserDefaults.standard.set(true, forKey: "isUserSignedIn")
     UserDefaults.standard.set(false, forKey: "isComingFromVideo")
     

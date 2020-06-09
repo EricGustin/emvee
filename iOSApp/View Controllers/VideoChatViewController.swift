@@ -5,10 +5,6 @@
 //  Created by Eric Gustin on 6/5/20.
 //  Copyright © 2020 Eric Gustin. All rights reserved.
 //
-// API_KEY (SID) SKd2c0eef25c29276ca62b7710819ce5b9
-// SECRET Qna8T6Zo01NlqtINlcq6fqV7Y0en8VTG
-// Account SID AC0f05752188e1d00c4eae5a05e5e8c3fe
-// Auth Token b7b5fd1a02344af7fc8b94070190016b
 
 import UIKit
 import TwilioVideo
@@ -28,6 +24,7 @@ class VideoChatViewController: UIViewController {
   var previewView: VideoView?
   var disconnectButton: UIButton?
   var muteButton: UIButton?
+  var flipCameraButton: UIButton?
   
   init(chatRoomID: String) { // initializer for joining an already existing chat room
     self.roomName = chatRoomID
@@ -39,21 +36,38 @@ class VideoChatViewController: UIViewController {
   }
   
   @objc func disconnect() {
+    disconnectButton!.backgroundColor = UIColor(red: 1, green: 0, blue: 50/255, alpha: 1)
     room?.disconnect()
     transitionToHome()
-    
   }
   
-  @objc func muteButtonClicked(_ sender: UIButton) {
+  @objc func muteButtonClicked() {
     print("mute button clicked")
     if (self.localAudioTrack != nil) {
       self.localAudioTrack?.isEnabled = !(self.localAudioTrack?.isEnabled)!
       
       // Update the button title
       if (self.localAudioTrack?.isEnabled == true) {
-       // self.muteButton.setImage(UIImage(named: "mute@4x"), for: .normal)
+        muteButton?.tintColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
+        muteButton?.backgroundColor = .white
       } else {
-       // self.muteButton.setImage(UIImage(named: "unmute@4x"), for: .normal)
+        muteButton?.tintColor = .white
+        muteButton?.backgroundColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
+      }
+    }
+  }
+  
+  @objc func flipCamera() {
+    if CameraSource.captureDevice(position: .front) != nil && CameraSource.captureDevice(position: .back) != nil {
+      
+      if camera!.device == CameraSource.captureDevice(position: .front) {
+        camera!.selectCaptureDevice(CameraSource.captureDevice(position: .back)!)
+        flipCameraButton?.tintColor = .white
+        flipCameraButton?.backgroundColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
+      } else {
+        camera!.selectCaptureDevice(CameraSource.captureDevice(position: .front)!)
+        flipCameraButton?.tintColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
+        flipCameraButton?.backgroundColor = .white
       }
     }
   }
@@ -120,17 +134,16 @@ class VideoChatViewController: UIViewController {
       // Add renderer to video track for local preview
       localVideoTrack!.addRenderer(previewView!)
       
-      //          if (frontCamera != nil && backCamera != nil) {
-      //              // We will flip camera on tap.
-      //              let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.flipCamera))
-      //              self.previewView.addGestureRecognizer(tap)
-      //          }
-      
+      if (frontCamera != nil && backCamera != nil) {
+        // Flip camera on tap.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(flipCamera))
+        self.previewView!.addGestureRecognizer(tap)
+      }
       camera!.startCapture(device: frontCamera != nil ? frontCamera! : backCamera!) { (captureDevice, videoFormat, error) in
         if error != nil {
           print("couldn't capture preview video")
         } else {
-        // self.previewView.shouldMirror = (captureDevice.position == .front)
+          self.previewView!.shouldMirror = (captureDevice.position == .front)
         }
       }
     }
@@ -153,8 +166,13 @@ class VideoChatViewController: UIViewController {
     
     // Disconnect Button
     disconnectButton = UIButton(type: .custom)
-    disconnectButton!.setImage(UIImage(named: "end@4x"), for: .normal)
-    disconnectButton!.setImage(UIImage(named: "end_pressed@4x"), for: .selected)
+    disconnectButton?.setImage(UIImage(systemName: "phone.down.fill"), for: .normal)
+    disconnectButton?.setImage(UIImage(systemName: "phone.down.fill"), for: .selected)
+    disconnectButton?.tintColor = .white
+    disconnectButton?.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
+    disconnectButton?.contentHorizontalAlignment = .fill
+    disconnectButton?.contentVerticalAlignment = .fill
+    disconnectButton?.contentEdgeInsets = UIEdgeInsets(top: 22, left: 7.5, bottom: 22, right: 7.5)
     disconnectButton!.addTarget(self, action: #selector(disconnect), for: .touchUpInside)
     view.addSubview(disconnectButton!)
     disconnectButton?.translatesAutoresizingMaskIntoConstraints = false
@@ -163,11 +181,18 @@ class VideoChatViewController: UIViewController {
     let disconnectButtonHorizontal = NSLayoutConstraint(item: disconnectButton!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1, constant: 0)
     let disconnectButtonVertical = NSLayoutConstraint(item: disconnectButton!, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: -20)
     view.addConstraints([disconnectButtonWidth, disconnectButtonHeight, disconnectButtonHorizontal, disconnectButtonVertical])
+    disconnectButton?.layer.cornerRadius = disconnectButtonWidth.constant / 2
     
     // Mute Button
     muteButton = UIButton(type: .custom)
-    muteButton!.setImage(UIImage(named: "mute@4x"), for: .normal)
-    muteButton!.setImage(UIImage(named: "unmute@4x"), for: .selected)
+    muteButton!.setImage(UIImage(systemName: "mic.slash.fill"), for: .normal)
+    muteButton!.setImage(UIImage(systemName: "mic.fill"), for: .selected)
+    muteButton?.tintColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
+    muteButton?.backgroundColor = .white
+    muteButton?.contentHorizontalAlignment = .fill
+    muteButton?.contentVerticalAlignment = .fill
+    muteButton?.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+    muteButton!.addTarget(self, action: #selector(muteButtonClicked), for: .touchUpInside)
     view.addSubview(muteButton!)
     muteButton?.translatesAutoresizingMaskIntoConstraints = false
     let muteButtonWidth = NSLayoutConstraint(item: muteButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56);
@@ -175,11 +200,32 @@ class VideoChatViewController: UIViewController {
     let muteButtonHorizontal = NSLayoutConstraint(item: muteButton!, attribute: .trailing, relatedBy: .equal, toItem: disconnectButton, attribute: .leading, multiplier: 1, constant: -40)
     let muteButtonVertical = NSLayoutConstraint(item: muteButton!, attribute: .centerY, relatedBy: .equal, toItem: disconnectButton, attribute: .centerY, multiplier: 1, constant: 0)
     view.addConstraints([muteButtonWidth, muteButtonHeight, muteButtonHorizontal, muteButtonVertical])
+    muteButton?.layer.cornerRadius = muteButtonWidth.constant / 2
+    
+    // Mic Button
+    flipCameraButton = UIButton(type: .custom)
+    flipCameraButton!.setImage(UIImage(systemName: "camera.rotate.fill"), for: .normal)
+    flipCameraButton!.setImage(UIImage(systemName: "camera.rotate"), for: .selected)
+    flipCameraButton?.tintColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
+    flipCameraButton?.backgroundColor = .white
+    flipCameraButton?.contentHorizontalAlignment = .fill
+    flipCameraButton?.contentVerticalAlignment = .fill
+    flipCameraButton?.contentEdgeInsets = UIEdgeInsets(top: 12, left: 8, bottom: 12, right: 8)
+    flipCameraButton!.addTarget(self, action: #selector(flipCamera), for: .touchUpInside)
+    view.addSubview(flipCameraButton!)
+    flipCameraButton?.translatesAutoresizingMaskIntoConstraints = false
+    let flipCameraButtonWidth = NSLayoutConstraint(item: flipCameraButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56);
+    let flipCameraButtonHeight = NSLayoutConstraint(item: flipCameraButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 56);
+    let flipCameraButtonHorizontal = NSLayoutConstraint(item: flipCameraButton!, attribute: .leading, relatedBy: .equal, toItem: disconnectButton, attribute: .trailing, multiplier: 1, constant: 40)
+    let flipCameraButtonVertical = NSLayoutConstraint(item: flipCameraButton!, attribute: .centerY, relatedBy: .equal, toItem: disconnectButton, attribute: .centerY, multiplier: 1, constant: 0)
+    view.addConstraints([flipCameraButtonWidth, flipCameraButtonHeight, flipCameraButtonHorizontal, flipCameraButtonVertical])
+    flipCameraButton?.layer.cornerRadius = flipCameraButtonWidth.constant / 2
   }
   
   // MARK: Transitions
   func transitionToHome() {
     UserDefaults.standard.set(true, forKey: "isComingFromVideoChat")
+    camera?.stopCapture()
     self.dismiss(animated: false, completion: nil)
   }
   
