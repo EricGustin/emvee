@@ -26,6 +26,9 @@ class VideoChatViewController: UIViewController {
   var muteButton: UIButton?
   var flipCameraButton: UIButton?
   
+  let frontCamera = CameraSource.captureDevice(position: .front)
+  let backCamera = CameraSource.captureDevice(position: .back)
+  
   init(chatRoomID: String) { // initializer for joining an already existing chat room
     self.roomName = chatRoomID
     super.init(nibName: nil, bundle: nil)
@@ -58,14 +61,15 @@ class VideoChatViewController: UIViewController {
   }
   
   @objc func flipCamera() {
-    if CameraSource.captureDevice(position: .front) != nil && CameraSource.captureDevice(position: .back) != nil {
-      
-      if camera!.device == CameraSource.captureDevice(position: .front) {
-        camera!.selectCaptureDevice(CameraSource.captureDevice(position: .back)!)
+    print("double clicked")
+    if frontCamera != nil && backCamera != nil && camera != nil {
+      print("again")
+      if camera!.device == frontCamera {
+        camera!.selectCaptureDevice(backCamera!)
         flipCameraButton?.tintColor = .white
         flipCameraButton?.backgroundColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
       } else {
-        camera!.selectCaptureDevice(CameraSource.captureDevice(position: .front)!)
+        camera!.selectCaptureDevice(frontCamera!)
         flipCameraButton?.tintColor = UIColor.init(red: 59/255, green: 100/255, blue: 180/255, alpha: 1)
         flipCameraButton?.backgroundColor = .white
       }
@@ -102,10 +106,18 @@ class VideoChatViewController: UIViewController {
     }
     room = TwilioVideoSDK.connect(options: connectOptions, delegate: self)
     print("Joined a room")
+    
+    if (frontCamera != nil && backCamera != nil) {
+      // Flip camera on tap.
+      let tap = UITapGestureRecognizer(target: self, action: #selector(flipCamera))
+      tap.numberOfTapsRequired = 2
+      previewView?.addGestureRecognizer(tap)
+      remoteView?.addGestureRecognizer(tap)
+    }
   }
   
   func requestAccessToken() {
-    let tokenURL = "http://c129e9720d90.ngrok.io"
+    let tokenURL = "http://cdd506997417.ngrok.io"
     if let url = URL(string: tokenURL) {
       let task = URLSession.shared.dataTask(with: url) {
         data, response, error in
@@ -123,8 +135,6 @@ class VideoChatViewController: UIViewController {
   }
   
   func startPreview() {
-    let frontCamera = CameraSource.captureDevice(position: .front)
-    let backCamera = CameraSource.captureDevice(position: .back)
     
     if (frontCamera != nil || backCamera != nil) {
       // Preview our local camera track in the local video preview view.
@@ -134,11 +144,6 @@ class VideoChatViewController: UIViewController {
       // Add renderer to video track for local preview
       localVideoTrack!.addRenderer(previewView!)
       
-      if (frontCamera != nil && backCamera != nil) {
-        // Flip camera on tap.
-        let tap = UITapGestureRecognizer(target: self, action: #selector(flipCamera))
-        self.previewView!.addGestureRecognizer(tap)
-      }
       camera!.startCapture(device: frontCamera != nil ? frontCamera! : backCamera!) { (captureDevice, videoFormat, error) in
         if error != nil {
           print("couldn't capture preview video")
@@ -202,7 +207,7 @@ class VideoChatViewController: UIViewController {
     view.addConstraints([muteButtonWidth, muteButtonHeight, muteButtonHorizontal, muteButtonVertical])
     muteButton?.layer.cornerRadius = muteButtonWidth.constant / 2
     
-    // Mic Button
+    // Camera Button
     flipCameraButton = UIButton(type: .custom)
     flipCameraButton!.setImage(UIImage(systemName: "camera.rotate.fill"), for: .normal)
     flipCameraButton!.setImage(UIImage(systemName: "camera.rotate"), for: .selected)
