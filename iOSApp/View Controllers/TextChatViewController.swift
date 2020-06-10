@@ -14,15 +14,19 @@ import InputBarAccessoryView
 import FirebaseAuth
 
 final class TextChatViewController: MessagesViewController {
-  
+
   private let db = Firestore.firestore()
   private var conversationRef: CollectionReference? // reference to database
   private let chatRoomID: String
   private let conversationID: String
+  private var localUserName: String?
+  private var localProfilePicture: UIImage?
+  private var remoteProfilePicture: UIImage?
+  private var remoteUserName: String?
   
   private let chatRoomRef: DocumentReference?
   
-  private let user: User
+  private let localUser: User
   private var messages: [Message] = []
   private var messageListener: ListenerRegistration?
   private var userJoinedListener: ListenerRegistration?
@@ -31,11 +35,11 @@ final class TextChatViewController: MessagesViewController {
   private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
   private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
   
-  private var timeLeft = 2
+  private var timeLeft = 60
   private var timer: Timer!
   
   init(user: User, chatRoomID: String, conversationID: String) { // initializer for joining an already existing chat room
-    self.user = user
+    self.localUser = user
     self.chatRoomID = chatRoomID
     self.conversationID = conversationID
     self.chatRoomRef = db.collection("activeChatRooms").document(chatRoomID)
@@ -77,11 +81,20 @@ final class TextChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    print("In TextChatViewController")
     //self.view.backgroundColor = UIColor.white
     if conversationRef == nil {
       conversationRef = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
     }
+    
+    let localUserRef = db.collection("users").document("\(localUser.uid)")
+    localUserRef.getDocument { (userDoc, err) in
+      print("document exists")
+      if let userDoc = userDoc, userDoc.exists {
+        self.localUserName = userDoc.get("firstName") as? String
+      }
+    }
+    
     // the chat's id is ref!.documentID
     messageListener = conversationRef?.addSnapshotListener({ (querySnapshot, error) in
       guard let snapshot = querySnapshot else {
@@ -115,19 +128,22 @@ final class TextChatViewController: MessagesViewController {
     chatRoomRef.getDocument { (document, err) in
       if let document = document, document.exists {
         guard let uid0 = document.get("person0uid") else { return }
-        if uid0 as! String != self.user.uid { // case where if this is the second person in the chat
+        if uid0 as! String != self.localUser.uid { // case where if this is the second person in the chat
           // then this user is the second person to join, so we can get the other person's name and info without using a listener
-          let otherUserRef = self.db.collection("users").document("\(uid0)")
-          otherUserRef.getDocument { (userDoc, err) in
+          let remoteUserRef = self.db.collection("users").document("\(uid0)")
+          remoteUserRef.getDocument { (userDoc, err) in
             if let userDoc = userDoc, userDoc.exists {
+              // Get the remote user's profile picture so that it can be displayed as an avatar
+              self.downloadProfilePictureFromFirebase(uid: uid0 as! String)
+              
               // Display the other user's name and age
-              let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
-              let otherUserBirthday = userDoc.get("birthday") ?? ""
+              self.remoteUserName = userDoc.get("firstName") as? String
+              let remoteUserBirthday = userDoc.get("birthday") ?? ""
               let date = Date()
               let dateFormatter = DateFormatter()
               dateFormatter.dateFormat = "MMMM dd yyyy"
               let currentDate = dateFormatter.string(from: date)
-              self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+              self.navItem.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
               
               // Start countdown to video chat
               self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
@@ -141,17 +157,20 @@ final class TextChatViewController: MessagesViewController {
             }
             guard let uid1 = document.get("person1uid") else { return }
             if uid1 as! String != "" {
-              let otherUserRef = self.db.collection("users").document("\(uid1)")
-              otherUserRef.getDocument { (userDoc, err) in
+              let remoteUser = self.db.collection("users").document("\(uid1)")
+              remoteUser.getDocument { (userDoc, err) in
                 if let userDoc = userDoc, userDoc.exists {
+                  // Get the remote user's profile picture so that it can be displayed as an avatar
+                  self.downloadProfilePictureFromFirebase(uid: uid1 as! String)
+                  
                   // Display the other user's name and age
-                  let otherUserFirstName = userDoc.get("firstName") ?? "Anonymous"
-                  let otherUserBirthday = userDoc.get("birthday") ?? ""
+                  self.remoteUserName = userDoc.get("firstName") as? String
+                  let remoteUserBirthday = userDoc.get("birthday") ?? ""
                   let date = Date()
                   let dateFormatter = DateFormatter()
                   dateFormatter.dateFormat = "MMMM dd yyyy"
                   let currentDate = dateFormatter.string(from: date)
-                  self.navItem.title = "Talking to \(otherUserFirstName), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: otherUserBirthday as! String))"
+                  self.navItem.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
                   // Start countdown to video chat
                   self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
                 } else {
@@ -163,13 +182,6 @@ final class TextChatViewController: MessagesViewController {
         }
       }
     }
-//    userJoinedListener = reference?.parent?.addSnapshotListener({ (querySnapshot, err) in
-//      guard let snapshot = querySnapshot else {
-//        print("Error when listening for ")
-//        return
-//      }
-//      if snapshot.
-//    })
     
     navigationItem.largeTitleDisplayMode = .never
     
@@ -182,26 +194,10 @@ final class TextChatViewController: MessagesViewController {
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
     
-    // Get rid of the white space that the avatar occupies. Since avatar.isHidden == true, we don't need this whitespace
-    if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
-      layout.setMessageIncomingAvatarSize(.zero)
-      layout.setMessageOutgoingAvatarSize(.zero)
-    }
-    
-//    print(messagesCollectionView.frame.height)
-//    messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-//    messagesCollectionView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 20).isActive = true
-//    print(messagesCollectionView.frame.height)
-    
     let whiteColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1.0)
     view.backgroundColor = whiteColor
     
-//    guard let flowLayout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout else {
-//        print("Can't get flowLayout")
-//        return
-//    }
-//    flowLayout.collectionView?.backgroundColor = whiteColor
-    
+    downloadProfilePictureFromFirebase(uid: localUser.uid)
   }
   
   // MARK: - Actions
@@ -224,6 +220,25 @@ final class TextChatViewController: MessagesViewController {
   }
   
   // MARK: - Helpers
+
+  
+  private func downloadProfilePictureFromFirebase(uid: String) {
+    
+    let profilePictureRef = Storage.storage().reference().child("profilePictures").child(uid)
+    // Download profile picture in memory  with a maximum allowed size of 1MB
+    profilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+      if error != nil {
+        return
+      } else {
+        let profileImage = UIImage(data: data!)
+        if self.localUser.uid == uid {
+          self.localProfilePicture = profileImage ?? UIImage(named: "defaultProfileImage")!
+        } else {
+          self.remoteProfilePicture = profileImage ?? UIImage(named: "defaultProfileImage")!
+        }
+      }
+    }
+  }
   
   private func save(_ message: Message) {
     conversationRef?.addDocument(data: message.representation) { error in
@@ -263,6 +278,11 @@ final class TextChatViewController: MessagesViewController {
     }
   }
   
+  func isNextMessageSameSender(at indexPath: IndexPath) -> Bool {
+      guard indexPath.section + 1 < messages.count else { return false }
+    return messages[indexPath.section].sender.senderId == messages[indexPath.section + 1].sender.senderId
+  }
+  
   // MARK: Calculations
   func getOtherUserAge(currentDate: String, dateOfBirth: String) -> Int {
     let currentDateArray: [String] = currentDate.wordList
@@ -297,13 +317,7 @@ final class TextChatViewController: MessagesViewController {
 extension TextChatViewController: MessagesDataSource {
   // 1
   func currentSender() -> SenderType {
-    var displayName: String = ""
-    db.collection("users").document(user.uid).getDocument { (snapshot, error) in
-    if let document = snapshot {
-      displayName = document.get("firstName") as! String
-      }
-    }
-    return Sender(senderId: user.uid, displayName: displayName)
+    return Sender(senderId: localUser.uid, displayName: localUserName ?? "Anonymous")
   }
   
   // 2
@@ -323,10 +337,8 @@ extension TextChatViewController: MessagesDataSource {
     let name = message.sender.displayName
     return NSAttributedString(
       string: name,
-      attributes: [
-        .font: UIFont.preferredFont(forTextStyle: .caption1),
-        .foregroundColor: UIColor(white: 0.3, alpha: 1)
-      ]
+      attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1),
+                   NSAttributedString.Key.foregroundColor: UIColor.black ]
     )
   }
 }
@@ -354,14 +366,23 @@ extension TextChatViewController: MessagesDisplayDelegate {
   }
   
   func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-    avatarView.isHidden = true
+
+    let avatar = (message.sender.senderId == localUser.uid) ? Avatar(image: localProfilePicture, initials: "EG") : Avatar(image: remoteProfilePicture, initials: "EG")
+
+    avatarView.set(avatar: avatar)
+    print("Index path: \(indexPath)")
+    avatarView.isHidden = isNextMessageSameSender(at: indexPath)
+    avatarView.layer.borderWidth = 2
+    avatarView.layer.borderColor = UIColor.blue.cgColor
   }
+  
 }
 
 
 // MARK: - MessagesLayoutDelegate
 
 extension TextChatViewController: MessagesLayoutDelegate {
+  
   
   func avatarSize(for message: MessageType, at indexPath: IndexPath,
                   in messagesCollectionView: MessagesCollectionView) -> CGSize {
@@ -382,6 +403,11 @@ extension TextChatViewController: MessagesLayoutDelegate {
     // 3
     return 0 // probably won't need to use location messages so just make the height zero for now
   }
+  
+  func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+   // return 18
+    return 0
+  }
 }
 
 
@@ -391,7 +417,7 @@ extension TextChatViewController: InputBarAccessoryViewDelegate {
   
   @objc(inputBar:didPressSendButtonWith:) func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
     // 1
-    let message = Message(user: user, content: text)
+    let message = Message(user: localUser, content: text)
     // 2
     save(message)
     // 3

@@ -170,7 +170,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
   }
   
   func uploadProfilePictureToFirebase() {
-    guard let image = profilePicture.image, let data = image.jpegData(compressionQuality: 1.0) else {
+    guard let image = profilePicture.image,
+      let nonCompressedData = image.jpegData(compressionQuality: 1.0),
+      let data = image.jpegData(compressionQuality: CGFloat((1048576) / nonCompressedData.count)) // 1024*1024 = 1048576 bytes = 1mb
+    else {
       print("Couldnt convert image to data")
       return
     }
@@ -196,9 +199,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
       return
     }
     let profilePictureRef = Storage.storage().reference().child("profilePictures").child(userID)
+    print("Uid: \(userID)")
     // Download profile picture in memory  with a maximum allowed size of 1MB
     profilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
       if error != nil {
+        print("Error getting profile picture data.")
+        print(error)
         return
       } else {
         let profileImage = UIImage(data: data!)
