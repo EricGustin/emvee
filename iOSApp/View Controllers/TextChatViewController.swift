@@ -133,6 +133,12 @@ final class TextChatViewController: MessagesViewController {
           let remoteUserRef = self.db.collection("users").document("\(uid0)")
           remoteUserRef.getDocument { (userDoc, err) in
             if let userDoc = userDoc, userDoc.exists {
+              self.chatRoomRef?.updateData(["isFull": true]) // make the chat room unjoinable
+              
+              self.messageInputBar.inputTextView.tintColor = .systemBlue
+              self.messageInputBar.sendButton.setTitleColor(.systemBlue, for: .normal)
+              self.messageInputBar.delegate = self
+              
               // Get the remote user's profile picture so that it can be displayed as an avatar
               self.downloadProfilePictureFromFirebase(uid: uid0 as! String)
               
@@ -160,6 +166,12 @@ final class TextChatViewController: MessagesViewController {
               let remoteUser = self.db.collection("users").document("\(uid1)")
               remoteUser.getDocument { (userDoc, err) in
                 if let userDoc = userDoc, userDoc.exists {
+                  self.chatRoomRef?.updateData(["isFull": true]) // make the chat room unjoinable
+                  
+                  self.messageInputBar.inputTextView.tintColor = .systemBlue
+                  self.messageInputBar.sendButton.setTitleColor(.systemBlue, for: .normal)
+                  self.messageInputBar.delegate = self
+                  
                   // Get the remote user's profile picture so that it can be displayed as an avatar
                   self.downloadProfilePictureFromFirebase(uid: uid1 as! String)
                   
@@ -186,10 +198,11 @@ final class TextChatViewController: MessagesViewController {
     navigationItem.largeTitleDisplayMode = .never
     
     maintainPositionOnKeyboardFrameChanged = true
-    messageInputBar.inputTextView.tintColor = .systemBlue
-    messageInputBar.sendButton.setTitleColor(.systemBlue, for: .normal)
     
-    messageInputBar.delegate = self
+//    messageInputBar.inputTextView.tintColor = .systemBlue
+//    messageInputBar.sendButton.setTitleColor(.systemBlue, for: .normal)
+//    messageInputBar.delegate = self
+    
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
