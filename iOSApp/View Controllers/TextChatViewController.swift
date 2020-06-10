@@ -35,8 +35,8 @@ final class TextChatViewController: MessagesViewController {
   private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
   private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
   
-  private var timeLeft = 60
-  private var timer: Timer!
+  private var timeLeft = 10
+  private var timer: Timer?
   
   init(user: User, chatRoomID: String, conversationID: String) { // initializer for joining an already existing chat room
     self.localUser = user
@@ -51,8 +51,10 @@ final class TextChatViewController: MessagesViewController {
   }
   
   deinit {
+    print("Deinit")
     messageListener?.remove()
     userJoinedListener?.remove()
+    // timer.invalidate() NOTE: ONCE I FIX THE MEMORY LEAK I CAN UNCOMMENT THIS
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -112,8 +114,15 @@ final class TextChatViewController: MessagesViewController {
         return
       }
       
+      if self.timer != nil {
+        self.timer!.invalidate()
+        self.timer = nil
+      }
+      
       if self.view.window != nil {
-        if snapshot.get("isActive") != nil {
+        if snapshot.get("isActive") != nil { // if its not nil, then it is must be false i.e chat has ended
+          
+          
           let userLeftAlert = UIAlertController(title: "The stanger left the chat", message: "", preferredStyle: .alert)
           let userLeftAction = UIAlertAction(title: "OK", style: .default, handler: {
             action in self.backToHome()
@@ -152,7 +161,9 @@ final class TextChatViewController: MessagesViewController {
               self.navItem.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
               
               // Start countdown to video chat
-              self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
+              if self.timer == nil {
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
+              }
             }
           }
         } else { // case where if this is a new chat room and they're the only one in it. Need to add a listener so that when the next person joins, we can get their name and age
@@ -184,7 +195,9 @@ final class TextChatViewController: MessagesViewController {
                   let currentDate = dateFormatter.string(from: date)
                   self.navItem.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
                   // Start countdown to video chat
-                  self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
+                  if self.timer == nil {
+                    self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
+                  }
                 } else {
                   print("if let userDoc = userDoc, userDoc.exists { failed for new chat room")
                 }
@@ -217,18 +230,41 @@ final class TextChatViewController: MessagesViewController {
   @objc func backToHome() {
     print("isFull set to true. no longer joinable")
     chatRoomRef?.updateData(["isFull": true, "isActive": false])
-    dismiss(animated: true, completion: nil)
+    print("invalidate back to home")
+    if timer != nil {
+      timer!.invalidate()
+      timer = nil
+    }
+    if self.timer != nil {
+      self.timer!.invalidate()
+      self.timer = nil
+    }
+    self.dismiss(animated: true, completion: nil)
   }
   
   @objc func counter() {
-    timeLeft -= 1
-    if timeLeft >= 0 {
+    
+    print("time left: \(timeLeft)")
+    if timeLeft > 0 {
+      timeLeft -= 1
       if timeLeft <= 5 {
         navItem.title = "Time until video chat: \(timeLeft)"
       }
-      if timeLeft == 0 {
-        transitionToVideoChat()
-      }
+    }
+
+    if timeLeft == 0 {
+      print("hello")
+      chatRoomRef?.getDocument(completion: { (document, err) in
+        if let document = document, document.exists {
+          if document.get("isActive") == nil {
+            self.timer!.invalidate() // NOTE: Get rid of this line when memory leak is fixed
+            self.transitionToVideoChat()
+          } else {
+            self.dismiss(animated: true, completion: nil)
+            self.backToHome()
+          }
+        }
+      })
     }
   }
   
