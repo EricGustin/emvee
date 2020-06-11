@@ -24,9 +24,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FA54DBE424661C99008227FE"
-               BuildableName = "iOSApp.app"
-               BlueprintName = "iOSApp"
-               ReferencedContainer = "container:iOSApp.xcodeproj">
+               BuildableName = "emvee.app"
+               BlueprintName = "emvee"
+               ReferencedContainer = "container:emvee.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -54,9 +54,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FA54DBE424661C99008227FE"
-            BuildableName = "iOSApp.app"
-            BlueprintName = "iOSApp"
-            ReferencedContainer = "container:iOSApp.xcodeproj">
+            BuildableName = "emvee.app"
+            BlueprintName = "emvee"
+            ReferencedContainer = "container:emvee.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -66,16 +66,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FA54DBE424661C99008227FE"
-            BuildableName = "iOSApp.app"
-            BlueprintName = "iOSApp"
-            ReferencedContainer = "container:iOSApp.xcodeproj">
+            BuildableName = "emvee.app"
+            BlueprintName = "emvee"
+            ReferencedContainer = "container:emvee.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

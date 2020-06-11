@@ -117,7 +117,7 @@ class VideoChatViewController: UIViewController {
   }
   
   func requestAccessToken() {
-    let tokenURL = "http://cdd506997417.ngrok.io"
+    let tokenURL = "http://9fe37ce4dab6.ngrok.io"
     if let url = URL(string: tokenURL) {
       let task = URLSession.shared.dataTask(with: url) {
         data, response, error in

@@ -1,4 +1,4 @@
-${PODS_ROOT}/Target Support Files/Pods-iOSApp/Pods-iOSApp-frameworks.sh
+${PODS_ROOT}/Target Support Files/Pods-emvee/Pods-emvee-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework
 ${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework
 ${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework

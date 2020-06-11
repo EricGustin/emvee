@@ -204,7 +204,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     profilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
       if error != nil {
         print("Error getting profile picture data.")
-        print(error)
         return
       } else {
         let profileImage = UIImage(data: data!)
