@@ -17,7 +17,6 @@ class LoginViewController: UIViewController {
   @IBOutlet weak var passwordTextField: UITextField!
   @IBOutlet weak var loginButton: UIButton!
   @IBOutlet weak var errorLabel: UILabel!
-  @IBOutlet weak var emailTextFieldBackground: UITextField!
   
   @IBAction func cancelButtonClicked(_ sender: UIButton) {
     let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
@@ -30,13 +29,8 @@ class LoginViewController: UIViewController {
     print("In loginViewController")
     setUpElements()
     
-    // DISMISS KEYBOARD WHEN THE USER CLICKS SOMEWHERE ELSE
-//    let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
-//    self.view.addGestureRecognizer(tap)
-    
-    //addTextFieldTargets()
-
-    // Do any additional setup after loading the view.
+    emailTextField.delegate = self
+    passwordTextField.delegate = self
   }
   
   func setUpElements() {
@@ -103,24 +97,12 @@ class LoginViewController: UIViewController {
       }
     }
   }
+}
+
+extension LoginViewController: UITextFieldDelegate {
   
-//  @objc func textFieldInitialClick(_ textfield: UITextField) {
-//    if textfield.text == "" {
-//    //  textfield.text = "   "
-//    }
-//  }
-//
-//  @objc func textFieldDidChange(_ textfield: UITextField) {
-//    if textfield.text == "  " {
-//      textfield.text = "   "
-//    }
-//  }
-//
-//  func addTextFieldTargets() {
-//    emailTextField.addTarget(self, action: #selector(textFieldInitialClick(_:)), for: .editingDidBegin)
-//    emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-//    passwordTextField.addTarget(self, action: #selector(textFieldInitialClick(_:)), for: .editingDidBegin)
-//    passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-//  }
-  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
 }

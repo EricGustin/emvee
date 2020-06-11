@@ -27,12 +27,15 @@ class SignUpViewController: UIViewController {
   }
   
   
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In signUpViewController")
     setUpElements()
-    // Do any additional setup after loading the view.
+    
+    firstNameTextField.delegate = self
+    lastNameTextField.delegate = self
+    emailTextField.delegate = self
+    passwordTextField.delegate = self
   }
   
   func setUpElements() {
@@ -119,4 +122,12 @@ class SignUpViewController: UIViewController {
     }
   }
   
+}
+
+extension SignUpViewController: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
 }
