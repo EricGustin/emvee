@@ -15,7 +15,7 @@ import Firebase
 class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
   let currentUser = Auth.auth().currentUser
   @IBOutlet weak var profileButton: UIButton!
-  @IBOutlet weak var findingPerfectMatchLabel: UILabel!
+  @IBOutlet weak var enveeLabel: UILabel!
   @IBOutlet weak var enterChatRoomButton: UIButton!
   @IBOutlet weak var enterVideoChatRoomButton: UIButton!
   
@@ -28,7 +28,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   }
   
   @IBAction func joinChatRoom(_ sender: Any) {
-    findingPerfectMatchLabel.text = "Finding you the perfect match"
     let db = Firestore.firestore()
     
     // Get all documents (chatRooms) inside the activeChatRooms collection that are not full
@@ -75,7 +74,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    findingPerfectMatchLabel.text = "Welcome!"
+    enveeLabel.text = "emvee"
   }
   
   override func viewDidLoad() {
@@ -84,6 +83,9 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     UserDefaults.standard.set(true, forKey: "isUserSignedIn")
     UserDefaults.standard.set(false, forKey: "isComingFromVideo")
     
+    enterChatRoomButton.titleLabel?.lineBreakMode = .byWordWrapping
+    enterChatRoomButton.titleLabel?.textAlignment = .center
+    enterChatRoomButton.titleLabel?.numberOfLines = 0
     StyleUtilities.styleFilledButton(enterChatRoomButton)
     
     let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
