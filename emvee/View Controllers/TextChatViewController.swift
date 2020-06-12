@@ -35,7 +35,7 @@ final class TextChatViewController: MessagesViewController {
   private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
   private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
   
-  private var timeLeft = 10
+  private var timeLeft = 60
   private var timer: Timer?
   
   init(user: User, chatRoomID: String, conversationID: String) { // initializer for joining an already existing chat room
@@ -247,7 +247,7 @@ final class TextChatViewController: MessagesViewController {
     print("time left: \(timeLeft)")
     if timeLeft > 0 {
       timeLeft -= 1
-      if timeLeft <= 5 {
+      if timeLeft <= 50 {
         navItem.title = "Time until video chat: \(timeLeft)"
       }
     }

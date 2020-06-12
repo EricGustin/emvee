@@ -13,21 +13,33 @@ import FirebaseAuth
 import Firebase
 
 class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
-  let currentUser = Auth.auth().currentUser
-  @IBOutlet weak var profileButton: UIButton!
-  @IBOutlet weak var enveeLabel: UILabel!
-  @IBOutlet weak var enterChatRoomButton: UIButton!
-  @IBOutlet weak var enterVideoChatRoomButton: UIButton!
   
-  @IBAction func profileButtonClicked(_ sender: UIButton) {
+  let currentUser = Auth.auth().currentUser
+  
+  var arrowCircleImage: UIImageView!
+  var profileButton: UIButton?
+  var infoButton: UIButton?
+  var emveeLabel: UILabel?
+  var getToChattingButton: UIButton?
+  
+  //@IBOutlet weak var profileButton: UIButton!
+  @IBOutlet weak var enterVideoChatRoomButton: UIButton!
+
+  
+  
+  
+  @objc func profileButtonClicked(_ sender: UIButton) {
     transitionToProfile()
+  }
+  @objc func infoButtonClicked() {
+    
   }
 
   @IBAction func joinVideoChatRoom(_ sender: Any) {
     transitionToVideoChat()
   }
   
-  @IBAction func joinChatRoom(_ sender: Any) {
+  @objc func joinChatRoom() {
     let db = Firestore.firestore()
     
     // Get all documents (chatRooms) inside the activeChatRooms collection that are not full
@@ -74,23 +86,91 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    enveeLabel.text = "emvee"
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In HomeViewController")
+    
+    setUpViews()
+    
     UserDefaults.standard.set(true, forKey: "isUserSignedIn")
     UserDefaults.standard.set(false, forKey: "isComingFromVideo")
-    
-    enterChatRoomButton.titleLabel?.lineBreakMode = .byWordWrapping
-    enterChatRoomButton.titleLabel?.textAlignment = .center
-    enterChatRoomButton.titleLabel?.numberOfLines = 0
-    StyleUtilities.styleFilledButton(enterChatRoomButton)
     
     let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     swipeGesture.direction = .right
     view.addGestureRecognizer(swipeGesture)
+  }
+  
+  func setUpViews() {
+    // set up profileButton
+    profileButton = UIButton(type: .custom)
+    profileButton!.translatesAutoresizingMaskIntoConstraints = false
+    profileButton!.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
+    profileButton!.tintColor = .systemTeal
+    profileButton!.addTarget(self, action: #selector(profileButtonClicked), for: .touchUpInside)
+    view.addSubview(profileButton!)
+    let profileButtonWidth = NSLayoutConstraint(item: profileButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
+    let profileButtonHeight = NSLayoutConstraint(item: profileButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
+    let profileButtonLeading = NSLayoutConstraint(item: profileButton!, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leadingMargin, multiplier: 1.0, constant: 20)
+    let profileButtonTop = NSLayoutConstraint(item: profileButton!, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1.0, constant: 20)
+    view.addConstraints([profileButtonWidth, profileButtonHeight, profileButtonLeading, profileButtonTop])
+    
+    // set up infoButton
+    infoButton = UIButton(type: .custom)
+    infoButton!.translatesAutoresizingMaskIntoConstraints = false
+    infoButton!.setBackgroundImage(UIImage(systemName: "info.circle"), for: .normal)
+    infoButton!.tintColor = .systemTeal
+    infoButton!.addTarget(self, action: #selector(infoButtonClicked), for: .touchUpInside)
+    view.addSubview(infoButton!)
+    let infoButtonWidth = NSLayoutConstraint(item: infoButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
+    let infoButtonHeight = NSLayoutConstraint(item: infoButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
+    let infoButtontrailing = NSLayoutConstraint(item: infoButton!, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailingMargin, multiplier: 1.0, constant: -20)
+    let infoButtonTop = NSLayoutConstraint(item: infoButton!, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1.0, constant: 20)
+    view.addConstraints([infoButtonWidth, infoButtonHeight, infoButtontrailing, infoButtonTop])
+    
+    // Set up emvee label
+    emveeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+    emveeLabel?.text = "emvee"
+    emveeLabel?.textColor = .black
+    emveeLabel?.textAlignment = .center
+    emveeLabel?.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 36), size: 36)
+    emveeLabel?.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(emveeLabel!)
+    let emveeLabelCenterX = NSLayoutConstraint(item: emveeLabel!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.0, constant: 0)
+    let emveeLabelCenterY = NSLayoutConstraint(item: emveeLabel!, attribute: .centerY, relatedBy: .equal, toItem: profileButton, attribute: .centerY, multiplier: 1.0, constant: 0)
+    view.addConstraints([emveeLabelCenterX, emveeLabelCenterY])
+    
+    // Set up GetToChattingButton
+    getToChattingButton = UIButton(type: .custom)
+    getToChattingButton?.setTitle("Get To Chatting", for: .normal)
+    getToChattingButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 32)
+    getToChattingButton?.setTitleColor(.white, for: .normal)
+    getToChattingButton?.setTitleColor(.lightGray, for: .selected)
+    getToChattingButton?.titleLabel?.lineBreakMode = .byWordWrapping
+    getToChattingButton?.titleLabel?.textAlignment = .center
+    getToChattingButton?.titleLabel?.numberOfLines = 0
+    StyleUtilities.styleFilledButton(getToChattingButton!)
+    getToChattingButton?.translatesAutoresizingMaskIntoConstraints = false
+    getToChattingButton!.addTarget(self, action: #selector(joinChatRoom), for: .touchUpInside)
+    view.addSubview(getToChattingButton!)
+    let getToChattingButtonWidth = NSLayoutConstraint(item: getToChattingButton!, attribute: .width, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .width, multiplier: 0.75, constant: 0)
+    let getToChattingButtonHeight = NSLayoutConstraint(item: getToChattingButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
+    let getToChattingButtonCenterX = NSLayoutConstraint(item: getToChattingButton!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.0, constant: 0)
+    let getToChattingButtonCenterY = NSLayoutConstraint(item: getToChattingButton!, attribute: .centerY, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerY, multiplier: 4/3, constant: 0)
+    view.addConstraints([getToChattingButtonWidth, getToChattingButtonHeight, getToChattingButtonCenterX, getToChattingButtonCenterY])
+    
+    // Set up arrow circle image view
+    arrowCircleImage = UIImageView(image: UIImage(named: "arrowCircle@4x"))
+    arrowCircleImage?.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(arrowCircleImage!)
+    let arrowCircleTop = NSLayoutConstraint(item: arrowCircleImage!, attribute: .top, relatedBy: .equal, toItem: emveeLabel, attribute: .bottom, multiplier: 1.0, constant: 50)
+    let arrowCircleBottom = NSLayoutConstraint(item: arrowCircleImage!, attribute: .bottom, relatedBy: .equal, toItem: getToChattingButton, attribute: .top, multiplier: 1.0, constant: -50)
+    let arrowCircleWidth = NSLayoutConstraint(item: arrowCircleImage!, attribute: .width, relatedBy: .equal, toItem: arrowCircleImage!, attribute: .height, multiplier: 1.0, constant: 0)
+    let arrowCircleCenterX = NSLayoutConstraint(item: arrowCircleImage!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.0, constant: 0)
+    view.addConstraints([arrowCircleTop, arrowCircleBottom, arrowCircleWidth, arrowCircleCenterX])
+
+
   }
   
   @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {

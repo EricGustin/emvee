@@ -28,7 +28,7 @@
         <!--Welcome View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="welcomeViewController" id="BYZ-38-t0r" customClass="WelcomeViewController" customModule="iOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="welcomeViewController" id="BYZ-38-t0r" customClass="WelcomeViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -101,7 +101,7 @@
         <!--Sign Up View Controller-->
         <scene sceneID="1Xz-ej-SK6">
             <objects>
-                <viewController id="5hc-xS-ydc" customClass="SignUpViewController" customModule="iOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="5hc-xS-ydc" customClass="SignUpViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lXF-zb-9RN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -247,7 +247,7 @@
         <!--Login View Controller-->
         <scene sceneID="7ie-T0-eZ7">
             <objects>
-                <viewController id="hYl-DF-Pnc" customClass="LoginViewController" customModule="iOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="hYl-DF-Pnc" customClass="LoginViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wgk-33-ktM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -349,7 +349,7 @@
         <!--Settings-->
         <scene sceneID="ty0-vR-BRU">
             <objects>
-                <viewController storyboardIdentifier="settingsViewController" title="Settings" id="PSm-v9-tyL" customClass="SettingsViewController" customModule="iOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="settingsViewController" title="Settings" id="PSm-v9-tyL" customClass="SettingsViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Vel-bX-b47">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -479,33 +479,12 @@
         <!--Home View Controller-->
         <scene sceneID="iFQ-gd-uN5">
             <objects>
-                <viewController storyboardIdentifier="homeViewController" id="SMW-XE-un6" customClass="HomeViewController" customModule="iOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="homeViewController" id="SMW-XE-un6" customClass="HomeViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QX7-fE-lyG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="emvee" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZq-8R-vuv">
-                                <rect key="frame" x="148.5" y="62" width="117.5" height="44.5"/>
-                                <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="36"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBu-y1-0bY" userLabel="ProfileButton">
-                                <rect key="frame" x="20" y="64.5" width="40" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="h53-vW-qCd"/>
-                                    <constraint firstAttribute="width" secondItem="NBu-y1-0bY" secondAttribute="height" multiplier="1:1" id="hrG-kn-8Nr"/>
-                                    <constraint firstAttribute="height" constant="40" id="nhU-vu-GhD"/>
-                                </constraints>
-                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="person.circle" catalog="system">
-                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="profileButtonClicked:" destination="SMW-XE-un6" eventType="touchUpInside" id="IEU-6p-kfu"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BSy-bB-310">
+                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BSy-bB-310">
                                 <rect key="frame" x="52" y="572.5" width="310.5" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Yjd-cP-pRA"/>
@@ -517,9 +496,6 @@
                                     <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                                 </state>
-                                <connections>
-                                    <action selector="joinChatRoom:" destination="SMW-XE-un6" eventType="touchUpInside" id="Svz-CE-Y51"/>
-                                </connections>
                             </button>
                             <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4a-dt-QXX">
                                 <rect key="frame" x="21" y="630.5" width="372" height="50"/>
@@ -537,45 +513,20 @@
                                     <action selector="joinVideoChatRoom:" destination="SMW-XE-un6" eventType="touchUpInside" id="P3a-gw-Zwv"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31p-KS-p7z">
-                                <rect key="frame" x="354" y="64.5" width="40" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="XC3-Sg-AMh"/>
-                                    <constraint firstAttribute="height" constant="40" id="eLV-PF-IpA"/>
-                                </constraints>
-                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="info.circle" catalog="system"/>
-                            </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrowCircle@4x" translatesAutoresizingMaskIntoConstraints="NO" id="53s-0K-rX9">
-                                <rect key="frame" x="0.0" y="156.5" width="414" height="366"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="w4a-dt-QXX" firstAttribute="top" secondItem="BSy-bB-310" secondAttribute="bottom" constant="8" id="7Kf-yk-7YX"/>
-                            <constraint firstItem="Kmr-og-I3S" firstAttribute="trailing" secondItem="31p-KS-p7z" secondAttribute="trailing" constant="20" id="OBT-CN-BBh"/>
-                            <constraint firstItem="53s-0K-rX9" firstAttribute="leading" secondItem="Kmr-og-I3S" secondAttribute="leading" id="Rhx-ld-1NV"/>
-                            <constraint firstItem="NBu-y1-0bY" firstAttribute="leading" secondItem="Kmr-og-I3S" secondAttribute="leading" constant="20" id="SLq-ye-b5g"/>
                             <constraint firstItem="w4a-dt-QXX" firstAttribute="centerX" secondItem="BSy-bB-310" secondAttribute="centerX" id="TAI-id-YkQ"/>
-                            <constraint firstItem="53s-0K-rX9" firstAttribute="top" secondItem="qZq-8R-vuv" secondAttribute="bottom" constant="50" id="VVn-tA-Ki5"/>
-                            <constraint firstItem="qZq-8R-vuv" firstAttribute="centerX" secondItem="QX7-fE-lyG" secondAttribute="centerX" id="Wyp-vw-huH"/>
                             <constraint firstItem="BSy-bB-310" firstAttribute="width" secondItem="QX7-fE-lyG" secondAttribute="width" multiplier="3/4" id="YIZ-wM-FPv"/>
                             <constraint firstItem="BSy-bB-310" firstAttribute="centerY" secondItem="QX7-fE-lyG" secondAttribute="centerY" multiplier="4:3" id="ayY-6V-1St"/>
-                            <constraint firstItem="Kmr-og-I3S" firstAttribute="trailing" secondItem="53s-0K-rX9" secondAttribute="trailing" id="dOs-vH-Ch2"/>
-                            <constraint firstItem="NBu-y1-0bY" firstAttribute="top" secondItem="Kmr-og-I3S" secondAttribute="top" constant="20" id="guw-LH-nNm"/>
-                            <constraint firstItem="BSy-bB-310" firstAttribute="top" secondItem="53s-0K-rX9" secondAttribute="bottom" constant="50" id="nbx-VH-akQ"/>
                             <constraint firstItem="BSy-bB-310" firstAttribute="centerX" secondItem="QX7-fE-lyG" secondAttribute="centerX" id="nff-fO-Bgw"/>
-                            <constraint firstItem="qZq-8R-vuv" firstAttribute="centerY" secondItem="NBu-y1-0bY" secondAttribute="centerY" id="qaz-If-9jN"/>
-                            <constraint firstItem="31p-KS-p7z" firstAttribute="centerY" secondItem="qZq-8R-vuv" secondAttribute="centerY" id="x9v-uN-MDt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Kmr-og-I3S"/>
                     </view>
                     <connections>
-                        <outlet property="enterChatRoomButton" destination="BSy-bB-310" id="COI-hX-SZl"/>
                         <outlet property="enterVideoChatRoomButton" destination="w4a-dt-QXX" id="OgC-Aw-fuN"/>
-                        <outlet property="enveeLabel" destination="qZq-8R-vuv" id="mfe-M3-b8G"/>
-                        <outlet property="profileButton" destination="NBu-y1-0bY" id="GoJ-Sv-ojY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zk9-9A-Sat" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -585,7 +536,7 @@
         <!--Video Chat View Controller-->
         <scene sceneID="vYY-52-Obo">
             <objects>
-                <viewController storyboardIdentifier="videoChatViewController" id="ioD-Fz-lS8" customClass="VideoChatViewController" customModule="iOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="videoChatViewController" id="ioD-Fz-lS8" customClass="VideoChatViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2xz-hR-rmf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -646,7 +597,7 @@
         <!--Profile View Controller-->
         <scene sceneID="lgn-fm-pc1">
             <objects>
-                <viewController storyboardIdentifier="profileViewController" id="cCt-J9-4By" customClass="ProfileViewController" customModule="iOSApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileViewController" id="cCt-J9-4By" customClass="ProfileViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XvO-hh-yA7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -771,7 +722,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrowCircle@4x" width="666" height="666"/>
         <image name="background@4x" width="4433" height="7880"/>
         <image name="defaultProfileImage" width="500" height="500"/>
         <image name="emveeLogoLightNoBackground@4x" width="325" height="260"/>
@@ -779,9 +729,7 @@
         <image name="end_pressed@4x" width="292" height="292"/>
         <image name="gear" catalog="system" width="128" height="119"/>
         <image name="house" catalog="system" width="128" height="110"/>
-        <image name="info.circle" catalog="system" width="128" height="121"/>
         <image name="mute@4x" width="744" height="744"/>
-        <image name="person.circle" catalog="system" width="128" height="121"/>
         <image name="radioOff" width="24" height="24"/>
         <image name="radioOn" width="24" height="24"/>
     </resources>
