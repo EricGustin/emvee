@@ -164,12 +164,11 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     arrowCircleImage = UIImageView(image: UIImage(named: "arrowCircle@4x"))
     arrowCircleImage?.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(arrowCircleImage!)
-    let arrowCircleTop = NSLayoutConstraint(item: arrowCircleImage!, attribute: .top, relatedBy: .equal, toItem: emveeLabel, attribute: .bottom, multiplier: 1.0, constant: 50)
+    let arrowCircleTop = NSLayoutConstraint(item: arrowCircleImage!, attribute: .top, relatedBy: .equal, toItem: profileButton, attribute: .bottom, multiplier: 1.0, constant: 50)
     let arrowCircleBottom = NSLayoutConstraint(item: arrowCircleImage!, attribute: .bottom, relatedBy: .equal, toItem: getToChattingButton, attribute: .top, multiplier: 1.0, constant: -50)
     let arrowCircleWidth = NSLayoutConstraint(item: arrowCircleImage!, attribute: .width, relatedBy: .equal, toItem: arrowCircleImage!, attribute: .height, multiplier: 1.0, constant: 0)
     let arrowCircleCenterX = NSLayoutConstraint(item: arrowCircleImage!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.0, constant: 0)
     view.addConstraints([arrowCircleTop, arrowCircleBottom, arrowCircleWidth, arrowCircleCenterX])
-
 
   }
   
