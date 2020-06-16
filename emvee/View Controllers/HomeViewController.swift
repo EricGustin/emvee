@@ -109,15 +109,18 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     let arrowCircleTapGesture = UITapGestureRecognizer(target: self, action: #selector(arrowCircleTapDetected))
     containerView?.addGestureRecognizer(arrowCircleTapGesture)
     
+    let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(transitionToProfile))
+    view.addGestureRecognizer(swipeRightGesture)
+    
   }
   
   func setUpViews() {
     // set up profileButton
     profileButton = UIButton(type: .custom)
-    profileButton!.translatesAutoresizingMaskIntoConstraints = false
-    profileButton!.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
-    profileButton!.tintColor = .systemTeal
-    profileButton!.addTarget(self, action: #selector(profileButtonClicked), for: .touchUpInside)
+    profileButton?.translatesAutoresizingMaskIntoConstraints = false
+    profileButton?.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
+    profileButton?.tintColor = .systemTeal
+    profileButton?.addTarget(self, action: #selector(profileButtonClicked), for: .touchUpInside)
     view.addSubview(profileButton!)
     let profileButtonWidth = NSLayoutConstraint(item: profileButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
     let profileButtonHeight = NSLayoutConstraint(item: profileButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
@@ -127,10 +130,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     // set up infoButton
     infoButton = UIButton(type: .custom)
-    infoButton!.translatesAutoresizingMaskIntoConstraints = false
-    infoButton!.setBackgroundImage(UIImage(systemName: "info.circle"), for: .normal)
-    infoButton!.tintColor = .systemTeal
-    infoButton!.addTarget(self, action: #selector(infoButtonClicked), for: .touchUpInside)
+    infoButton?.translatesAutoresizingMaskIntoConstraints = false
+    infoButton?.setBackgroundImage(UIImage(systemName: "info.circle"), for: .normal)
+    infoButton?.tintColor = .systemTeal
+    infoButton?.addTarget(self, action: #selector(infoButtonClicked), for: .touchUpInside)
     view.addSubview(infoButton!)
     let infoButtonWidth = NSLayoutConstraint(item: infoButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
     let infoButtonHeight = NSLayoutConstraint(item: infoButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
@@ -161,7 +164,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     getToChattingButton?.titleLabel?.numberOfLines = 0
     StyleUtilities.styleFilledButton(getToChattingButton!)
     getToChattingButton?.translatesAutoresizingMaskIntoConstraints = false
-    getToChattingButton!.addTarget(self, action: #selector(joinChatRoom), for: .touchUpInside)
+    getToChattingButton?.addTarget(self, action: #selector(joinChatRoom), for: .touchUpInside)
     view.addSubview(getToChattingButton!)
     let getToChattingButtonWidth = NSLayoutConstraint(item: getToChattingButton!, attribute: .width, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .width, multiplier: 0.75, constant: 0)
     let getToChattingButtonHeight = NSLayoutConstraint(item: getToChattingButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
@@ -171,7 +174,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     // Set up arrow circle image view and its container view
     arrowCircleImage = UIImageView(image: UIImage(named: "arrowCircle@4x"))
-    arrowCircleImage?.translatesAutoresizingMaskIntoConstraints = false
+    arrowCircleImage.translatesAutoresizingMaskIntoConstraints = false
     arrowCircleImage.isUserInteractionEnabled = true
     
     containerView = UIView(frame: arrowCircleImage.frame)
@@ -223,7 +226,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   }
   
     
-  func transitionToProfile() {
+  @objc func transitionToProfile() {
     let profileViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.profileViewController) as? ProfileViewController
     // Make profile ViewController appear fullscrean
     view.window?.rootViewController = profileViewController
