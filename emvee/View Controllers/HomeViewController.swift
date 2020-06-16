@@ -17,10 +17,12 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   let currentUser = Auth.auth().currentUser
   
   var arrowCircleImage: UIImageView!
+  var arrowCircleFlippedImage: UIImageView!
   var profileButton: UIButton?
   var infoButton: UIButton?
   var emveeLabel: UILabel?
   var getToChattingButton: UIButton?
+  var containerView: UIView?
   
   //@IBOutlet weak var profileButton: UIButton!
   @IBOutlet weak var enterVideoChatRoomButton: UIButton!
@@ -93,13 +95,20 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     print("In HomeViewController")
     
     setUpViews()
-    
+    setUpGestures()
     UserDefaults.standard.set(true, forKey: "isUserSignedIn")
     UserDefaults.standard.set(false, forKey: "isComingFromVideo")
     
-    let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
-    swipeGesture.direction = .right
-    view.addGestureRecognizer(swipeGesture)
+
+    
+  }
+  
+  func setUpGestures() {
+    let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(rightSwipeDetected(gesture:)))
+    rightSwipeGesture.direction = .right
+    //view.addGestureRecognizer(rightSwipeGesture)
+    containerView?.addGestureRecognizer(rightSwipeGesture)
+    
   }
   
   func setUpViews() {
@@ -160,22 +169,43 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     let getToChattingButtonCenterY = NSLayoutConstraint(item: getToChattingButton!, attribute: .centerY, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerY, multiplier: 4/3, constant: 0)
     view.addConstraints([getToChattingButtonWidth, getToChattingButtonHeight, getToChattingButtonCenterX, getToChattingButtonCenterY])
     
-    // Set up arrow circle image view
+    // Set up arrow circle image view and its container view
     arrowCircleImage = UIImageView(image: UIImage(named: "arrowCircle@4x"))
     arrowCircleImage?.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(arrowCircleImage!)
+    
+    containerView = UIView(frame: arrowCircleImage.frame)
+    view.addSubview(containerView!)
+    containerView?.addSubview(arrowCircleImage)
+    containerView?.translatesAutoresizingMaskIntoConstraints = false
+    
+    // Constraints for arrowCircle view
     let arrowCircleTop = NSLayoutConstraint(item: arrowCircleImage!, attribute: .top, relatedBy: .equal, toItem: profileButton, attribute: .bottom, multiplier: 1.0, constant: 50)
     let arrowCircleBottom = NSLayoutConstraint(item: arrowCircleImage!, attribute: .bottom, relatedBy: .equal, toItem: getToChattingButton, attribute: .top, multiplier: 1.0, constant: -50)
     let arrowCircleWidth = NSLayoutConstraint(item: arrowCircleImage!, attribute: .width, relatedBy: .equal, toItem: arrowCircleImage!, attribute: .height, multiplier: 1.0, constant: 0)
     let arrowCircleCenterX = NSLayoutConstraint(item: arrowCircleImage!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.0, constant: 0)
     view.addConstraints([arrowCircleTop, arrowCircleBottom, arrowCircleWidth, arrowCircleCenterX])
-
+    
+    let containerCenterX = containerView!.centerXAnchor.constraint(equalTo: arrowCircleImage.centerXAnchor)
+    let containerBottom = containerView!.bottomAnchor.constraint(equalTo: arrowCircleImage.bottomAnchor)
+    let containerWidth = containerView!.widthAnchor.constraint(equalTo: arrowCircleImage.widthAnchor)
+    let containerTop = containerView!.topAnchor.constraint(equalTo: arrowCircleImage.topAnchor)
+    NSLayoutConstraint.activate([containerCenterX, containerBottom, containerWidth, containerTop])
+    
+    view.layoutIfNeeded()
   }
   
-  @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
-    transitionToProfile()
+  @objc func rightSwipeDetected(gesture: UISwipeGestureRecognizer) {
+    //transitionToProfile()
+    
+    UIView.transition(with: arrowCircleImage, duration: 0.65, options: .transitionFlipFromLeft, animations: {
+      self.arrowCircleImage.isUserInteractionEnabled = false
+      self.arrowCircleImage.image = self.arrowCircleImage.image?.withHorizontallyFlippedOrientation()
+    }) { _ in
+      self.arrowCircleImage.isUserInteractionEnabled = true
+    }
   }
   
+    
   func transitionToProfile() {
     let profileViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.profileViewController) as? ProfileViewController
     // Make profile ViewController appear fullscrean
