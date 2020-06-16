@@ -24,6 +24,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   var getToChattingButton: UIButton?
   var containerView: UIView?
   
+  var spinsRemaining = 10
+  
   //@IBOutlet weak var profileButton: UIButton!
   @IBOutlet weak var enterVideoChatRoomButton: UIButton!
 
@@ -104,10 +106,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   }
   
   func setUpGestures() {
-    let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(rightSwipeDetected(gesture:)))
-    rightSwipeGesture.direction = .right
-    //view.addGestureRecognizer(rightSwipeGesture)
-    containerView?.addGestureRecognizer(rightSwipeGesture)
+    let arrowCircleTapGesture = UITapGestureRecognizer(target: self, action: #selector(arrowCircleTapDetected))
+    containerView?.addGestureRecognizer(arrowCircleTapGesture)
     
   }
   
@@ -172,6 +172,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     // Set up arrow circle image view and its container view
     arrowCircleImage = UIImageView(image: UIImage(named: "arrowCircle@4x"))
     arrowCircleImage?.translatesAutoresizingMaskIntoConstraints = false
+    arrowCircleImage.isUserInteractionEnabled = true
     
     containerView = UIView(frame: arrowCircleImage.frame)
     view.addSubview(containerView!)
@@ -194,14 +195,30 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     view.layoutIfNeeded()
   }
   
-  @objc func rightSwipeDetected(gesture: UISwipeGestureRecognizer) {
-    //transitionToProfile()
+  @objc func arrowCircleTapDetected() {
+    if arrowCircleImage.isUserInteractionEnabled {
+      arrowCircleImage.isUserInteractionEnabled = false
+      // Spin arrowCircleView for the first. The spinArrowCircle function will continue to call itself until spinsRemaning=0
+      _ = Timer.scheduledTimer(timeInterval: 0.0, target: self, selector: #selector(spinArrowCircle(timer:)), userInfo: nil, repeats: false)
+    }
+  }
+  
+  // Helper function for arrowCircleTapDetected event
+  @objc func spinArrowCircle(timer: Timer) {
     
-    UIView.transition(with: arrowCircleImage, duration: 0.65, options: .transitionFlipFromLeft, animations: {
-      self.arrowCircleImage.isUserInteractionEnabled = false
+    UIView.transition(with: arrowCircleImage, duration: 0.4 - (Double(spinsRemaining) * 0.02), options: .transitionFlipFromLeft, animations: {
       self.arrowCircleImage.image = self.arrowCircleImage.image?.withHorizontallyFlippedOrientation()
-    }) { _ in
-      self.arrowCircleImage.isUserInteractionEnabled = true
+    }, completion: nil)
+    
+    spinsRemaining -= 1
+    
+    if spinsRemaining <= 0 {
+      // Done spinning
+      spinsRemaining = 10
+      arrowCircleImage.isUserInteractionEnabled = true
+    } else {
+      // Spin again!
+      _ = Timer.scheduledTimer(timeInterval: 0.4 - (Double(spinsRemaining) * 0.02), target: self, selector: #selector(spinArrowCircle(timer:)), userInfo: nil, repeats: false)
     }
   }
   
