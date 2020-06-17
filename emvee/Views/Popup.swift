@@ -21,7 +21,7 @@ class Popup : UIView {
     return label
   }()
   
-  fileprivate let subtitleLabel1: UILabel = {
+  private let subtitleLabel1: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 16), size: 16)
@@ -75,7 +75,6 @@ class Popup : UIView {
     
     self.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
     self.frame = UIScreen.main.bounds
-    
     setUpSubviews()
     animateIn()
     setUpGestures()
@@ -91,11 +90,11 @@ class Popup : UIView {
     container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     container.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.7).isActive = true
-    container.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.55).isActive = true
+    container.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.25).isActive = true
     
     container.addSubview(stack)
     stack.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
-    stack.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+    stack.topAnchor.constraint(equalTo: self.container.topAnchor).isActive = true
     stack.heightAnchor.constraint(equalTo: container.heightAnchor, multiplier: 0.9).isActive = true
     stack.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
     
@@ -110,7 +109,7 @@ class Popup : UIView {
     self.addGestureRecognizer(swipeUpGesture)
   }
   
-  @objc private func animateOut() {
+  @objc func animateOut() {
     UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
       self.alpha = 0
@@ -121,12 +120,29 @@ class Popup : UIView {
     }
   }
   
-  @objc private func animateIn() {
-    self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
+  @objc func animateIn() {
+    container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
     self.alpha = 0
-    UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
+    subtitleLabel1.alpha = 0
+    subtitleLabel2.alpha = 0
+    button.alpha = 0
+    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.container.transform = .identity
       self.alpha = 1
+    }) { (complete) in
+      if complete {
+        self.growContainer()
+      }
+    }
+  }
+  
+  func growContainer() {
+    UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
+      self.container.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.55).isActive = true
+      self.subtitleLabel1.alpha = 1
+      self.subtitleLabel2.alpha = 1
+      self.button.alpha = 1
+      self.layoutIfNeeded()
     })
   }
 }

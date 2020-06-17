@@ -20,7 +20,6 @@
 		FA54DC0724662352008227FE /* FormUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC0624662352008227FE /* FormUtilities.swift */; };
 		FA54DC0B24663B37008227FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC0A24663B37008227FE /* Constants.swift */; };
 		FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC0C24666A0C008227FE /* ProfileViewController.swift */; };
-		FA54DC132467A64D008227FE /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC122467A64D008227FE /* PopAnimator.swift */; };
 		FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DC142467C168008227FE /* SettingsViewController.swift */; };
 		FA5AD8C5248AF991001DFAB6 /* VideoChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */; };
 		FA6A18D92492BCFD007CE8EF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA6A18D82492BCFD007CE8EF /* GoogleService-Info.plist */; };
@@ -56,7 +55,6 @@
 		FA54DC0624662352008227FE /* FormUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormUtilities.swift; sourceTree = "<group>"; };
 		FA54DC0A24663B37008227FE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FA54DC0C24666A0C008227FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		FA54DC122467A64D008227FE /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
 		FA54DC142467C168008227FE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoChatViewController.swift; sourceTree = "<group>"; };
 		FA6A18D82492BCFD007CE8EF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -141,7 +139,6 @@
 				FA54DBF324661C9A008227FE /* LaunchScreen.storyboard */,
 				FA6A18D82492BCFD007CE8EF /* GoogleService-Info.plist */,
 				FA6A18DD2492BF56007CE8EF /* Info.plist */,
-				FA54DC122467A64D008227FE /* PopAnimator.swift */,
 			);
 			path = emvee;
 			sourceTree = "<group>";
@@ -359,7 +356,6 @@
 				FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */,
 				FA91C65F24749F2E00895098 /* UIRadioButton.swift in Sources */,
 				FA91C60324709FF000895098 /* NavigationController.swift in Sources */,
-				FA54DC132467A64D008227FE /* PopAnimator.swift in Sources */,
 				FA54DC052466232D008227FE /* StyleUtilities.swift in Sources */,
 				FA54DBFD24661CDF008227FE /* SignUpViewController.swift in Sources */,
 				FA54DBFF24661CEA008227FE /* LoginViewController.swift in Sources */,

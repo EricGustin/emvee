@@ -78,7 +78,7 @@ final class TextChatViewController: MessagesViewController {
     
     let topInset: CGFloat = navBar.frame.maxY
     messagesCollectionView.contentInset.top = topInset
-    messagesCollectionView.scrollIndicatorInsets.top = topInset
+    messagesCollectionView.verticalScrollIndicatorInsets.top = topInset
   }
   
   override func viewDidLoad() {

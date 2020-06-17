@@ -71,6 +71,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     rightSwipeGesture.direction = .right
     view.addGestureRecognizer(rightSwipeGesture)
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
