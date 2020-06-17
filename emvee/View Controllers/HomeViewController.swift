@@ -36,7 +36,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     transitionToProfile()
   }
   @objc func infoButtonClicked() {
-    
+    let infoPopup = Popup()
+    view.addSubview(infoPopup)
   }
 
   @IBAction func joinVideoChatRoom(_ sender: Any) {
