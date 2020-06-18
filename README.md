@@ -1,1 +1,1 @@
-# Repository for my second iOS App:
+# emvee: Messege and video chat with strangers
