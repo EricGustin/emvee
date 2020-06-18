@@ -13,20 +13,110 @@ import FirebaseStorage
 
 class ProfileViewController: UIViewController, UITextViewDelegate {
   
-  @IBOutlet weak var bioCharsLeftLabel: UILabel!
-  @IBOutlet weak var aboutMeTextView: UITextView!
-  @IBOutlet weak var profilePicture: UIImageView!
-  @IBOutlet weak var nameAndAgeLabel: UILabel!
-  @IBOutlet weak var currentLocationLabel: UILabel!
+  //@IBOutlet weak var bioCharsLeftLabel: UILabel!
+  //@IBOutlet weak var aboutMeTextView: UITextView!
+  //@IBOutlet weak var profilePicture: UIImageView!
+  //@IBOutlet weak var nameAndAgeLabel: UILabel!
+  
   @IBOutlet weak var editBioButton: UIButton!
   
+  private var settingsButton: UIButton!
+  private var homeButton: UIButton!
+  private var profilePicture: UIImageView!
+  private var nameAndAgeLabel: UILabel!
+  private var aboutMeLabel: UILabel!
+  private var aboutMeTextView: UITextView!
+  private var aboutMeCharsRemainingLabel: UILabel!
+  
+  
   // MARK: - ACTIONS
-  @IBAction func homeButtonClicked(_ sender: UIButton) {
+  @objc func homeButtonClicked(_ sender: UIButton) {
     transitionToHome()
   }
   
-  @IBAction func settingsButtonClicked(_ sender: UIButton) {
+  @objc func settingsButtonClicked(_ sender: UIButton) {
     transitionToSettings()
+  }
+  
+  private func setUpSubViews() {
+    
+    settingsButton = UIButton()
+    settingsButton.translatesAutoresizingMaskIntoConstraints = false
+    settingsButton.setBackgroundImage(UIImage(systemName: "gear"), for: .normal)
+    settingsButton.tintColor = .systemTeal
+    view.addSubview(settingsButton)
+    settingsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+    settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+    settingsButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+    settingsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    settingsButton.addTarget(self, action: #selector(settingsButtonClicked), for: .touchUpInside)
+    
+    homeButton = UIButton()
+    homeButton.translatesAutoresizingMaskIntoConstraints = false
+    homeButton.setBackgroundImage(UIImage(systemName: "house"), for: .normal)
+    homeButton.tintColor = .systemTeal
+    view.addSubview(homeButton)
+    homeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+    homeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+    homeButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+    homeButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    homeButton.addTarget(self, action: #selector(homeButtonClicked), for: .touchUpInside)
+    
+
+    profilePicture = UIImageView(image: UIImage(named: "defaultProfileImage@4x"))
+    profilePicture.translatesAutoresizingMaskIntoConstraints = false
+    profilePicture.isUserInteractionEnabled = true
+    view.addSubview(profilePicture)
+    profilePicture.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    NSLayoutConstraint(item: profilePicture!, attribute: .centerY, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
+    profilePicture.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+    profilePicture.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+    profilePicture.contentMode = .scaleAspectFill
+    profilePicture.layer.cornerRadius = UIScreen.main.bounds.width / 4
+    profilePicture.layer.masksToBounds = true
+    profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profilePictureTapped)))
+    
+    nameAndAgeLabel = UILabel()
+    nameAndAgeLabel.translatesAutoresizingMaskIntoConstraints = false
+    nameAndAgeLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 18), size: 18)
+    nameAndAgeLabel.textColor = .black
+    nameAndAgeLabel.textAlignment = .center
+    nameAndAgeLabel.numberOfLines = 0
+    view.addSubview(nameAndAgeLabel)
+    nameAndAgeLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
+    nameAndAgeLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
+    
+    aboutMeLabel = UILabel()
+    aboutMeLabel.translatesAutoresizingMaskIntoConstraints = false
+    aboutMeLabel.text = "About me"
+    aboutMeLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
+    aboutMeLabel.textColor = .black
+    aboutMeLabel.textAlignment = .center
+    view.addSubview(aboutMeLabel)
+    aboutMeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
+    aboutMeLabel.topAnchor.constraint(equalTo: nameAndAgeLabel.bottomAnchor, constant: 80).isActive = true
+    
+    aboutMeTextView = UITextView()
+    aboutMeTextView.delegate = self
+    aboutMeTextView.translatesAutoresizingMaskIntoConstraints = false
+    aboutMeTextView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
+    aboutMeTextView.layer.cornerRadius = 25
+    aboutMeTextView.backgroundColor = .white
+    view.addSubview(aboutMeTextView)
+    aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 5).isActive = true
+    aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true  // 3:1 AspectRatio
+    aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+    aboutMeCharsRemainingLabel = UILabel()
+    aboutMeCharsRemainingLabel.translatesAutoresizingMaskIntoConstraints = false
+    aboutMeCharsRemainingLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
+    aboutMeCharsRemainingLabel.textColor = .lightGray
+    aboutMeCharsRemainingLabel.textAlignment = .center
+    view.addSubview(aboutMeCharsRemainingLabel)
+    aboutMeCharsRemainingLabel.bottomAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
+    aboutMeCharsRemainingLabel.trailingAnchor.constraint(equalTo: aboutMeTextView.trailingAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
+    
   }
   
   @IBAction func editBioButtonClicked(_ sender: UIButton) {
@@ -56,13 +146,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profilePictureTapped)))
-    profilePicture.isUserInteractionEnabled = true
-    profilePicture.layer.cornerRadius = profilePicture.frame.width / 2
-    profilePicture.contentMode = .scaleToFill
-    
-    aboutMeTextView.delegate = self
-    aboutMeTextView.layer.cornerRadius = 25
+    setUpSubViews()
     
     
     let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
@@ -73,14 +157,12 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     view.addGestureRecognizer(rightSwipeGesture)
     
     view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
-    aboutMeTextView.backgroundColor = .white
-    aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
-    aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
     
   }
   
   override func viewWillAppear(_ animated: Bool) {
+
     // Get user data from Firebase Database
     let userID = Auth.auth().currentUser?.uid
     let db = Firestore.firestore()
@@ -220,11 +302,11 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
   func displayBioCharsLeft() {
     let currChars = aboutMeTextView.text.count
     
-    bioCharsLeftLabel.text = String(255 - currChars)
+    aboutMeCharsRemainingLabel.text = String(255 - currChars)
     if currChars < 230 {
-      bioCharsLeftLabel.textColor = UIColor.lightGray
+      aboutMeCharsRemainingLabel.textColor = UIColor.lightGray
     } else {
-      bioCharsLeftLabel.textColor = UIColor.red
+      aboutMeCharsRemainingLabel.textColor = UIColor.red
     }
   }
 }
