@@ -53,6 +53,7 @@ class Popup : UIView {
     StyleUtilities.styleFilledButton(button)
     return button
   }()
+
   
   private let container: UIView = {
     let container = UIView()

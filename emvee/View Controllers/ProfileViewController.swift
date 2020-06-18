@@ -11,7 +11,7 @@ import Firebase
 import FirebaseDatabase
 import FirebaseStorage
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate & UITextViewDelegate {
+class ProfileViewController: UIViewController, UITextViewDelegate {
   
   @IBOutlet weak var bioCharsLeftLabel: UILabel!
   @IBOutlet weak var aboutMeTextView: UITextView!
@@ -40,11 +40,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     }
   }
   
-  @objc func editProfilePicture() {
-    let picker = UIImagePickerController()
-    picker.delegate = self
-    picker.allowsEditing = true
-    present(picker, animated: true, completion: nil)
+  @objc func profilePictureTapped() {
+    presentImagePickerControllerActionSheet()
   }
   
   @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
@@ -59,10 +56,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(editProfilePicture)))
+    profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profilePictureTapped)))
     profilePicture.isUserInteractionEnabled = true
+    profilePicture.layer.cornerRadius = profilePicture.frame.width / 2
+    profilePicture.contentMode = .scaleToFill
     
     aboutMeTextView.delegate = self
+    aboutMeTextView.layer.cornerRadius = 25
     
     
     let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
@@ -71,6 +71,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     rightSwipeGesture.direction = .right
     view.addGestureRecognizer(rightSwipeGesture)
+    
+    view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
+    aboutMeTextView.backgroundColor = .white
+    aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
     
   }
   
@@ -116,10 +122,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     view.window?.makeKeyAndVisible()
   }
   
-  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-    dismiss(animated: true, completion: nil)
-  }
-  
   // MARK: - Delegates
   // Adds the new character to the user's bio if it doesn't exceed 255 chars, else no update occurs
   func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -143,22 +145,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     displayBioCharsLeft()
   }
   
-  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    var selectedImage: UIImage?
-    if let editedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage {
-      selectedImage = editedImage
-    } else if let originalImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage {
-      selectedImage = originalImage
-    }
-    
-    if let profileImage = selectedImage {
-      profilePicture.image = profileImage
-    }
-    
-    dismiss(animated: true, completion: nil) // dismiss the UIImagePickerControllers and go back to profile VC
-    
-    uploadProfilePictureToFirebase()
-  }
+
   
   // MARK: - Firebase Stuff
   func updateCloudFirestoreField(_ fieldName: String, _ newValue: Any) {
@@ -244,7 +231,62 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
 
 // MARK: - Extensions
 extension String {
+  
   var wordList: [String] {
     return components(separatedBy: CharacterSet.alphanumerics.inverted).filter { !$0.isEmpty }
+  }
+  
+}
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  
+  // Presents a UIAlertController that gives the user the option to pick a profile picture from their existing library or from their camera.
+  func presentImagePickerControllerActionSheet() {
+    // Make actions for the UIAlertController
+    let photoLibraryAction = UIAlertAction(title: "Choose from library", style: .default) { (action) in
+      self.presentImagePickerController(sourceType: .photoLibrary)
+    }
+    let cameraAction = UIAlertAction(title: "Choose from camera", style: .default) { (action) in
+      self.presentImagePickerController(sourceType: .camera)
+    }
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    
+    // Create UIAlertController
+    let alert = UIAlertController(title: "Choose your image", message: nil, preferredStyle: .actionSheet)
+    alert.addAction(photoLibraryAction)
+    alert.addAction(cameraAction)
+    alert.addAction(cancelAction)
+    self.present(alert, animated: true, completion: nil)
+    
+    
+  }
+  
+  func presentImagePickerController(sourceType: UIImagePickerController.SourceType) {
+    let picker = UIImagePickerController()
+    picker.delegate = self
+    picker.allowsEditing = true
+    picker.sourceType = sourceType
+    present(picker, animated: true, completion: nil)
+  }
+  
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    var selectedImage: UIImage?
+    if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+      selectedImage = editedImage
+    } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+      selectedImage = originalImage
+    }
+    
+    if let profileImage = selectedImage {
+      profilePicture.image = profileImage
+    }
+    
+    dismiss(animated: true, completion: nil) // dismiss the UIImagePickerControllers and go back to profile VC
+    
+    uploadProfilePictureToFirebase()
+  }
+  
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    dismiss(animated: true, completion: nil)
   }
 }

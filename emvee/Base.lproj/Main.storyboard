@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7yt-PQ-0GC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7yt-PQ-0GC">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -243,6 +243,29 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fhG-i8-kDG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1806" y="-136"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tyi-oa-73X">
+            <objects>
+                <viewController id="eKj-Wz-D63" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yHe-fy-Py6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pft-wQ-V1Z">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="rl2-uz-oyF"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="iSg-wK-taj"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="CdZ-gw-qks"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M0g-8T-eIC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2776.811594202899" y="-408.48214285714283"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="7ie-T0-eZ7">
@@ -630,15 +653,18 @@
                                 <rect key="frame" x="103.5" y="156.5" width="207" height="314"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="defaultProfileImage" translatesAutoresizingMaskIntoConstraints="NO" id="7Jw-ji-Cb1">
-                                        <rect key="frame" x="0.0" y="0.0" width="207" height="233"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="207" height="207"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="7Jw-ji-Cb1" secondAttribute="height" id="5zB-Bb-tNW"/>
+                                        </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name, Age" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Hx-7M-Oaz">
-                                        <rect key="frame" x="0.0" y="253" width="207" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name, Age" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Hx-7M-Oaz">
+                                        <rect key="frame" x="0.0" y="227" width="207" height="46.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7qd-Hs-gnK">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Current Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7qd-Hs-gnK">
                                         <rect key="frame" x="0.0" y="293.5" width="207" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -669,7 +695,7 @@
                                     </stackView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wR8-VW-pL9">
                                         <rect key="frame" x="0.0" y="35" width="414" height="138"/>
-                                        <color key="backgroundColor" red="0.93365323604060912" green="0.93365323604060912" blue="0.93365323604060912" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" red="0.96040837302691051" green="0.9600338011091023" blue="0.9600338011091023" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="wR8-VW-pL9" secondAttribute="height" multiplier="3:1" id="1NC-EN-9fs"/>
                                         </constraints>
@@ -688,7 +714,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="wR8-VW-pL9" firstAttribute="width" secondItem="XvO-hh-yA7" secondAttribute="width" id="1El-Xq-lFI"/>
                             <constraint firstItem="VQ9-Dh-EKL" firstAttribute="trailing" secondItem="erp-KB-jw5" secondAttribute="trailing" constant="20" id="2Wd-tM-uvz"/>
                             <constraint firstItem="sSk-0A-hrq" firstAttribute="height" secondItem="XvO-hh-yA7" secondAttribute="height" multiplier="0.350164" id="4nH-kb-xEl"/>
                             <constraint firstItem="sSk-0A-hrq" firstAttribute="centerX" secondItem="XvO-hh-yA7" secondAttribute="centerX" id="87o-1Z-5Gu"/>
