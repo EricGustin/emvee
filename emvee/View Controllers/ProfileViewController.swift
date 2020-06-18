@@ -11,7 +11,7 @@ import Firebase
 import FirebaseDatabase
 import FirebaseStorage
 
-class ProfileViewController: UIViewController, UITextViewDelegate {
+class ProfileViewController: UIViewController {
   
   //@IBOutlet weak var bioCharsLeftLabel: UILabel!
   //@IBOutlet weak var aboutMeTextView: UITextView!
@@ -20,6 +20,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
   
   @IBOutlet weak var editBioButton: UIButton!
   
+  private var scrollView: UIScrollView!
   private var settingsButton: UIButton!
   private var homeButton: UIButton!
   private var profilePicture: UIImageView!
@@ -27,7 +28,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
   private var aboutMeLabel: UILabel!
   private var aboutMeTextView: UITextView!
   private var aboutMeCharsRemainingLabel: UILabel!
-  
+  private var myBasicInfoLabel: UILabel!
   
   // MARK: - ACTIONS
   @objc func homeButtonClicked(_ sender: UIButton) {
@@ -40,13 +41,22 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
   
   private func setUpSubViews() {
     
+    scrollView = UIScrollView()
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.backgroundColor = .clear
+    view.addSubview(scrollView)
+    scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+    scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+    scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+    scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    
     settingsButton = UIButton()
     settingsButton.translatesAutoresizingMaskIntoConstraints = false
     settingsButton.setBackgroundImage(UIImage(systemName: "gear"), for: .normal)
     settingsButton.tintColor = .systemTeal
-    view.addSubview(settingsButton)
+    scrollView.addSubview(settingsButton)
     settingsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-    settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+    settingsButton.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20).isActive = true
     settingsButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
     settingsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     settingsButton.addTarget(self, action: #selector(settingsButtonClicked), for: .touchUpInside)
@@ -55,9 +65,9 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     homeButton.translatesAutoresizingMaskIntoConstraints = false
     homeButton.setBackgroundImage(UIImage(systemName: "house"), for: .normal)
     homeButton.tintColor = .systemTeal
-    view.addSubview(homeButton)
+    scrollView.addSubview(homeButton)
     homeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-    homeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+    homeButton.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20).isActive = true
     homeButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
     homeButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     homeButton.addTarget(self, action: #selector(homeButtonClicked), for: .touchUpInside)
@@ -66,9 +76,9 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     profilePicture = UIImageView(image: UIImage(named: "defaultProfileImage@4x"))
     profilePicture.translatesAutoresizingMaskIntoConstraints = false
     profilePicture.isUserInteractionEnabled = true
-    view.addSubview(profilePicture)
+    scrollView.addSubview(profilePicture)
     profilePicture.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    NSLayoutConstraint(item: profilePicture!, attribute: .centerY, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
+    NSLayoutConstraint(item: profilePicture!, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
     profilePicture.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
     profilePicture.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
     profilePicture.contentMode = .scaleAspectFill
@@ -82,7 +92,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     nameAndAgeLabel.textColor = .black
     nameAndAgeLabel.textAlignment = .center
     nameAndAgeLabel.numberOfLines = 0
-    view.addSubview(nameAndAgeLabel)
+    scrollView.addSubview(nameAndAgeLabel)
     nameAndAgeLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
     nameAndAgeLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
     
@@ -92,7 +102,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     aboutMeLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
     aboutMeLabel.textColor = .black
     aboutMeLabel.textAlignment = .center
-    view.addSubview(aboutMeLabel)
+    scrollView.addSubview(aboutMeLabel)
     aboutMeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
     aboutMeLabel.topAnchor.constraint(equalTo: nameAndAgeLabel.bottomAnchor, constant: 80).isActive = true
     
@@ -102,7 +112,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     aboutMeTextView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
     aboutMeTextView.layer.cornerRadius = 25
     aboutMeTextView.backgroundColor = .white
-    view.addSubview(aboutMeTextView)
+    scrollView.addSubview(aboutMeTextView)
     aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 5).isActive = true
     aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true  // 3:1 AspectRatio
@@ -113,10 +123,24 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     aboutMeCharsRemainingLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
     aboutMeCharsRemainingLabel.textColor = .lightGray
     aboutMeCharsRemainingLabel.textAlignment = .center
-    view.addSubview(aboutMeCharsRemainingLabel)
+    scrollView.addSubview(aboutMeCharsRemainingLabel)
     aboutMeCharsRemainingLabel.bottomAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
     aboutMeCharsRemainingLabel.trailingAnchor.constraint(equalTo: aboutMeTextView.trailingAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
     
+    myBasicInfoLabel = UILabel()
+    myBasicInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+    myBasicInfoLabel.text = "My basic info"
+    myBasicInfoLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
+    myBasicInfoLabel.textColor = .black
+    myBasicInfoLabel.textAlignment = .center
+    scrollView.addSubview(myBasicInfoLabel)
+    myBasicInfoLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
+    myBasicInfoLabel.topAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: 300).isActive = true
+    
+  }
+  
+  override func viewDidLayoutSubviews() {
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 300)
   }
   
   @IBAction func editBioButtonClicked(_ sender: UIButton) {
@@ -204,30 +228,10 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     view.window?.makeKeyAndVisible()
   }
   
-  // MARK: - Delegates
-  // Adds the new character to the user's bio if it doesn't exceed 255 chars, else no update occurs
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    if 255 - aboutMeTextView.text.count == 0 {
-      if range.length != 1 {
-        // TODO: add an animation of the charsLeft label where it gets slightly bigger and then returns to normal size
-        return false
-      }
-    }
-    return true
-  }
-  
-  func textViewDidBeginEditing(_ textView: UITextView) {
-  }
-  
+  //MARK: - Helper functions
   func aboutMetextViewWasSaved(_ textView: UITextView) {
     updateCloudFirestoreField("bio", aboutMeTextView.text ?? 0)
   }
-  
-  func textViewDidChange(_ textView: UITextView) {
-    displayBioCharsLeft()
-  }
-  
-
   
   // MARK: - Firebase Stuff
   func updateCloudFirestoreField(_ fieldName: String, _ newValue: Any) {
@@ -328,7 +332,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     let photoLibraryAction = UIAlertAction(title: "Choose from library", style: .default) { (action) in
       self.presentImagePickerController(sourceType: .photoLibrary)
     }
-    let cameraAction = UIAlertAction(title: "Choose from camera", style: .default) { (action) in
+    let cameraAction = UIAlertAction(title: "Take a photo", style: .default) { (action) in
       self.presentImagePickerController(sourceType: .camera)
     }
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -370,5 +374,26 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
   
   func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
     dismiss(animated: true, completion: nil)
+  }
+}
+
+extension ProfileViewController: UITextViewDelegate {
+  
+  // Adds the new character to the user's bio if it doesn't exceed 255 chars, else no update occurs
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    if 255 - aboutMeTextView.text.count == 0 {
+      if range.length != 1 {
+        // TODO: add an animation of the charsLeft label where it gets slightly bigger and then returns to normal size
+        return false
+      }
+    }
+    return true
+  }
+
+  func textViewDidBeginEditing(_ textView: UITextView) {
+  }
+  
+  func textViewDidChange(_ textView: UITextView) {
+    displayBioCharsLeft()
   }
 }
