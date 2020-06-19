@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8EC6E28BDCED361E1EE1DD1A /* Pods_emvee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F346B81463B8B4BA31FB784 /* Pods_emvee.framework */; };
+		FA0899C8249C7109005061DB /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0899C7249C7109005061DB /* UITextView+.swift */; };
 		FA54DBE924661C99008227FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DBE824661C99008227FE /* AppDelegate.swift */; };
 		FA54DBEB24661C99008227FE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DBEA24661C99008227FE /* SceneDelegate.swift */; };
 		FA54DBED24661C99008227FE /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA54DBEC24661C99008227FE /* WelcomeViewController.swift */; };
@@ -42,6 +43,7 @@
 		EF9107E1CCB8ED70B42A82C9 /* Pods-iOSApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSApp.debug.xcconfig"; path = "Target Support Files/Pods-iOSApp/Pods-iOSApp.debug.xcconfig"; sourceTree = "<group>"; };
 		F14BE25128F6B3AB279C7699 /* Pods-FirebaseAuthentification.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseAuthentification.debug.xcconfig"; path = "Target Support Files/Pods-FirebaseAuthentification/Pods-FirebaseAuthentification.debug.xcconfig"; sourceTree = "<group>"; };
 		F7FBE67DC78E33F40E37A331 /* Pods-iOSApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOSApp.release.xcconfig"; path = "Target Support Files/Pods-iOSApp/Pods-iOSApp.release.xcconfig"; sourceTree = "<group>"; };
+		FA0899C7249C7109005061DB /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextView+.swift"; path = "emvee/Views/UITextView+.swift"; sourceTree = SOURCE_ROOT; };
 		FA54DBE524661C99008227FE /* emvee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emvee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA54DBE824661C99008227FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA54DBEA24661C99008227FE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 		FA91C5EB246E1ABC00895098 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				FA0899C7249C7109005061DB /* UITextView+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				FA785165249962A5001A8949 /* Popup.swift in Sources */,
 				FA54DBE924661C99008227FE /* AppDelegate.swift in Sources */,
 				FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */,
+				FA0899C8249C7109005061DB /* UITextView+.swift in Sources */,
 				FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */,
 				FA91C65F24749F2E00895098 /* UIRadioButton.swift in Sources */,
 				FA91C60324709FF000895098 /* NavigationController.swift in Sources */,

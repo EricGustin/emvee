@@ -117,6 +117,7 @@ class ProfileViewController: UIViewController {
     aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true  // 3:1 AspectRatio
     aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    aboutMeTextView.addDoneButton(title: "Save", target: self, selector: #selector(dismissKeyboard(sender:)))
     
     aboutMeCharsRemainingLabel = UILabel()
     aboutMeCharsRemainingLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -137,10 +138,9 @@ class ProfileViewController: UIViewController {
     myBasicInfoLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
     myBasicInfoLabel.topAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: 300).isActive = true
     
-  }
-  
-  override func viewDidLayoutSubviews() {
+    // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 300)
+    
   }
   
   @IBAction func editBioButtonClicked(_ sender: UIButton) {
@@ -166,12 +166,52 @@ class ProfileViewController: UIViewController {
     }
   }
   
+  @objc func adjustInsetForKeyboard(_ notification: Notification) {
+    print("Notification")
+//    guard let userInfo = notification.userInfo else { return }
+//    let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+//    let show = (notification.name == UIResponder.keyboardWillShowNotification) ? true : false
+//    let adjustmentHeight = (keyboardFrame.height + 20) * (show ? 1 : -1)
+//    print(adjustmentHeight)
+//    print(scrollView.contentInset.bottom)
+//    print(scrollView.contentOffset.y)
+//    scrollView.contentOffset.y += adjustmentHeight
+//    scrollView.contentInset.bottom -= adjustmentHeight
+//    print(scrollView.contentOffset.y)
+    //    scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
+    
+    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    
+    let keyboardScreenEndFrame = keyboardValue.cgRectValue
+    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+    
+    if notification.name == UIResponder.keyboardWillHideNotification {
+      print("if statement")
+      scrollView.contentInset = .zero
+    } else {
+      print("else statement")
+      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -keyboardViewEndFrame.height + view.safeAreaInsets.bottom, right: 0)
+    }
+    
+    scrollView.scrollIndicatorInsets = scrollView.contentInset
+//
+//    let selectedRange = aboutMeTextView.selectedRange
+//    aboutMeTextView.scrollRangeToVisible(selectedRange)
+  }
+  
+  @objc func dismissKeyboard(sender: Any) {
+    self.view.endEditing(true)
+  }
+  
   // MARK: - Navigation
   override func viewDidLoad() {
     super.viewDidLoad()
     
     setUpSubViews()
     
+    // Adjust scrollView's inset when needed
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     
     let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     leftSwipeGesture.direction = .left
@@ -391,9 +431,23 @@ extension ProfileViewController: UITextViewDelegate {
   }
 
   func textViewDidBeginEditing(_ textView: UITextView) {
+    print("Did begin editing")
   }
   
   func textViewDidChange(_ textView: UITextView) {
     displayBioCharsLeft()
+  }
+
+  func textViewDidEndEditing(_ textView: UITextView) {
+    print("textView done editing.")
+  }
+  
+}
+
+extension ProfileViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    print("resigning keyboard")
+    textField.resignFirstResponder()
+    return true
   }
 }
