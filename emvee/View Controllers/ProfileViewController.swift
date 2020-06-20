@@ -167,36 +167,20 @@ class ProfileViewController: UIViewController {
   }
   
   @objc func adjustInsetForKeyboard(_ notification: Notification) {
-    print("Notification")
-//    guard let userInfo = notification.userInfo else { return }
-//    let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-//    let show = (notification.name == UIResponder.keyboardWillShowNotification) ? true : false
-//    let adjustmentHeight = (keyboardFrame.height + 20) * (show ? 1 : -1)
-//    print(adjustmentHeight)
-//    print(scrollView.contentInset.bottom)
-//    print(scrollView.contentOffset.y)
-//    scrollView.contentOffset.y += adjustmentHeight
-//    scrollView.contentInset.bottom -= adjustmentHeight
-//    print(scrollView.contentOffset.y)
-    //    scrollView.verticalScrollIndicatorInsets.bottom += adjustmentHeight
     
     guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
     
     let keyboardScreenEndFrame = keyboardValue.cgRectValue
     let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
     
+    
     if notification.name == UIResponder.keyboardWillHideNotification {
-      print("if statement")
       scrollView.contentInset = .zero
     } else {
-      print("else statement")
-      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -keyboardViewEndFrame.height + view.safeAreaInsets.bottom, right: 0)
+      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+      scrollView.setContentOffset(CGPoint(x: 0, y: 250), animated: true)
     }
-    
     scrollView.scrollIndicatorInsets = scrollView.contentInset
-//
-//    let selectedRange = aboutMeTextView.selectedRange
-//    aboutMeTextView.scrollRangeToVisible(selectedRange)
   }
   
   @objc func dismissKeyboard(sender: Any) {
