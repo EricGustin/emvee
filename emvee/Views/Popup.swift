@@ -63,6 +63,8 @@ class Popup : UIView {
     return container
   }()
   
+  private var containerInitialHeight: NSLayoutConstraint = NSLayoutConstraint()
+  
   // lazy so that the stack isn't created until the above constants have been created
   private lazy var stack: UIStackView = {
     let stack = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel1, subtitleLabel2, button])
@@ -91,7 +93,8 @@ class Popup : UIView {
     container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     container.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.7).isActive = true
-    container.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.25).isActive = true
+    containerInitialHeight = container.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.25)
+    containerInitialHeight.isActive = true
     
     container.addSubview(stack)
     stack.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
@@ -132,6 +135,7 @@ class Popup : UIView {
       self.alpha = 1
     }) { (complete) in
       if complete {
+        self.containerInitialHeight.isActive = false
         self.growContainer()
       }
     }

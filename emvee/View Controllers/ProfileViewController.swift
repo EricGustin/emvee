@@ -13,12 +13,7 @@ import FirebaseStorage
 
 class ProfileViewController: UIViewController {
   
-  //@IBOutlet weak var bioCharsLeftLabel: UILabel!
-  //@IBOutlet weak var aboutMeTextView: UITextView!
-  //@IBOutlet weak var profilePicture: UIImageView!
-  //@IBOutlet weak var nameAndAgeLabel: UILabel!
-  
-  @IBOutlet weak var editBioButton: UIButton!
+
   
   private var scrollView: UIScrollView!
   private var settingsButton: UIButton!
@@ -29,6 +24,12 @@ class ProfileViewController: UIViewController {
   private var aboutMeTextView: UITextView!
   private var aboutMeCharsRemainingLabel: UILabel!
   private var myBasicInfoLabel: UILabel!
+  private var genderButton: UIButton!
+  private var locationButton: UIButton!
+  private var genderGreaterThanImage: UIImageView!
+  private var locationGreaterThanImage: UIImageView!
+  
+  private var savedAboutMeText: String?
   
   // MARK: - ACTIONS
   @objc func homeButtonClicked(_ sender: UIButton) {
@@ -76,6 +77,10 @@ class ProfileViewController: UIViewController {
     profilePicture = UIImageView(image: UIImage(named: "defaultProfileImage@4x"))
     profilePicture.translatesAutoresizingMaskIntoConstraints = false
     profilePicture.isUserInteractionEnabled = true
+//    profilePicture.layer.shadowColor = UIColor.green.cgColor
+//    profilePicture.layer.shadowOffset = CGSize(width: 3, height: 3)
+//    profilePicture.layer.shadowRadius = 2
+//    profilePicture.layer.shadowOpacity = 1.0
     scrollView.addSubview(profilePicture)
     profilePicture.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     NSLayoutConstraint(item: profilePicture!, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
@@ -111,13 +116,16 @@ class ProfileViewController: UIViewController {
     aboutMeTextView.translatesAutoresizingMaskIntoConstraints = false
     aboutMeTextView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
     aboutMeTextView.layer.cornerRadius = 25
+    aboutMeTextView.layer.borderColor = UIColor.lightGray.cgColor
+    aboutMeTextView.layer.borderWidth = 0.25
     aboutMeTextView.backgroundColor = .white
+    aboutMeTextView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
     scrollView.addSubview(aboutMeTextView)
     aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 5).isActive = true
     aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true  // 3:1 AspectRatio
     aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    aboutMeTextView.addDoneButton(title: "Save", target: self, selector: #selector(dismissKeyboard(sender:)))
+    aboutMeTextView.addKeyboardToolBar(leftTitle: "Cancel", rightTitle: "Save", target: self, selector: #selector(dismissKeyboard(sender:)))
     
     aboutMeCharsRemainingLabel = UILabel()
     aboutMeCharsRemainingLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -136,24 +144,53 @@ class ProfileViewController: UIViewController {
     myBasicInfoLabel.textAlignment = .center
     scrollView.addSubview(myBasicInfoLabel)
     myBasicInfoLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
-    myBasicInfoLabel.topAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: 300).isActive = true
+    myBasicInfoLabel.topAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: 30).isActive = true
+    
+    genderButton = UIButton()
+    genderButton.translatesAutoresizingMaskIntoConstraints = false
+    genderButton.setTitle("Man", for: .normal)
+    StyleUtilities.styleBasicInfoButton(genderButton)
+    genderButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    scrollView.addSubview(genderButton)
+    genderButton.topAnchor.constraint(equalTo: myBasicInfoLabel.bottomAnchor, constant: 5).isActive = true
+    genderButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    genderButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    genderButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+    locationButton = UIButton()
+    locationButton.translatesAutoresizingMaskIntoConstraints = false
+    locationButton.setTitle("Lives in Spokane, WA", for: .normal)
+    StyleUtilities.styleBasicInfoButton(locationButton)
+    locationButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    scrollView.addSubview(locationButton)
+    locationButton.topAnchor.constraint(equalTo: genderButton.bottomAnchor, constant: 5).isActive = true
+    locationButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    locationButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    locationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+    genderGreaterThanImage = UIImageView(image: UIImage(systemName: "greaterthan"))
+    genderGreaterThanImage.translatesAutoresizingMaskIntoConstraints = false
+    genderGreaterThanImage.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+    genderGreaterThanImage.tintColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0)
+    genderGreaterThanImage.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
+    genderButton.addSubview(genderGreaterThanImage)
+    genderGreaterThanImage.centerYAnchor.constraint(equalTo: genderButton.centerYAnchor).isActive = true
+    genderGreaterThanImage.trailingAnchor.constraint(equalTo: genderButton.trailingAnchor, constant: -genderButton.layer.cornerRadius / 2).isActive = true
+    
+    locationGreaterThanImage = UIImageView(image: UIImage(systemName: "greaterthan"))
+    locationGreaterThanImage.translatesAutoresizingMaskIntoConstraints = false
+    locationGreaterThanImage.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+    locationGreaterThanImage.tintColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0)
+    locationGreaterThanImage.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
+    locationButton.addSubview(locationGreaterThanImage)
+    locationGreaterThanImage.centerYAnchor.constraint(equalTo: locationButton.centerYAnchor).isActive = true
+    locationGreaterThanImage.trailingAnchor.constraint(equalTo: locationButton.trailingAnchor, constant: -locationButton.layer.cornerRadius / 2).isActive = true
     
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 300)
     
   }
-  
-  @IBAction func editBioButtonClicked(_ sender: UIButton) {
-    if editBioButton.titleLabel?.text == "Edit" {
-      aboutMeTextView.isEditable = true
-      editBioButton.setTitle("Save", for: .normal)
-    } else if editBioButton.titleLabel?.text == "Save" {
-      aboutMeTextView.isEditable = false
-      editBioButton.setTitle("Edit", for: .normal)
-      aboutMetextViewWasSaved(aboutMeTextView)
-    }
-  }
-  
+    
   @objc func profilePictureTapped() {
     presentImagePickerControllerActionSheet()
   }
@@ -173,23 +210,38 @@ class ProfileViewController: UIViewController {
     let keyboardScreenEndFrame = keyboardValue.cgRectValue
     let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
     
+    let willHideKeyboard = notification.name == UIResponder.keyboardWillHideNotification
     
-    if notification.name == UIResponder.keyboardWillHideNotification {
+    if willHideKeyboard { // if keyboard will hide
       scrollView.contentInset = .zero
-    } else {
+    } else { // if keyboard will show
       scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
       scrollView.setContentOffset(CGPoint(x: 0, y: 250), animated: true)
     }
     scrollView.scrollIndicatorInsets = scrollView.contentInset
+    
+    // disable or enable user interaction for all views that can be interacted with
+    profilePicture.isUserInteractionEnabled = willHideKeyboard
+    homeButton.isUserInteractionEnabled = willHideKeyboard
+    settingsButton.isUserInteractionEnabled = willHideKeyboard
+    scrollView.isScrollEnabled = willHideKeyboard
   }
   
-  @objc func dismissKeyboard(sender: Any) {
+  @objc func dismissKeyboard(sender: UIBarButtonItem) {
+    if sender.title == "Save" {
+      saveTextView(firestoreField: "bio", textView: aboutMeTextView)
+      savedAboutMeText = aboutMeTextView.text
+    } else {
+      aboutMeTextView.text = savedAboutMeText
+    }
     self.view.endEditing(true)
   }
   
   // MARK: - Navigation
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
     
     setUpSubViews()
     
@@ -203,10 +255,7 @@ class ProfileViewController: UIViewController {
     let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     rightSwipeGesture.direction = .right
     view.addGestureRecognizer(rightSwipeGesture)
-    
-    view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
-    
-    
+  
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -229,6 +278,7 @@ class ProfileViewController: UIViewController {
         
         self.nameAndAgeLabel.text = "\(firstName), \(age)"
         self.aboutMeTextView.text = bio as? String
+        self.savedAboutMeText = bio as? String
         self.displayBioCharsLeft()
       }
     }
@@ -253,8 +303,8 @@ class ProfileViewController: UIViewController {
   }
   
   //MARK: - Helper functions
-  func aboutMetextViewWasSaved(_ textView: UITextView) {
-    updateCloudFirestoreField("bio", aboutMeTextView.text ?? 0)
+  func saveTextView(firestoreField: String, textView: UITextView) {
+    updateCloudFirestoreField(firestoreField, textView.text ?? 0)
   }
   
   // MARK: - Firebase Stuff
@@ -330,12 +380,23 @@ class ProfileViewController: UIViewController {
   func displayBioCharsLeft() {
     let currChars = aboutMeTextView.text.count
     
+    aboutMeCharsRemainingLabel.animateTransform(withIncreaseDuration: 0.1, withDecreaseDuration: 0.1, withIncreaseScale: 1.1, withDecreaseScale: 1)
+    
     aboutMeCharsRemainingLabel.text = String(255 - currChars)
+    
+//    UIView.animate(withDuration: 0.5, animations: {
+//      self.aboutMeCharsRemainingLabel.transform = CGAffineTransform(scaleX: 2/3, y: 2/3)
+//    })
+    
     if currChars < 230 {
       aboutMeCharsRemainingLabel.textColor = UIColor.lightGray
     } else {
       aboutMeCharsRemainingLabel.textColor = UIColor.red
     }
+//    UIView.animate(withDuration: 0.5) {
+//      //self.aboutMeCharsRemainingLabel.font = self.aboutMeCharsRemainingLabel.font.withSize(12)
+//      self.aboutMeCharsRemainingLabel.font = UIFont(name: "American Typewriter", size: 12)
+//    }
   }
 }
 

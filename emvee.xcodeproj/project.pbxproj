@@ -33,6 +33,7 @@
 		FA91C60324709FF000895098 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C60224709FF000895098 /* NavigationController.swift */; };
 		FA91C65B2470E24400895098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA91C6592470E24400895098 /* Main.storyboard */; };
 		FA91C65F24749F2E00895098 /* UIRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C65E24749F2E00895098 /* UIRadioButton.swift */; };
+		FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C224A15C0400AD3BEF /* UILabel+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		FA91C60224709FF000895098 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		FA91C65A2470E24400895098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA91C65E24749F2E00895098 /* UIRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRadioButton.swift; sourceTree = "<group>"; };
+		FA9505C224A15C0400AD3BEF /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+.swift"; path = "emvee/Views/UILabel+.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +111,8 @@
 		FA54DBDC24661C99008227FE = {
 			isa = PBXGroup;
 			children = (
-				FA76570E247721DB0022C644 /* launch_multiple_simulators.sh */,
 				FA76570A2477213A0022C644 /* MultiSimConfig.txt */,
+				FA76570E247721DB0022C644 /* launch_multiple_simulators.sh */,
 				FA54DBE724661C99008227FE /* emvee */,
 				FA54DBE624661C99008227FE /* Products */,
 				4716F8D841E487BE20A85BB6 /* Pods */,
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				FA0899C7249C7109005061DB /* UITextView+.swift */,
+				FA9505C224A15C0400AD3BEF /* UILabel+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */,
 				FA54DC0B24663B37008227FE /* Constants.swift in Sources */,
 				FA5AD8C5248AF991001DFAB6 /* VideoChatViewController.swift in Sources */,
+				FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */,
 				FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */,
 				FA91C5FD246F4ADE00895098 /* Message.swift in Sources */,
 			);

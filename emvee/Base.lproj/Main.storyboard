@@ -199,9 +199,8 @@
                                     <constraint firstItem="Sfh-aW-tAl" firstAttribute="height" secondItem="ueQ-x4-71S" secondAttribute="height" id="s4M-oq-K0X"/>
                                 </constraints>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZcS-fR-L5j">
-                                <rect key="frame" x="334" y="812" width="50" height="30"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZcS-fR-L5j">
+                                <rect key="frame" x="328" y="808" width="56" height="34"/>
                                 <state key="normal" title="Cancel">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -303,12 +302,11 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oj7-df-oJB">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oj7-df-oJB">
                                         <rect key="frame" x="0.0" y="140" width="334" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="cbD-fc-Vnn"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -456,7 +454,7 @@
                                     <constraint firstAttribute="height" constant="50" id="ERr-Tq-eGk"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Save Settings"/>
+                                <state key="normal" title="Save Settings" backgroundImage="greater"/>
                                 <connections>
                                     <action selector="saveSettingsButtonClicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="SdM-ry-cUc"/>
                                 </connections>
@@ -624,38 +622,9 @@
                     <view key="view" contentMode="scaleToFill" id="XvO-hh-yA7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xAV-IW-ELy">
-                                <rect key="frame" x="0.0" y="520.5" width="414" height="30"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="9cA-Pi-qKG">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O2y-ud-C9o">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
-                                                <state key="normal" title="Edit"/>
-                                                <connections>
-                                                    <action selector="editBioButtonClicked:" destination="cCt-J9-4By" eventType="touchUpInside" id="eqd-TA-371"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="VQ9-Dh-EKL" firstAttribute="trailing" secondItem="xAV-IW-ELy" secondAttribute="trailing" id="NeF-TY-eKi"/>
-                            <constraint firstItem="xAV-IW-ELy" firstAttribute="leading" secondItem="VQ9-Dh-EKL" secondAttribute="leading" id="Tin-xI-3cf"/>
-                            <constraint firstItem="xAV-IW-ELy" firstAttribute="width" secondItem="XvO-hh-yA7" secondAttribute="width" id="qzQ-mq-SOD"/>
-                            <constraint firstItem="xAV-IW-ELy" firstAttribute="centerX" secondItem="XvO-hh-yA7" secondAttribute="centerX" id="wGR-Z3-01P"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="VQ9-Dh-EKL"/>
                     </view>
-                    <navigationItem key="navigationItem" id="olb-Jm-Qv8"/>
-                    <connections>
-                        <outlet property="editBioButton" destination="O2y-ud-C9o" id="OVR-vh-mVe"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D1N-TT-D3r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -667,6 +636,7 @@
         <image name="emveeLogoLightNoBackground@4x" width="325" height="260"/>
         <image name="end@4x" width="292" height="292"/>
         <image name="end_pressed@4x" width="292" height="292"/>
+        <image name="greater" width="128" height="128"/>
         <image name="mute@4x" width="744" height="744"/>
         <image name="radioOff" width="24" height="24"/>
         <image name="radioOn" width="24" height="24"/>
