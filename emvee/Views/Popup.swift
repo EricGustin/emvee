@@ -43,7 +43,7 @@ class Popup : UIView {
     return label
   }()
   
-  private let button: UIButton = {
+  public let button: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Got it", for: .normal)

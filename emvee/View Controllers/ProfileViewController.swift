@@ -18,8 +18,10 @@ class ProfileViewController: UIViewController {
   private var scrollView: UIScrollView!
   private var settingsButton: UIButton!
   private var homeButton: UIButton!
-  private var profilePicture: UIImageView!
   private var profilePictureContainer: UIView!
+  private var profilePicture: UIImageView!
+  private var editProfilePictureButtonContainer: UIView!
+  private var editProfilePictureButton: UIButton!
   private var nameAndAgeLabel: UILabel!
   private var aboutMeLabel: UILabel!
   private var aboutMeTextView: UITextView!
@@ -77,7 +79,7 @@ class ProfileViewController: UIViewController {
     profilePictureContainer = UIView()
     profilePictureContainer.translatesAutoresizingMaskIntoConstraints = false
     profilePictureContainer.layer.borderWidth = 3.0
-    profilePictureContainer.layer.borderColor = UIColor.black.cgColor
+    profilePictureContainer.layer.borderColor = UIColor.systemTeal.cgColor
     scrollView.addSubview(profilePictureContainer)
     profilePictureContainer.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     NSLayoutConstraint(item: profilePictureContainer!, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
@@ -90,7 +92,7 @@ class ProfileViewController: UIViewController {
     profilePicture = UIImageView(image: UIImage(named: "defaultProfileImage@4x"))
     profilePicture.translatesAutoresizingMaskIntoConstraints = false
     profilePicture.isUserInteractionEnabled = true
-    profilePicture.layer.borderColor = UIColor.black.cgColor
+    profilePicture.layer.borderColor = UIColor.systemTeal.cgColor
     profilePicture.layer.borderWidth = 1
     profilePictureContainer.addSubview(profilePicture)
     profilePicture.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
@@ -98,9 +100,32 @@ class ProfileViewController: UIViewController {
     profilePicture.widthAnchor.constraint(equalTo: profilePictureContainer.widthAnchor, multiplier: 0.95).isActive = true
     profilePicture.heightAnchor.constraint(equalTo: profilePictureContainer.heightAnchor, multiplier: 0.95).isActive = true
     profilePicture.contentMode = .scaleAspectFill
-    profilePicture.layer.cornerRadius = UIScreen.main.bounds.width * (19 / 80)
+    profilePicture.layer.cornerRadius = UIScreen.main.bounds.width * (19 / 80) // circle
     profilePicture.layer.masksToBounds = true
     profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profilePictureTapped)))
+    
+    editProfilePictureButtonContainer = UIView()
+    editProfilePictureButtonContainer.translatesAutoresizingMaskIntoConstraints = false
+    editProfilePictureButtonContainer.backgroundColor = view.backgroundColor
+    scrollView.addSubview(editProfilePictureButtonContainer)
+    editProfilePictureButtonContainer.widthAnchor.constraint(equalTo: profilePicture.widthAnchor, multiplier: 1/3).isActive = true
+    editProfilePictureButtonContainer.heightAnchor.constraint(equalTo: profilePicture.heightAnchor, multiplier: 1/3).isActive = true
+    editProfilePictureButtonContainer.bottomAnchor.constraint(equalToSystemSpacingBelow: profilePicture.bottomAnchor, multiplier: 1.0).isActive = true
+    editProfilePictureButtonContainer.trailingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: editProfilePictureButtonContainer.frame.width/2).isActive = true
+    editProfilePictureButtonContainer.layer.cornerRadius = profilePicture.layer.cornerRadius * (1/3)
+    editProfilePictureButtonContainer.layer.masksToBounds = true
+    
+    editProfilePictureButton = UIButton()
+    editProfilePictureButton.setBackgroundImage(UIImage(systemName: "pencil.circle"), for: .normal)
+    editProfilePictureButton.backgroundColor = view.backgroundColor
+    editProfilePictureButton.translatesAutoresizingMaskIntoConstraints = false
+    editProfilePictureButton.tintColor = .systemTeal
+    editProfilePictureButtonContainer.addSubview(editProfilePictureButton)
+    editProfilePictureButton.widthAnchor.constraint(equalTo: profilePicture.widthAnchor, multiplier: 1/3).isActive = true
+    editProfilePictureButton.heightAnchor.constraint(equalTo: profilePicture.heightAnchor, multiplier: 1/3).isActive = true
+    editProfilePictureButton.bottomAnchor.constraint(equalToSystemSpacingBelow: profilePicture.bottomAnchor, multiplier: 1.0).isActive = true
+    editProfilePictureButton.trailingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: editProfilePictureButton.frame.width/2).isActive = true
+    editProfilePictureButton.addTarget(self, action: #selector(transitionToEditProfile), for: .touchUpInside)
   
     nameAndAgeLabel = UILabel()
     nameAndAgeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -198,7 +223,7 @@ class ProfileViewController: UIViewController {
     locationGreaterThanImage.trailingAnchor.constraint(equalTo: locationButton.trailingAnchor, constant: -locationButton.layer.cornerRadius / 2).isActive = true
     
     // Lastly, calculate the content size of the scrollView
-    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 300)
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
     
   }
     
@@ -253,7 +278,6 @@ class ProfileViewController: UIViewController {
     super.viewDidLoad()
     
     view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
-    
     setUpSubViews()
     
     // Adjust scrollView's inset when needed
@@ -270,7 +294,7 @@ class ProfileViewController: UIViewController {
   }
   
   override func viewWillAppear(_ animated: Bool) {
-
+    
     // Get user data from Firebase Database
     let userID = Auth.auth().currentUser?.uid
     let db = Firestore.firestore()
@@ -301,16 +325,22 @@ class ProfileViewController: UIViewController {
     super.viewDidAppear(animated)
   }
   
-  func transitionToSettings() {
+  private func transitionToSettings() {
     let settingsViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.settingsViewController) as? SettingsViewController
     view.window?.rootViewController = settingsViewController
     view.window?.makeKeyAndVisible()
   }
   
-  func transitionToHome() {
+  private func transitionToHome() {
     let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
     view.window?.rootViewController = homeViewController
     view.window?.makeKeyAndVisible()
+  }
+  
+  @objc private func transitionToEditProfile() {
+    let vc = EditProfileViewController()
+    vc.modalPresentationStyle = .fullScreen
+    self.present(vc, animated: true, completion: nil)
   }
   
   //MARK: - Helper functions
@@ -341,7 +371,8 @@ class ProfileViewController: UIViewController {
     
     let storage = Storage.storage()
     let storageRef = storage.reference() // a reference is essentially a pointer to a file in the cloud
-    let profilePictureRef = storageRef.child("profilePictures").child(userID!)
+    let profilePictureRef = storageRef.child("profilePictures/\(String(describing: userID!))/picture0")
+    
     
     // upload the picture to Firebase
     profilePictureRef.putData(data, metadata: nil) { (metadata, error) in
@@ -357,8 +388,7 @@ class ProfileViewController: UIViewController {
       print("Error generating UserID.")
       return
     }
-    let profilePictureRef = Storage.storage().reference().child("profilePictures").child(userID)
-    print("Uid: \(userID)")
+    let profilePictureRef = Storage.storage().reference().child("profilePictures/\(userID)/picture0")
     // Download profile picture in memory  with a maximum allowed size of 1MB
     profilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
       if error != nil {

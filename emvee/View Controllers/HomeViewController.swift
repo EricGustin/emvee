@@ -90,9 +90,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     }
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In HomeViewController")
@@ -101,9 +98,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     setUpGestures()
     UserDefaults.standard.set(true, forKey: "isUserSignedIn")
     UserDefaults.standard.set(false, forKey: "isComingFromVideo")
-    
-
-    
   }
   
   func setUpGestures() {
@@ -112,10 +106,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(transitionToProfile))
     view.addGestureRecognizer(swipeRightGesture)
-    
   }
   
   func setUpViews() {
+  
     // set up profileButton
     profileButton = UIButton(type: .custom)
     profileButton?.translatesAutoresizingMaskIntoConstraints = false
@@ -199,7 +193,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     view.layoutIfNeeded()
   }
   
-  @objc func arrowCircleTapDetected() {
+  @objc public func arrowCircleTapDetected() {
     if arrowCircleImage.isUserInteractionEnabled {
       arrowCircleImage.isUserInteractionEnabled = false
       // Spin arrowCircleView for the first. The spinArrowCircle function will continue to call itself until spinsRemaning=0
@@ -241,5 +235,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     vc.modalPresentationStyle = .fullScreen
     self.present(vc, animated: true, completion: nil)
   }
+  
+
   
 }

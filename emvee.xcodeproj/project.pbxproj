@@ -34,6 +34,7 @@
 		FA91C65B2470E24400895098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA91C6592470E24400895098 /* Main.storyboard */; };
 		FA91C65F24749F2E00895098 /* UIRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C65E24749F2E00895098 /* UIRadioButton.swift */; };
 		FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C224A15C0400AD3BEF /* UILabel+.swift */; };
+		FA9505C724A2B96800AD3BEF /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		FA91C65A2470E24400895098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA91C65E24749F2E00895098 /* UIRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRadioButton.swift; sourceTree = "<group>"; };
 		FA9505C224A15C0400AD3BEF /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+.swift"; path = "emvee/Views/UILabel+.swift"; sourceTree = SOURCE_ROOT; };
+		FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				FA91C5FA246F49F500895098 /* TextChatViewController.swift */,
 				FA91C60224709FF000895098 /* NavigationController.swift */,
 				FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */,
+				FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA9505C724A2B96800AD3BEF /* EditProfileViewController.swift in Sources */,
 				FA54DBED24661C99008227FE /* WelcomeViewController.swift in Sources */,
 				FA91C601246F5BA900895098 /* ChatRoom.swift in Sources */,
 				FA785165249962A5001A8949 /* Popup.swift in Sources */,
