@@ -19,6 +19,7 @@ class ProfileViewController: UIViewController {
   private var settingsButton: UIButton!
   private var homeButton: UIButton!
   private var profilePicture: UIImageView!
+  private var profilePictureContainer: UIView!
   private var nameAndAgeLabel: UILabel!
   private var aboutMeLabel: UILabel!
   private var aboutMeTextView: UITextView!
@@ -73,24 +74,34 @@ class ProfileViewController: UIViewController {
     homeButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     homeButton.addTarget(self, action: #selector(homeButtonClicked), for: .touchUpInside)
     
-
+    profilePictureContainer = UIView()
+    profilePictureContainer.translatesAutoresizingMaskIntoConstraints = false
+    profilePictureContainer.layer.borderWidth = 3.0
+    profilePictureContainer.layer.borderColor = UIColor.black.cgColor
+    scrollView.addSubview(profilePictureContainer)
+    profilePictureContainer.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    NSLayoutConstraint(item: profilePictureContainer!, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
+    profilePictureContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+    profilePictureContainer.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+    profilePictureContainer.contentMode = .scaleAspectFill
+    profilePictureContainer.layer.cornerRadius = UIScreen.main.bounds.width / 4
+    profilePictureContainer.layer.masksToBounds = true
+    
     profilePicture = UIImageView(image: UIImage(named: "defaultProfileImage@4x"))
     profilePicture.translatesAutoresizingMaskIntoConstraints = false
     profilePicture.isUserInteractionEnabled = true
-//    profilePicture.layer.shadowColor = UIColor.green.cgColor
-//    profilePicture.layer.shadowOffset = CGSize(width: 3, height: 3)
-//    profilePicture.layer.shadowRadius = 2
-//    profilePicture.layer.shadowOpacity = 1.0
-    scrollView.addSubview(profilePicture)
+    profilePicture.layer.borderColor = UIColor.black.cgColor
+    profilePicture.layer.borderWidth = 1
+    profilePictureContainer.addSubview(profilePicture)
     profilePicture.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     NSLayoutConstraint(item: profilePicture!, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
-    profilePicture.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
-    profilePicture.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+    profilePicture.widthAnchor.constraint(equalTo: profilePictureContainer.widthAnchor, multiplier: 0.95).isActive = true
+    profilePicture.heightAnchor.constraint(equalTo: profilePictureContainer.heightAnchor, multiplier: 0.95).isActive = true
     profilePicture.contentMode = .scaleAspectFill
-    profilePicture.layer.cornerRadius = UIScreen.main.bounds.width / 4
+    profilePicture.layer.cornerRadius = UIScreen.main.bounds.width * (19 / 80)
     profilePicture.layer.masksToBounds = true
     profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profilePictureTapped)))
-    
+  
     nameAndAgeLabel = UILabel()
     nameAndAgeLabel.translatesAutoresizingMaskIntoConstraints = false
     nameAndAgeLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 18), size: 18)
