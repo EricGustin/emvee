@@ -277,7 +277,7 @@ class ProfileViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
+    view.backgroundColor = .systemGray6
     setUpSubViews()
     
     // Adjust scrollView's inset when needed
@@ -339,8 +339,9 @@ class ProfileViewController: UIViewController {
   
   @objc private func transitionToEditProfile() {
     let vc = EditProfileViewController()
-    vc.modalPresentationStyle = .fullScreen
-    self.present(vc, animated: true, completion: nil)
+    let nc = NavigationController(vc)
+    nc.modalPresentationStyle = .fullScreen
+    self.present(nc, animated: true, completion: nil)
   }
   
   //MARK: - Helper functions

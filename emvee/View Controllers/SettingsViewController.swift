@@ -39,7 +39,7 @@ class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In settingsViewController")
-    setViews()
+    setUpViews()
     setUpElements()
     
     let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
@@ -109,7 +109,7 @@ class SettingsViewController: UIViewController {
     StyleUtilities.styleHollowButton(logoutButton)
   }
   
-  func setViews() {
+  func setUpViews() {
     // 1. Navigation Bar Stuff
     let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
     view.addSubview(navBar)

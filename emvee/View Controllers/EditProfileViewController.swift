@@ -18,10 +18,15 @@ class EditProfileViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    view.backgroundColor = .white
+    view.backgroundColor = .systemGray6
     
+    setUpNavigationBar()
     setupSubviews()
-    
+  }
+  
+  private func setUpNavigationBar() {
+    title = "Edit Profile"
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(transitionToProfile))
   }
   
   private func setupSubviews() {
@@ -36,10 +41,8 @@ class EditProfileViewController: UIViewController {
     for i in 0...1 {
       profilePicturesHorizStacks.append(UIStackView(arrangedSubviews: Array(profilePictures[(i*3)..<(3+i*3)])))
       profilePicturesHorizStacks[i].axis = .horizontal
-//      profilePicturesHorizStacks[index].translatesAutoresizingMaskIntoConstraints = false
       profilePicturesHorizStacks[i].distribution = .fillEqually
       profilePicturesHorizStacks[i].spacing = 10
-      //view.addSubview(profilePicturesHorizStacks[index])
     }
     
     profilePictureVertStack = UIStackView(arrangedSubviews: [profilePicturesHorizStacks[0], profilePicturesHorizStacks[1]])
@@ -57,5 +60,7 @@ class EditProfileViewController: UIViewController {
     
   }
   
-  
+  @objc private func transitionToProfile() {
+    self.dismiss(animated: true, completion: nil)
+  }
 }
