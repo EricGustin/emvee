@@ -228,7 +228,7 @@ class ProfileViewController: UIViewController {
   }
     
   @objc func profilePictureTapped() { // change so that it gives a preview of how other people see their profile
-    presentImagePickerControllerActionSheet()
+    
   }
   
   @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
