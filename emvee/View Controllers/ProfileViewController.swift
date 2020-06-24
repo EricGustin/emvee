@@ -78,8 +78,8 @@ class ProfileViewController: UIViewController {
     
     profilePictureContainer = UIView()
     profilePictureContainer.translatesAutoresizingMaskIntoConstraints = false
-    profilePictureContainer.layer.borderWidth = 3.0
-    profilePictureContainer.layer.borderColor = UIColor.systemTeal.cgColor
+    profilePictureContainer.layer.borderWidth = 0.25
+    profilePictureContainer.layer.borderColor = UIColor.lightGray.cgColor
     scrollView.addSubview(profilePictureContainer)
     profilePictureContainer.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     NSLayoutConstraint(item: profilePictureContainer!, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
@@ -92,15 +92,17 @@ class ProfileViewController: UIViewController {
     profilePicture = UIImageView(image: UIImage(named: "defaultProfileImage@4x"))
     profilePicture.translatesAutoresizingMaskIntoConstraints = false
     profilePicture.isUserInteractionEnabled = true
-    profilePicture.layer.borderColor = UIColor.systemTeal.cgColor
-    profilePicture.layer.borderWidth = 1
+    profilePicture.layer.borderColor = UIColor.white.cgColor
+    profilePicture.layer.borderWidth = 4.75
     profilePictureContainer.addSubview(profilePicture)
     profilePicture.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     NSLayoutConstraint(item: profilePicture!, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
-    profilePicture.widthAnchor.constraint(equalTo: profilePictureContainer.widthAnchor, multiplier: 0.95).isActive = true
-    profilePicture.heightAnchor.constraint(equalTo: profilePictureContainer.heightAnchor, multiplier: 0.95).isActive = true
+    profilePicture.leadingAnchor.constraint(equalTo: profilePictureContainer.leadingAnchor, constant: profilePictureContainer.layer.borderWidth).isActive = true
+    profilePicture.topAnchor.constraint(equalTo: profilePictureContainer.topAnchor, constant: profilePictureContainer.layer.borderWidth).isActive = true
+    profilePicture.trailingAnchor.constraint(equalTo: profilePictureContainer.trailingAnchor, constant: -profilePictureContainer.layer.borderWidth).isActive = true
+    profilePicture.bottomAnchor.constraint(equalTo: profilePictureContainer.bottomAnchor, constant: -profilePictureContainer.layer.borderWidth).isActive = true
     profilePicture.contentMode = .scaleAspectFill
-    profilePicture.layer.cornerRadius = UIScreen.main.bounds.width * (19 / 80) // circle
+    profilePicture.layer.cornerRadius = (UIScreen.main.bounds.width - 0.5) / 4 // circle
     profilePicture.layer.masksToBounds = true
     profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profilePictureTapped)))
     

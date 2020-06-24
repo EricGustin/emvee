@@ -14,7 +14,9 @@ class EditProfileViewController: UIViewController {
   private var scrollView: UIScrollView!
   private var profilePictureVertStack: UIStackView!
   private var profilePicturesHorizStacks: [UIStackView]!
+  private var profilePicturesContainer: [UIView]!
   private var profilePictures: [UIImageView]!
+  private var deleteProfilePictureButtonContainers: [UIView]!
   private var profilePictureBeingEditedIndex: Int?  // The index of the profile picture being edited
   
   
@@ -35,19 +37,36 @@ class EditProfileViewController: UIViewController {
   
   private func setupSubviews() {
     
+    profilePicturesContainer = [UIView]()
     profilePictures = [UIImageView]()
     for index in 0..<6 {
+      // Set up each container for profile pictures
+      profilePicturesContainer.append(UIView())
+      profilePicturesContainer[index].layer.borderColor = UIColor.lightGray.cgColor
+      profilePicturesContainer[index].layer.borderWidth = 0.25
+      profilePicturesContainer[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.
+      
+      // Set up each profile picture view
       profilePictures.append(UIImageView(image: UIImage(named: "defaultProfileImage@4x")))
+      profilePictures[index].translatesAutoresizingMaskIntoConstraints = false
       profilePictures[index].isUserInteractionEnabled = true
-      profilePictures[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.
+      profilePictures[index].layer.borderWidth = 4.75
+      profilePictures[index].layer.borderColor = UIColor.white.cgColor
+      profilePictures[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40 - 1.5) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. The 1.5 is profilePicturesContainer[index].layer.borderWidth * 6. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.
       profilePictures[index].layer.masksToBounds = true
       profilePictures[index].tag = index  // the tag is used to keep track of which profilePicture is supposed to changed/edited
       profilePictures[index].addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(aProfilePictureTapped)))
+      profilePicturesContainer[index].addSubview(profilePictures[index])
+      profilePictures[index].leadingAnchor.constraint(equalTo: profilePicturesContainer[index].leadingAnchor, constant: profilePicturesContainer[index].layer.borderWidth).isActive = true
+      profilePictures[index].topAnchor.constraint(equalTo: profilePicturesContainer[index].topAnchor, constant: profilePicturesContainer[index].layer.borderWidth).isActive = true
+      profilePictures[index].trailingAnchor.constraint(equalTo: profilePicturesContainer[index].trailingAnchor, constant: -profilePicturesContainer[index].layer.borderWidth).isActive = true
+      profilePictures[index].bottomAnchor.constraint(equalTo: profilePicturesContainer[index].bottomAnchor, constant: -profilePicturesContainer[index].layer.borderWidth).isActive = true
+      
     }
     
     profilePicturesHorizStacks = [UIStackView]()
     for i in 0...1 {
-      profilePicturesHorizStacks.append(UIStackView(arrangedSubviews: Array(profilePictures[(i*3)..<(3+i*3)])))
+      profilePicturesHorizStacks.append(UIStackView(arrangedSubviews: Array(profilePicturesContainer[(i*3)..<(3+i*3)])))
       profilePicturesHorizStacks[i].axis = .horizontal
       profilePicturesHorizStacks[i].distribution = .fillEqually
       profilePicturesHorizStacks[i].spacing = 10
@@ -73,6 +92,21 @@ class EditProfileViewController: UIViewController {
     profilePictureVertStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
     profilePictureVertStack.heightAnchor.constraint(equalTo: profilePictureVertStack.widthAnchor, multiplier: 2/3).isActive = true
     
+    deleteProfilePictureButtonContainers = [UIView]()
+    for index in 0..<6 {
+      deleteProfilePictureButtonContainers.append(UIView())
+      deleteProfilePictureButtonContainers[index].translatesAutoresizingMaskIntoConstraints = false
+      deleteProfilePictureButtonContainers[index].backgroundColor = .white
+      deleteProfilePictureButtonContainers[index].isHidden = true
+      scrollView.addSubview(deleteProfilePictureButtonContainers[index])
+      deleteProfilePictureButtonContainers[index].widthAnchor.constraint(equalTo: profilePictures[index].widthAnchor, multiplier: 1/3).isActive = true
+      deleteProfilePictureButtonContainers[index].heightAnchor.constraint(equalTo: profilePictures[index].heightAnchor, multiplier: 1/3).isActive = true
+      deleteProfilePictureButtonContainers[index].bottomAnchor.constraint(equalToSystemSpacingBelow: profilePictures[index].bottomAnchor, multiplier: 1.0).isActive = true
+      deleteProfilePictureButtonContainers[index].trailingAnchor.constraint(equalTo: profilePictures[index].trailingAnchor, constant: deleteProfilePictureButtonContainers[index].frame.width/2).isActive = true
+      
+    }
+    
+    
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
     
@@ -95,6 +129,7 @@ class EditProfileViewController: UIViewController {
         } else {
           let aProfilePicture = UIImage(data: data!)
           self.profilePictures[i].image = aProfilePicture
+          self.deleteProfilePictureButtonContainers[i].isHidden = false
         }
       }
     }
