@@ -227,7 +227,7 @@ class ProfileViewController: UIViewController {
     
   }
     
-  @objc func profilePictureTapped() {
+  @objc func profilePictureTapped() { // change so that it gives a preview of how other people see their profile
     presentImagePickerControllerActionSheet()
   }
   
@@ -359,31 +359,6 @@ class ProfileViewController: UIViewController {
     db.collection("users").document(userID).updateData([fieldName: newValue])
   }
   
-  func uploadProfilePictureToFirebase() {
-    guard let image = profilePicture.image,
-      let nonCompressedData = image.jpegData(compressionQuality: 1.0),
-      let data = image.jpegData(compressionQuality: CGFloat((1048576) / nonCompressedData.count)) // 1024*1024 = 1048576 bytes = 1mb
-    else {
-      print("Couldnt convert image to data")
-      return
-    }
-    
-    let userID = Auth.auth().currentUser?.uid
-    
-    let storage = Storage.storage()
-    let storageRef = storage.reference() // a reference is essentially a pointer to a file in the cloud
-    let profilePictureRef = storageRef.child("profilePictures/\(String(describing: userID!))/picture0")
-    
-    
-    // upload the picture to Firebase
-    profilePictureRef.putData(data, metadata: nil) { (metadata, error) in
-      if error != nil {
-        print("Error putting profilePictureRef data.")
-        return
-      }
-    }
-  }
-  
   func downloadProfilePictureFromFirebase() {
     guard let userID = Auth.auth().currentUser?.uid else {
       print("Error generating UserID.")
@@ -426,19 +401,11 @@ class ProfileViewController: UIViewController {
     
     aboutMeCharsRemainingLabel.text = String(255 - currChars)
     
-//    UIView.animate(withDuration: 0.5, animations: {
-//      self.aboutMeCharsRemainingLabel.transform = CGAffineTransform(scaleX: 2/3, y: 2/3)
-//    })
-    
     if currChars < 230 {
       aboutMeCharsRemainingLabel.textColor = UIColor.lightGray
     } else {
       aboutMeCharsRemainingLabel.textColor = UIColor.red
     }
-//    UIView.animate(withDuration: 0.5) {
-//      //self.aboutMeCharsRemainingLabel.font = self.aboutMeCharsRemainingLabel.font.withSize(12)
-//      self.aboutMeCharsRemainingLabel.font = UIFont(name: "American Typewriter", size: 12)
-//    }
   }
 }
 
@@ -451,66 +418,12 @@ extension String {
   
 }
 
-extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-  
-  // Presents a UIAlertController that gives the user the option to pick a profile picture from their existing library or from their camera.
-  func presentImagePickerControllerActionSheet() {
-    // Make actions for the UIAlertController
-    let photoLibraryAction = UIAlertAction(title: "Choose from library", style: .default) { (action) in
-      self.presentImagePickerController(sourceType: .photoLibrary)
-    }
-    let cameraAction = UIAlertAction(title: "Take a photo", style: .default) { (action) in
-      self.presentImagePickerController(sourceType: .camera)
-    }
-    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-    
-    // Create UIAlertController
-    let alert = UIAlertController(title: "Choose your image", message: nil, preferredStyle: .actionSheet)
-    alert.addAction(photoLibraryAction)
-    alert.addAction(cameraAction)
-    alert.addAction(cancelAction)
-    self.present(alert, animated: true, completion: nil)
-    
-    
-  }
-  
-  func presentImagePickerController(sourceType: UIImagePickerController.SourceType) {
-    let picker = UIImagePickerController()
-    picker.delegate = self
-    picker.allowsEditing = true
-    picker.sourceType = sourceType
-    present(picker, animated: true, completion: nil)
-  }
-  
-  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    var selectedImage: UIImage?
-    if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-      selectedImage = editedImage
-    } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-      selectedImage = originalImage
-    }
-    
-    if let profileImage = selectedImage {
-      profilePicture.image = profileImage
-    }
-    
-    dismiss(animated: true, completion: nil) // dismiss the UIImagePickerControllers and go back to profile VC
-    
-    uploadProfilePictureToFirebase()
-  }
-  
-  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-    dismiss(animated: true, completion: nil)
-  }
-}
-
 extension ProfileViewController: UITextViewDelegate {
   
   // Adds the new character to the user's bio if it doesn't exceed 255 chars, else no update occurs
   func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
     if 255 - aboutMeTextView.text.count == 0 {
       if range.length != 1 {
-        // TODO: add an animation of the charsLeft label where it gets slightly bigger and then returns to normal size
         return false
       }
     }
