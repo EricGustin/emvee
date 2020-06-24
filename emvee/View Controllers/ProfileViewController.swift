@@ -112,7 +112,7 @@ class ProfileViewController: UIViewController {
     scrollView.addSubview(editProfilePictureButtonContainer)
     editProfilePictureButtonContainer.widthAnchor.constraint(equalTo: profilePicture.widthAnchor, multiplier: 1/3).isActive = true
     editProfilePictureButtonContainer.heightAnchor.constraint(equalTo: profilePicture.heightAnchor, multiplier: 1/3).isActive = true
-    editProfilePictureButtonContainer.bottomAnchor.constraint(equalToSystemSpacingBelow: profilePicture.bottomAnchor, multiplier: 1.0).isActive = true
+    editProfilePictureButtonContainer.bottomAnchor.constraint(equalTo: profilePicture.bottomAnchor).isActive = true
     editProfilePictureButtonContainer.trailingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: editProfilePictureButtonContainer.frame.width/2).isActive = true
     editProfilePictureButtonContainer.layer.cornerRadius = profilePicture.layer.cornerRadius * (1/3)
     editProfilePictureButtonContainer.layer.masksToBounds = true
@@ -121,11 +121,11 @@ class ProfileViewController: UIViewController {
     editProfilePictureButton.setBackgroundImage(UIImage(systemName: "pencil.circle"), for: .normal)
     editProfilePictureButton.backgroundColor = view.backgroundColor
     editProfilePictureButton.translatesAutoresizingMaskIntoConstraints = false
-    editProfilePictureButton.tintColor = .systemTeal
+    editProfilePictureButton.tintColor = .lightGray
     editProfilePictureButtonContainer.addSubview(editProfilePictureButton)
     editProfilePictureButton.widthAnchor.constraint(equalTo: profilePicture.widthAnchor, multiplier: 1/3).isActive = true
     editProfilePictureButton.heightAnchor.constraint(equalTo: profilePicture.heightAnchor, multiplier: 1/3).isActive = true
-    editProfilePictureButton.bottomAnchor.constraint(equalToSystemSpacingBelow: profilePicture.bottomAnchor, multiplier: 1.0).isActive = true
+    editProfilePictureButton.bottomAnchor.constraint(equalTo: profilePicture.bottomAnchor).isActive = true
     editProfilePictureButton.trailingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: editProfilePictureButton.frame.width/2).isActive = true
     editProfilePictureButton.addTarget(self, action: #selector(transitionToEditProfile), for: .touchUpInside)
   

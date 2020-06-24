@@ -17,6 +17,7 @@ class EditProfileViewController: UIViewController {
   private var profilePicturesContainer: [UIView]!
   private var profilePictures: [UIImageView]!
   private var deleteProfilePictureButtonContainers: [UIView]!
+  private var deleteProfilePictureButtons: [UIButton]!
   private var profilePictureBeingEditedIndex: Int?  // The index of the profile picture being edited
   
   
@@ -93,16 +94,31 @@ class EditProfileViewController: UIViewController {
     profilePictureVertStack.heightAnchor.constraint(equalTo: profilePictureVertStack.widthAnchor, multiplier: 2/3).isActive = true
     
     deleteProfilePictureButtonContainers = [UIView]()
+    deleteProfilePictureButtons = [UIButton]()
     for index in 0..<6 {
       deleteProfilePictureButtonContainers.append(UIView())
       deleteProfilePictureButtonContainers[index].translatesAutoresizingMaskIntoConstraints = false
-      deleteProfilePictureButtonContainers[index].backgroundColor = .white
+      deleteProfilePictureButtonContainers[index].backgroundColor = view.backgroundColor
+      deleteProfilePictureButtonContainers[index].layer.cornerRadius = profilePictures[index].layer.cornerRadius / 3
+      deleteProfilePictureButtonContainers[index].layer.masksToBounds = true
       deleteProfilePictureButtonContainers[index].isHidden = true
       scrollView.addSubview(deleteProfilePictureButtonContainers[index])
       deleteProfilePictureButtonContainers[index].widthAnchor.constraint(equalTo: profilePictures[index].widthAnchor, multiplier: 1/3).isActive = true
       deleteProfilePictureButtonContainers[index].heightAnchor.constraint(equalTo: profilePictures[index].heightAnchor, multiplier: 1/3).isActive = true
-      deleteProfilePictureButtonContainers[index].bottomAnchor.constraint(equalToSystemSpacingBelow: profilePictures[index].bottomAnchor, multiplier: 1.0).isActive = true
+      deleteProfilePictureButtonContainers[index].bottomAnchor.constraint(equalTo: profilePictures[index].bottomAnchor).isActive = true
       deleteProfilePictureButtonContainers[index].trailingAnchor.constraint(equalTo: profilePictures[index].trailingAnchor, constant: deleteProfilePictureButtonContainers[index].frame.width/2).isActive = true
+      
+      deleteProfilePictureButtons.append(UIButton())
+      deleteProfilePictureButtons[index].setBackgroundImage(UIImage(systemName: "xmark.circle"), for: .normal)
+      deleteProfilePictureButtons[index].backgroundColor = view.backgroundColor
+      deleteProfilePictureButtons[index].tintColor = .lightGray
+      deleteProfilePictureButtons[index].translatesAutoresizingMaskIntoConstraints = false
+      deleteProfilePictureButtonContainers[index].addSubview(deleteProfilePictureButtons[index])
+      deleteProfilePictureButtons[index].widthAnchor.constraint(equalTo: profilePictures[index].widthAnchor, multiplier: 1/3).isActive = true
+      deleteProfilePictureButtons[index].heightAnchor.constraint(equalTo: profilePictures[index].heightAnchor, multiplier: 1/3).isActive = true
+      deleteProfilePictureButtons[index].bottomAnchor.constraint(equalTo: profilePictures[index].bottomAnchor).isActive = true
+      deleteProfilePictureButtons[index].trailingAnchor.constraint(equalTo: profilePictures[index].trailingAnchor, constant: deleteProfilePictureButtonContainers[index].frame.width/2).isActive = true
+      
       
     }
     
