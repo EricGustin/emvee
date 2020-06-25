@@ -25,7 +25,6 @@ class ProfileViewController: UIViewController {
   private var nameAndAgeLabel: UILabel!
   private var aboutMeLabel: UILabel!
   private var aboutMeTextView: UITextView!
-  private var aboutMeCharsRemainingLabel: UILabel!
   private var myBasicInfoLabel: UILabel!
   private var genderButton: UIButton!
   private var locationButton: UIButton!
@@ -151,7 +150,6 @@ class ProfileViewController: UIViewController {
     aboutMeLabel.topAnchor.constraint(equalTo: nameAndAgeLabel.bottomAnchor, constant: 80).isActive = true
     
     aboutMeTextView = UITextView()
-    aboutMeTextView.delegate = self
     aboutMeTextView.translatesAutoresizingMaskIntoConstraints = false
     aboutMeTextView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
     aboutMeTextView.layer.cornerRadius = 25
@@ -164,16 +162,6 @@ class ProfileViewController: UIViewController {
     aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true  // 3:1 AspectRatio
     aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    aboutMeTextView.addKeyboardToolBar(leftTitle: "Cancel", rightTitle: "Save", target: self, selector: #selector(dismissKeyboard(sender:)))
-    
-    aboutMeCharsRemainingLabel = UILabel()
-    aboutMeCharsRemainingLabel.translatesAutoresizingMaskIntoConstraints = false
-    aboutMeCharsRemainingLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
-    aboutMeCharsRemainingLabel.textColor = .lightGray
-    aboutMeCharsRemainingLabel.textAlignment = .center
-    scrollView.addSubview(aboutMeCharsRemainingLabel)
-    aboutMeCharsRemainingLabel.bottomAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
-    aboutMeCharsRemainingLabel.trailingAnchor.constraint(equalTo: aboutMeTextView.trailingAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
     
     myBasicInfoLabel = UILabel()
     myBasicInfoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -242,50 +230,12 @@ class ProfileViewController: UIViewController {
     }
   }
   
-  @objc func adjustInsetForKeyboard(_ notification: Notification) {
-    
-    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-    
-    let keyboardScreenEndFrame = keyboardValue.cgRectValue
-    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-    
-    let willHideKeyboard = notification.name == UIResponder.keyboardWillHideNotification
-    
-    if willHideKeyboard { // if keyboard will hide
-      scrollView.contentInset = .zero
-    } else { // if keyboard will show
-      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
-      scrollView.setContentOffset(CGPoint(x: 0, y: 250), animated: true)
-    }
-    scrollView.scrollIndicatorInsets = scrollView.contentInset
-    
-    // disable or enable user interaction for all views that can be interacted with
-    profilePicture.isUserInteractionEnabled = willHideKeyboard
-    homeButton.isUserInteractionEnabled = willHideKeyboard
-    settingsButton.isUserInteractionEnabled = willHideKeyboard
-    scrollView.isScrollEnabled = willHideKeyboard
-  }
-  
-  @objc func dismissKeyboard(sender: UIBarButtonItem) {
-    if sender.title == "Save" {
-      saveTextView(firestoreField: "bio", textView: aboutMeTextView)
-      savedAboutMeText = aboutMeTextView.text
-    } else {
-      aboutMeTextView.text = savedAboutMeText
-    }
-    self.view.endEditing(true)
-  }
-  
   // MARK: - Navigation
   override func viewDidLoad() {
     super.viewDidLoad()
     
     view.backgroundColor = .systemGray6
     setUpSubViews()
-    
-    // Adjust scrollView's inset when needed
-    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     
     let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     leftSwipeGesture.direction = .left
@@ -316,11 +266,8 @@ class ProfileViewController: UIViewController {
         
         self.nameAndAgeLabel.text = "\(firstName), \(age)"
         self.aboutMeTextView.text = bio as? String
-        self.savedAboutMeText = bio as? String
-        self.displayBioCharsLeft()
       }
     }
-    textViewDidChange(aboutMeTextView) // initialize a proper size for the textView
     downloadProfilePictureFromFirebase()
   }
   
@@ -341,11 +288,6 @@ class ProfileViewController: UIViewController {
     let nc = NavigationController(vc)
     nc.modalPresentationStyle = .fullScreen
     self.present(nc, animated: true, completion: nil)
-  }
-  
-  //MARK: - Helper functions
-  func saveTextView(firestoreField: String, textView: UITextView) {
-    updateCloudFirestoreField(firestoreField, textView.text ?? 0)
   }
   
   // MARK: - Firebase Stuff
@@ -390,22 +332,6 @@ class ProfileViewController: UIViewController {
     }
     return age
   }
-  
-  // The user has a maximum of 255 characters for their bio. This function calculates the number of chars
-  // That they can still add to their bio and updates the bioCharsLeftLabel accordingly.
-  func displayBioCharsLeft() {
-    let currChars = aboutMeTextView.text.count
-    
-    aboutMeCharsRemainingLabel.animateTransform(withIncreaseDuration: 0.1, withDecreaseDuration: 0.1, withIncreaseScale: 1.1, withDecreaseScale: 1)
-    
-    aboutMeCharsRemainingLabel.text = String(255 - currChars)
-    
-    if currChars < 230 {
-      aboutMeCharsRemainingLabel.textColor = UIColor.lightGray
-    } else {
-      aboutMeCharsRemainingLabel.textColor = UIColor.red
-    }
-  }
 }
 
 // MARK: - Extensions
@@ -413,32 +339,6 @@ extension String {
   
   var wordList: [String] {
     return components(separatedBy: CharacterSet.alphanumerics.inverted).filter { !$0.isEmpty }
-  }
-  
-}
-
-extension ProfileViewController: UITextViewDelegate {
-  
-  // Adds the new character to the user's bio if it doesn't exceed 255 chars, else no update occurs
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    if 255 - aboutMeTextView.text.count == 0 {
-      if range.length != 1 {
-        return false
-      }
-    }
-    return true
-  }
-
-  func textViewDidBeginEditing(_ textView: UITextView) {
-    print("Did begin editing")
-  }
-  
-  func textViewDidChange(_ textView: UITextView) {
-    displayBioCharsLeft()
-  }
-
-  func textViewDidEndEditing(_ textView: UITextView) {
-    print("textView done editing.")
   }
   
 }
