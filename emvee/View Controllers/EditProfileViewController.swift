@@ -51,6 +51,7 @@ class EditProfileViewController: UIViewController {
       profilePictures.append(UIImageView(image: UIImage()))
       profilePictures[index].backgroundColor = .white
       profilePictures[index].contentMode = .scaleAspectFill
+      
       profilePictures[index].translatesAutoresizingMaskIntoConstraints = false
       profilePictures[index].isUserInteractionEnabled = true
       profilePictures[index].layer.borderWidth = 4.75
@@ -144,7 +145,7 @@ class EditProfileViewController: UIViewController {
       aProfilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
         if error != nil {
           print("Error getting profile picture data or no picture exists. Setting picture to default.")
-          self.profilePictures[i].image = UIImage(named: "defaultProfileImage@4x")
+          self.changeProfileImageToPlusSignFormat(index: i)
           return
         } else {
           let aProfilePicture = UIImage(data: data!)
@@ -181,6 +182,19 @@ class EditProfileViewController: UIViewController {
     }
   }
   
+  private func changeProfileImageToPlusSignFormat(index: Int) {
+    profilePictures[index].image = UIImage(systemName: "plus")
+    profilePictures[index].tintColor = .lightGray
+    profilePictures[index].backgroundColor = .systemGray6
+    profilePictures[index].contentMode = .center
+  }
+  
+  private func changeProfileImageToNormalFormat(index: Int) {
+    profilePictures[index].tintColor = .none
+    profilePictures[index].backgroundColor = .none
+    profilePictures[index].contentMode = .scaleAspectFill
+  }
+  
   @objc private func aDeleteProfilePictureButtonTapped(sender: UIButton) {
     print("Now all i have to do is delete the photo locally, in the cloud, and move the other photos around.")
     
@@ -193,7 +207,8 @@ class EditProfileViewController: UIViewController {
     for index in profilePictureBeingDeletedIndex..<profilePictures.count-1 {
       //  Delete photo locally & move the other photos accordingly
       profilePictures[index].image = profilePictures[index+1].image
-      if profilePictures[index].image == UIImage(named: "defaultProfileImage@4x") {
+      if profilePictures[index].image == UIImage(systemName: "plus") {
+        changeProfileImageToPlusSignFormat(index: index)
         deleteProfilePictureButtonContainers[index].isHidden = true
         deleteProfilePictureButtons[index].isHidden = true
         // Delete from Firebase?
@@ -205,12 +220,13 @@ class EditProfileViewController: UIViewController {
       }
     }
     //  Ensure that the last profile picture is set to the default image since the above for-loop doesn't assign an image to it
-    profilePictures[profilePictures.count-1].image = UIImage(named: "defaultProfileImage@4x")
+    profilePictures[profilePictures.count-1].image = UIImage(systemName: "plus")
+    changeProfileImageToPlusSignFormat(index: profilePictures.count-1)
     deleteProfilePictureButtonContainers[profilePictures.count-1].isHidden = true
     deleteProfilePictureButtons[profilePictures.count-1].isHidden = true
     
     for index in 0..<profilePictures.count {
-      if profilePictures[index].image == UIImage(named: "defaultProfileImage@4x") {
+      if profilePictures[index].image == UIImage(systemName: "plus") {
         //  Delete from firebase
         guard let userID = Auth.auth().currentUser?.uid else {
           print("Error generating UserID.")
@@ -222,7 +238,7 @@ class EditProfileViewController: UIViewController {
             print("Error deleting profile picture.")
           }
         }
-        break
+       // break
       }
     }
     
@@ -234,7 +250,16 @@ class EditProfileViewController: UIViewController {
     guard gestureRecognizer.view != nil else { return }
     
     profilePictureBeingEditedIndex = gestureRecognizer.view!.tag
-
+    if profilePictures[profilePictureBeingEditedIndex].image == UIImage(systemName: "plus") {
+      //  Change the index to the first ImageView that is not filled with a profile picture
+      for index in 0..<profilePictures.count {
+        if profilePictures[index].image == UIImage(systemName: "plus") {
+          profilePictureBeingEditedIndex = index
+          break
+        }
+      }
+    }
+    
     presentImagePickerControllerActionSheet() // UIImagePickerControllerDelegate extension method
   }
   
@@ -280,9 +305,10 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     }
     
     if let profileImage = selectedImage {
-      profilePictures[profilePictureBeingEditedIndex ?? 0].image = profileImage
-      deleteProfilePictureButtonContainers[profilePictureBeingEditedIndex ?? 0].isHidden = false
-      deleteProfilePictureButtons[profilePictureBeingEditedIndex ?? 0].isHidden = false
+      profilePictures[profilePictureBeingEditedIndex].image = profileImage
+      changeProfileImageToNormalFormat(index: profilePictureBeingEditedIndex)
+      deleteProfilePictureButtonContainers[profilePictureBeingEditedIndex].isHidden = false
+      deleteProfilePictureButtons[profilePictureBeingEditedIndex].isHidden = false
     }
     
     dismiss(animated: true, completion: nil) // dismiss the UIImagePickerControllers and go back to profile VC
