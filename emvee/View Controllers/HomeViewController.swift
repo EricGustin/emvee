@@ -92,7 +92,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    print("In HomeViewController")
+    view.backgroundColor = .systemGray6
     
     setUpViews()
     setUpGestures()

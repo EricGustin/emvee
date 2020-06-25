@@ -36,6 +36,9 @@
 		FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C224A15C0400AD3BEF /* UILabel+.swift */; };
 		FA9505C724A2B96800AD3BEF /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */; };
 		FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */; };
+		FA9505CD24A563BA00AD3BEF /* EditGenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CC24A563BA00AD3BEF /* EditGenderViewController.swift */; };
+		FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */; };
+		FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +80,9 @@
 		FA9505C224A15C0400AD3BEF /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+.swift"; path = "emvee/Views/UILabel+.swift"; sourceTree = SOURCE_ROOT; };
 		FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+.swift"; path = "emvee/View Controllers/UIViewController+.swift"; sourceTree = SOURCE_ROOT; };
+		FA9505CC24A563BA00AD3BEF /* EditGenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGenderViewController.swift; sourceTree = "<group>"; };
+		FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCurrentLocationViewController.swift; sourceTree = "<group>"; };
+		FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHometownLocationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +103,8 @@
 				F14BE25128F6B3AB279C7699 /* Pods-FirebaseAuthentification.debug.xcconfig */,
 				1DD6C80516D350B9AF075916 /* Pods-FirebaseAuthentification.release.xcconfig */,
 				EF9107E1CCB8ED70B42A82C9 /* Pods-iOSApp.debug.xcconfig */,
-				F7FBE67DC78E33F40E37A331 /* Pods-iOSApp.release.xcconfig */,
 				C73BBCB7FA4B906C09DD68BE /* Pods-emvee.debug.xcconfig */,
+				F7FBE67DC78E33F40E37A331 /* Pods-iOSApp.release.xcconfig */,
 				7EF20D9AEE8B98C3F45F02C4 /* Pods-emvee.release.xcconfig */,
 			);
 			path = Pods;
@@ -164,6 +170,9 @@
 				FA91C60224709FF000895098 /* NavigationController.swift */,
 				FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */,
 				FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */,
+				FA9505CC24A563BA00AD3BEF /* EditGenderViewController.swift */,
+				FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */,
+				FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -373,13 +382,16 @@
 				FA54DC052466232D008227FE /* StyleUtilities.swift in Sources */,
 				FA54DBFD24661CDF008227FE /* SignUpViewController.swift in Sources */,
 				FA54DBFF24661CEA008227FE /* LoginViewController.swift in Sources */,
+				FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */,
 				FA54DBEB24661C99008227FE /* SceneDelegate.swift in Sources */,
 				FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */,
 				FA54DC0724662352008227FE /* FormUtilities.swift in Sources */,
 				FA54DC0124661D01008227FE /* HomeViewController.swift in Sources */,
 				FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */,
 				FA54DC0B24663B37008227FE /* Constants.swift in Sources */,
+				FA9505CD24A563BA00AD3BEF /* EditGenderViewController.swift in Sources */,
 				FA5AD8C5248AF991001DFAB6 /* VideoChatViewController.swift in Sources */,
+				FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */,
 				FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */,
 				FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */,
 				FA91C5FD246F4ADE00895098 /* Message.swift in Sources */,

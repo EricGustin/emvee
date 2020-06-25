@@ -28,9 +28,8 @@ class ProfileViewController: UIViewController {
   private var myBasicInfoLabel: UILabel!
   private var genderButton: UIButton!
   private var locationButton: UIButton!
-  private var genderGreaterThanImage: UIImageView!
-  private var locationGreaterThanImage: UIImageView!
-  
+  private var hometownButton: UIButton!
+
   private var savedAboutMeText: String?
   
   // MARK: - ACTIONS
@@ -151,6 +150,8 @@ class ProfileViewController: UIViewController {
     
     aboutMeTextView = UITextView()
     aboutMeTextView.translatesAutoresizingMaskIntoConstraints = false
+    aboutMeTextView.isEditable = false
+    aboutMeTextView.isScrollEnabled = true
     aboutMeTextView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
     aboutMeTextView.layer.cornerRadius = 25
     aboutMeTextView.layer.borderColor = UIColor.lightGray.cgColor
@@ -160,7 +161,7 @@ class ProfileViewController: UIViewController {
     scrollView.addSubview(aboutMeTextView)
     aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 5).isActive = true
     aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
-    aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true  // 3:1 AspectRatio
+    aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true
     aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
     myBasicInfoLabel = UILabel()
@@ -195,23 +196,16 @@ class ProfileViewController: UIViewController {
     locationButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     locationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
-    genderGreaterThanImage = UIImageView(image: UIImage(systemName: "greaterthan"))
-    genderGreaterThanImage.translatesAutoresizingMaskIntoConstraints = false
-    genderGreaterThanImage.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
-    genderGreaterThanImage.tintColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0)
-    genderGreaterThanImage.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
-    genderButton.addSubview(genderGreaterThanImage)
-    genderGreaterThanImage.centerYAnchor.constraint(equalTo: genderButton.centerYAnchor).isActive = true
-    genderGreaterThanImage.trailingAnchor.constraint(equalTo: genderButton.trailingAnchor, constant: -genderButton.layer.cornerRadius / 2).isActive = true
-    
-    locationGreaterThanImage = UIImageView(image: UIImage(systemName: "greaterthan"))
-    locationGreaterThanImage.translatesAutoresizingMaskIntoConstraints = false
-    locationGreaterThanImage.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
-    locationGreaterThanImage.tintColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0)
-    locationGreaterThanImage.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
-    locationButton.addSubview(locationGreaterThanImage)
-    locationGreaterThanImage.centerYAnchor.constraint(equalTo: locationButton.centerYAnchor).isActive = true
-    locationGreaterThanImage.trailingAnchor.constraint(equalTo: locationButton.trailingAnchor, constant: -locationButton.layer.cornerRadius / 2).isActive = true
+    hometownButton = UIButton()
+    hometownButton.translatesAutoresizingMaskIntoConstraints = false
+    hometownButton.setTitle("From Stayton, OR", for: .normal)
+    StyleUtilities.styleBasicInfoButton(hometownButton)
+    hometownButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    scrollView.addSubview(hometownButton)
+    hometownButton.topAnchor.constraint(equalTo: locationButton.bottomAnchor, constant: 5).isActive = true
+    hometownButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    hometownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    hometownButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
