@@ -18,7 +18,7 @@ class EditProfileViewController: UIViewController {
   private var profilePictures: [UIImageView]!
   private var deleteProfilePictureButtonContainers: [UIView]!
   private var deleteProfilePictureButtons: [UIButton]!
-  private var profilePictureBeingEditedIndex: Int?  // The index of the profile picture being edited
+  private var profilePictureBeingEditedIndex: Int!  // The index of the profile picture being edited
   
   
   override func viewDidLoad() {
@@ -109,6 +109,7 @@ class EditProfileViewController: UIViewController {
       deleteProfilePictureButtonContainers[index].trailingAnchor.constraint(equalTo: profilePictures[index].trailingAnchor, constant: deleteProfilePictureButtonContainers[index].frame.width/2).isActive = true
       
       deleteProfilePictureButtons.append(UIButton())
+      deleteProfilePictureButtons[index].tag = index
       deleteProfilePictureButtons[index].setBackgroundImage(UIImage(systemName: "xmark.circle"), for: .normal)
       deleteProfilePictureButtons[index].backgroundColor = view.backgroundColor
       deleteProfilePictureButtons[index].tintColor = .lightGray
@@ -119,7 +120,7 @@ class EditProfileViewController: UIViewController {
       deleteProfilePictureButtons[index].bottomAnchor.constraint(equalTo: profilePictures[index].bottomAnchor).isActive = true
       deleteProfilePictureButtons[index].trailingAnchor.constraint(equalTo: profilePictures[index].trailingAnchor, constant: deleteProfilePictureButtonContainers[index].frame.width/2).isActive = true
       
-      
+      deleteProfilePictureButtons[index].addTarget(self, action: #selector(aDeleteProfilePictureButtonTapped(sender:)), for: .touchUpInside)
     }
     
     
@@ -153,7 +154,7 @@ class EditProfileViewController: UIViewController {
   }
   
   private func uploadProfilePictureToFirebase() {
-    guard let image = profilePictures[profilePictureBeingEditedIndex ?? 0].image,
+    guard let image = profilePictures[profilePictureBeingEditedIndex].image,
       let nonCompressedData = image.jpegData(compressionQuality: 1.0),
       let data = image.jpegData(compressionQuality: CGFloat((1048576) / nonCompressedData.count)) // 1024*1024 = 1048576 bytes = 1mb
       else {
@@ -173,6 +174,40 @@ class EditProfileViewController: UIViewController {
       if error != nil {
         print("Error putting profilePictureRef data.")
         return
+      }
+    }
+  }
+  
+  @objc private func aDeleteProfilePictureButtonTapped(sender: UIButton) {
+    print("Now all i have to do is delete the photo locally, in the cloud, and move the other photos around.")
+    
+    profilePictureBeingEditedIndex = sender.tag
+    deleteProfilePicture()
+  }
+  
+  private func deleteProfilePicture() {
+    //  Delete locally and reset image to default
+    profilePictures[profilePictureBeingEditedIndex].image = UIImage(named: "defaultProfileImage@4x")
+    deleteProfilePictureButtons[profilePictureBeingEditedIndex].isHidden = true
+    deleteProfilePictureButtonContainers[profilePictureBeingEditedIndex].isHidden = true
+    
+    //  Delete from Firebase Storage
+    guard let userID = Auth.auth().currentUser?.uid else {
+      print("Error generating UserID.")
+      return
+    }
+    
+    for index in profilePictureBeingEditedIndex..<profilePictures.count-1 {
+      profilePictures[index].image = profilePictures[index+1].image
+    }
+    profilePictures[profilePictures.count-1].image = UIImage(named: "defaultProfileImage@4x")
+    
+    let deletePictureRef = Storage.storage().reference().child("profilePictures/\(userID)/picture\(profilePictures.count-1)")
+    deletePictureRef.delete { (error) in
+      if error != nil {
+        print("Error deleting image from Firebase Storage")
+      } else {
+        //  Move other photos accordingly
       }
     }
   }
@@ -229,6 +264,8 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     
     if let profileImage = selectedImage {
       profilePictures[profilePictureBeingEditedIndex ?? 0].image = profileImage
+      deleteProfilePictureButtonContainers[profilePictureBeingEditedIndex ?? 0].isHidden = false
+      deleteProfilePictureButtons[profilePictureBeingEditedIndex ?? 0].isHidden = false
     }
     
     dismiss(animated: true, completion: nil) // dismiss the UIImagePickerControllers and go back to profile VC
