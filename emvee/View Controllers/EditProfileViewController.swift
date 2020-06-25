@@ -181,7 +181,7 @@ class EditProfileViewController: UIViewController {
       }
     }
   }
-  
+  // I want to "Build the Future".
   private func changeProfileImageToPlusSignFormat(index: Int) {
     profilePictures[index].image = UIImage(systemName: "plus")
     profilePictures[index].tintColor = .lightGray
@@ -196,10 +196,16 @@ class EditProfileViewController: UIViewController {
   }
   
   @objc private func aDeleteProfilePictureButtonTapped(sender: UIButton) {
-    print("Now all i have to do is delete the photo locally, in the cloud, and move the other photos around.")
-    
-    profilePictureBeingDeletedIndex = sender.tag
-    deleteProfilePicture()
+    let confirmDeleteAlert = UIAlertController(title: "Are you sure that you want to delete this picture from your profile?", message: "", preferredStyle: .alert)
+    let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+      self.profilePictureBeingDeletedIndex = sender.tag
+      self.deleteProfilePicture()
+    }
+    let noAction = UIAlertAction(title: "No", style: .cancel) { _ in
+    }
+    confirmDeleteAlert.addAction(yesAction)
+    confirmDeleteAlert.addAction(noAction)
+    present(confirmDeleteAlert, animated: true, completion: nil)
   }
   
   private func deleteProfilePicture() {
