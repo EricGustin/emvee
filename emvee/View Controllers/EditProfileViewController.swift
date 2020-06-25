@@ -19,7 +19,7 @@ class EditProfileViewController: UIViewController {
   private var deleteProfilePictureButtonContainers: [UIView]!
   private var deleteProfilePictureButtons: [UIButton]!
   private var profilePictureBeingEditedIndex: Int!  // The index of the profile picture being edited
-  
+  private var profilePictureBeingDeletedIndex: Int!  // The index of the profile picture that was deleted
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -48,7 +48,9 @@ class EditProfileViewController: UIViewController {
       profilePicturesContainer[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.
       
       // Set up each profile picture view
-      profilePictures.append(UIImageView(image: UIImage(named: "defaultProfileImage@4x")))
+      profilePictures.append(UIImageView(image: UIImage()))
+      profilePictures[index].backgroundColor = .white
+      profilePictures[index].contentMode = .scaleAspectFill
       profilePictures[index].translatesAutoresizingMaskIntoConstraints = false
       profilePictures[index].isUserInteractionEnabled = true
       profilePictures[index].layer.borderWidth = 4.75
@@ -141,7 +143,8 @@ class EditProfileViewController: UIViewController {
       // Download profile picture in memory  with a maximum allowed size of 1MB
       aProfilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
         if error != nil {
-          print("Error getting profile picture data or no picture exists.")
+          print("Error getting profile picture data or no picture exists. Setting picture to default.")
+          self.profilePictures[i].image = UIImage(named: "defaultProfileImage@4x")
           return
         } else {
           let aProfilePicture = UIImage(data: data!)
@@ -181,35 +184,49 @@ class EditProfileViewController: UIViewController {
   @objc private func aDeleteProfilePictureButtonTapped(sender: UIButton) {
     print("Now all i have to do is delete the photo locally, in the cloud, and move the other photos around.")
     
-    profilePictureBeingEditedIndex = sender.tag
+    profilePictureBeingDeletedIndex = sender.tag
     deleteProfilePicture()
   }
   
   private func deleteProfilePicture() {
-    //  Delete locally and reset image to default
-    profilePictures[profilePictureBeingEditedIndex].image = UIImage(named: "defaultProfileImage@4x")
-    deleteProfilePictureButtons[profilePictureBeingEditedIndex].isHidden = true
-    deleteProfilePictureButtonContainers[profilePictureBeingEditedIndex].isHidden = true
     
-    //  Delete from Firebase Storage
-    guard let userID = Auth.auth().currentUser?.uid else {
-      print("Error generating UserID.")
-      return
-    }
-    
-    for index in profilePictureBeingEditedIndex..<profilePictures.count-1 {
+    for index in profilePictureBeingDeletedIndex..<profilePictures.count-1 {
+      //  Delete photo locally & move the other photos accordingly
       profilePictures[index].image = profilePictures[index+1].image
-    }
-    profilePictures[profilePictures.count-1].image = UIImage(named: "defaultProfileImage@4x")
-    
-    let deletePictureRef = Storage.storage().reference().child("profilePictures/\(userID)/picture\(profilePictures.count-1)")
-    deletePictureRef.delete { (error) in
-      if error != nil {
-        print("Error deleting image from Firebase Storage")
+      if profilePictures[index].image == UIImage(named: "defaultProfileImage@4x") {
+        deleteProfilePictureButtonContainers[index].isHidden = true
+        deleteProfilePictureButtons[index].isHidden = true
+        // Delete from Firebase?
+ 
       } else {
-        //  Move other photos accordingly
+        // Upload the new picture to firebase, effectively deleting the old picture
+        profilePictureBeingEditedIndex = index
+        uploadProfilePictureToFirebase()
       }
     }
+    //  Ensure that the last profile picture is set to the default image since the above for-loop doesn't assign an image to it
+    profilePictures[profilePictures.count-1].image = UIImage(named: "defaultProfileImage@4x")
+    deleteProfilePictureButtonContainers[profilePictures.count-1].isHidden = true
+    deleteProfilePictureButtons[profilePictures.count-1].isHidden = true
+    
+    for index in 0..<profilePictures.count {
+      if profilePictures[index].image == UIImage(named: "defaultProfileImage@4x") {
+        //  Delete from firebase
+        guard let userID = Auth.auth().currentUser?.uid else {
+          print("Error generating UserID.")
+          return
+        }
+        let deletePictureRef = Storage.storage().reference().child("profilePictures/\(userID)/picture\(index)")
+        deletePictureRef.delete { (error) in
+          if error != nil {
+            print("Error deleting profile picture.")
+          }
+        }
+        break
+      }
+    }
+    
+    
   }
   
   @objc private func aProfilePictureTapped(_ gestureRecognizer: UITapGestureRecognizer) {
