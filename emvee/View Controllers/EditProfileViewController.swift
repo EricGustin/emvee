@@ -11,6 +11,7 @@ import Firebase
 
 class EditProfileViewController: UIViewController {
   
+  //  Views
   private var scrollView: UIScrollView!
   private var profilePictureVertStack: UIStackView!
   private var profilePicturesHorizStacks: [UIStackView]!
@@ -18,6 +19,11 @@ class EditProfileViewController: UIViewController {
   private var profilePictures: [UIImageView]!
   private var deleteProfilePictureButtonContainers: [UIView]!
   private var deleteProfilePictureButtons: [UIButton]!
+  private var aboutMeLabel: UILabel!
+  private var aboutMeTextView: UITextView!
+  private var aboutMeCharsRemainingLabel: UILabel!
+  //  Variables & constants
+  private var savedAboutMeText: String?
   private var profilePictureBeingEditedIndex: Int!  // The index of the profile picture being edited
   private var profilePictureBeingDeletedIndex: Int!  // The index of the profile picture that was deleted
   
@@ -29,6 +35,26 @@ class EditProfileViewController: UIViewController {
     setUpNavigationBar()
     setupSubviews()
     downloadProfilePicturesFromFirebase()
+    
+    // Adjust scrollView's inset when needed
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    let userID = Auth.auth().currentUser?.uid
+    let db = Firestore.firestore()
+    
+    db.collection("users").document(userID!).getDocument { (snapshot, error) in
+      if let document = snapshot {
+        let bio = document.get("bio")
+        
+        self.aboutMeTextView.text = bio as? String
+        self.savedAboutMeText = bio as? String
+        self.displayBioCharsLeft()
+      }
+    }
+    textViewDidChange(aboutMeTextView) // initialize a proper size for the textView
   }
   
   private func setUpNavigationBar() {
@@ -126,11 +152,72 @@ class EditProfileViewController: UIViewController {
       deleteProfilePictureButtons[index].addTarget(self, action: #selector(aDeleteProfilePictureButtonTapped(sender:)), for: .touchUpInside)
     }
     
+    aboutMeLabel = UILabel()
+    aboutMeLabel.translatesAutoresizingMaskIntoConstraints = false
+    aboutMeLabel.text = "About me"
+    aboutMeLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
+    aboutMeLabel.textColor = .black
+    aboutMeLabel.textAlignment = .center
+    scrollView.addSubview(aboutMeLabel)
+    aboutMeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
+    aboutMeLabel.topAnchor.constraint(equalTo: profilePictureVertStack.bottomAnchor, constant: 80).isActive = true
     
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
     
+    aboutMeTextView = UITextView()
+    aboutMeTextView.delegate = self
+    aboutMeTextView.translatesAutoresizingMaskIntoConstraints = false
+    aboutMeTextView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
+    aboutMeTextView.layer.cornerRadius = 25
+    aboutMeTextView.layer.borderColor = UIColor.lightGray.cgColor
+    aboutMeTextView.layer.borderWidth = 0.25
+    aboutMeTextView.backgroundColor = .white
+    aboutMeTextView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+    scrollView.addSubview(aboutMeTextView)
+    aboutMeTextView.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 5).isActive = true
+    aboutMeTextView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    aboutMeTextView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3).isActive = true  // 3:1 AspectRatio
+    aboutMeTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    aboutMeTextView.addKeyboardToolBar(leftTitle: "Cancel", rightTitle: "Save", target: self, selector: #selector(dismissKeyboard(sender:)))
+    
+    aboutMeCharsRemainingLabel = UILabel()
+    aboutMeCharsRemainingLabel.translatesAutoresizingMaskIntoConstraints = false
+    aboutMeCharsRemainingLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
+    aboutMeCharsRemainingLabel.textColor = .lightGray
+    aboutMeCharsRemainingLabel.textAlignment = .center
+    scrollView.addSubview(aboutMeCharsRemainingLabel)
+    aboutMeCharsRemainingLabel.bottomAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
+    aboutMeCharsRemainingLabel.trailingAnchor.constraint(equalTo: aboutMeTextView.trailingAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
   }
+  
+  @objc func adjustInsetForKeyboard(_ notification: Notification) {
+    
+    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    
+    let keyboardScreenEndFrame = keyboardValue.cgRectValue
+    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+    
+    let willHideKeyboard = notification.name == UIResponder.keyboardWillHideNotification
+    
+    if willHideKeyboard { // if keyboard will hide
+      scrollView.contentInset = .zero
+    } else { // if keyboard will show
+      scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+      scrollView.setContentOffset(CGPoint(x: 0, y: 250), animated: true)
+    }
+    scrollView.scrollIndicatorInsets = scrollView.contentInset
+    
+    // disable or enable user interaction for all views that can be interacted with
+    for picture in profilePictures {
+      picture.isUserInteractionEnabled = willHideKeyboard
+    }
+    for deleteButton in deleteProfilePictureButtons {
+      deleteButton.isUserInteractionEnabled = willHideKeyboard
+    }
+    scrollView.isScrollEnabled = willHideKeyboard
+  }
+  
   
   private func downloadProfilePicturesFromFirebase() {
     
@@ -251,6 +338,44 @@ class EditProfileViewController: UIViewController {
     
   }
   
+  @objc func dismissKeyboard(sender: UIBarButtonItem) {
+    if sender.title == "Save" {
+      saveTextView(firestoreField: "bio", textView: aboutMeTextView)
+      savedAboutMeText = aboutMeTextView.text
+    } else {
+      aboutMeTextView.text = savedAboutMeText
+    }
+    self.view.endEditing(true)
+  }
+  
+  func saveTextView(firestoreField: String, textView: UITextView) {
+    updateCloudFirestoreField(firestoreField, textView.text ?? 0)
+  }
+  
+  func updateCloudFirestoreField(_ fieldName: String, _ newValue: Any) {
+    guard let userID = Auth.auth().currentUser?.uid else {
+      print("Error accessing userID")
+      return
+    }
+    let db = Firestore.firestore() // initialize an instance of Cloud Firestore
+    db.collection("users").document(userID).updateData([fieldName: newValue])
+  }
+  
+  // The user has a maximum of 255 characters for their bio. This function calculates the number of chars That they can still add to their bio and updates the bioCharsLeftLabel accordingly.
+  func displayBioCharsLeft() {
+    let currChars = aboutMeTextView.text.count
+    
+    aboutMeCharsRemainingLabel.animateTransform(withIncreaseDuration: 0.1, withDecreaseDuration: 0.1, withIncreaseScale: 1.1, withDecreaseScale: 1)
+    
+    aboutMeCharsRemainingLabel.text = String(255 - currChars)
+    
+    if currChars < 230 {
+      aboutMeCharsRemainingLabel.textColor = UIColor.lightGray
+    } else {
+      aboutMeCharsRemainingLabel.textColor = UIColor.red
+    }
+  }
+  
   @objc private func aProfilePictureTapped(_ gestureRecognizer: UITapGestureRecognizer) {
     
     guard gestureRecognizer.view != nil else { return }
@@ -288,6 +413,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     
     // Create UIAlertController
     let alert = UIAlertController(title: "Choose your image", message: nil, preferredStyle: .actionSheet)
+    addActionSheetForiPad(actionSheet: alert)
     alert.addAction(photoLibraryAction)
     alert.addAction(cameraAction)
     alert.addAction(cancelAction)
@@ -326,4 +452,30 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     dismiss(animated: true, completion: nil)
   }
 
+}
+
+extension EditProfileViewController: UITextViewDelegate {
+  
+  // Adds the new character to the user's bio if it doesn't exceed 255 chars, else no update occurs
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    if 255 - aboutMeTextView.text.count == 0 {
+      if range.length != 1 {
+        return false
+      }
+    }
+    return true
+  }
+
+  func textViewDidBeginEditing(_ textView: UITextView) {
+    print("Did begin editing")
+  }
+  
+  func textViewDidChange(_ textView: UITextView) {
+    displayBioCharsLeft()
+  }
+
+  func textViewDidEndEditing(_ textView: UITextView) {
+    print("textView done editing.")
+  }
+  
 }

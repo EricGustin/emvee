@@ -35,6 +35,7 @@
 		FA91C65F24749F2E00895098 /* UIRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C65E24749F2E00895098 /* UIRadioButton.swift */; };
 		FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C224A15C0400AD3BEF /* UILabel+.swift */; };
 		FA9505C724A2B96800AD3BEF /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */; };
+		FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		FA91C65E24749F2E00895098 /* UIRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRadioButton.swift; sourceTree = "<group>"; };
 		FA9505C224A15C0400AD3BEF /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+.swift"; path = "emvee/Views/UILabel+.swift"; sourceTree = SOURCE_ROOT; };
 		FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+.swift"; path = "emvee/View Controllers/UIViewController+.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 			children = (
 				FA0899C7249C7109005061DB /* UITextView+.swift */,
 				FA9505C224A15C0400AD3BEF /* UILabel+.swift */,
+				FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 				FA54DBFD24661CDF008227FE /* SignUpViewController.swift in Sources */,
 				FA54DBFF24661CEA008227FE /* LoginViewController.swift in Sources */,
 				FA54DBEB24661C99008227FE /* SceneDelegate.swift in Sources */,
+				FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */,
 				FA54DC0724662352008227FE /* FormUtilities.swift in Sources */,
 				FA54DC0124661D01008227FE /* HomeViewController.swift in Sources */,
 				FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */,

@@ -147,6 +147,7 @@ class ProfileViewController: UIViewController {
     aboutMeLabel.textAlignment = .center
     scrollView.addSubview(aboutMeLabel)
     aboutMeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
+
     aboutMeLabel.topAnchor.constraint(equalTo: nameAndAgeLabel.bottomAnchor, constant: 80).isActive = true
     
     aboutMeTextView = UITextView()
@@ -321,10 +322,6 @@ class ProfileViewController: UIViewController {
     }
     textViewDidChange(aboutMeTextView) // initialize a proper size for the textView
     downloadProfilePictureFromFirebase()
-  }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
   }
   
   private func transitionToSettings() {

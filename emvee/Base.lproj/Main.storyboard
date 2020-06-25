@@ -574,10 +574,6 @@
                                     <action selector="joinVideoChatRoom:" destination="SMW-XE-un6" eventType="touchUpInside" id="P3a-gw-Zwv"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="plus" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="wBu-d6-AWT">
-                                <rect key="frame" x="81" y="134" width="234" height="218"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
@@ -682,7 +678,6 @@
         <image name="end_pressed@4x" width="292" height="292"/>
         <image name="greater" width="128" height="128"/>
         <image name="mute@4x" width="744" height="744"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="radioOff" width="24" height="24"/>
         <image name="radioOn" width="24" height="24"/>
     </resources>
