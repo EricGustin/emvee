@@ -22,6 +22,7 @@ final class TextChatViewController: MessagesViewController {
   private var localUserName: String?
   private var localProfilePicture: UIImage?
   private var remoteProfilePicture: UIImage?
+
   private var remoteUserName: String?
   
   private let chatRoomRef: DocumentReference?
@@ -30,10 +31,6 @@ final class TextChatViewController: MessagesViewController {
   private var messages: [Message] = []
   private var messageListener: ListenerRegistration?
   private var userJoinedListener: ListenerRegistration?
-  
-//  private var navBar = UINavigationBar()
-//  private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
-//  private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
   
   private var timeLeft = 60
   private var timer: Timer?
@@ -72,9 +69,6 @@ final class TextChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    title = "Waiting for a stanger to join"
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(backToHome))
     
     print("In TextChatViewController")
     //self.view.backgroundColor = UIColor.white
@@ -205,10 +199,6 @@ final class TextChatViewController: MessagesViewController {
     
     maintainPositionOnKeyboardFrameChanged = true
     
-//    messageInputBar.inputTextView.tintColor = .systemBlue
-//    messageInputBar.sendButton.setTitleColor(.systemBlue, for: .normal)
-//    messageInputBar.delegate = self
-    
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
@@ -217,6 +207,12 @@ final class TextChatViewController: MessagesViewController {
     view.backgroundColor = whiteColor
     
     downloadProfilePictureFromFirebase(uid: localUser.uid)
+    setUpNavigationBar()
+  }
+  
+  private func setUpNavigationBar() {
+    title = "Waiting for a stanger to join"
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leave", style: .done, target: self, action: #selector(backToHome))
   }
   
   // MARK: - Actions
@@ -275,9 +271,22 @@ final class TextChatViewController: MessagesViewController {
       } else {
         let profileImage = UIImage(data: data!)
         if self.localUser.uid == uid {
-          self.localProfilePicture = profileImage ?? UIImage(named: "defaultProfileImage")!
+          self.localProfilePicture = profileImage!
+            //?? UIImage(named: "defaultProfileImage")!
         } else {
           self.remoteProfilePicture = profileImage ?? UIImage(named: "defaultProfileImage")!
+          
+          //  Set up the left navigation item (remote person's profile picture)
+          let leftNavigationItemButton = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+          leftNavigationItemButton.setImage(self.remoteProfilePicture, for: .normal)
+          leftNavigationItemButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.showRemoteProfilePopup)))
+          leftNavigationItemButton.imageView?.contentMode = .scaleAspectFill
+          leftNavigationItemButton.imageView?.layer.cornerRadius = 22
+          let leftNavigationItemButtonContainer = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 44, height: 44)))
+          leftNavigationItemButtonContainer.addSubview(leftNavigationItemButton)
+          let leftButton = UIBarButtonItem(customView: leftNavigationItemButtonContainer)
+          self.navigationItem.leftBarButtonItem = leftButton
+
         }
       }
     }
@@ -352,6 +361,12 @@ final class TextChatViewController: MessagesViewController {
     vc.modalPresentationStyle = .fullScreen
     self.present(vc, animated: true, completion: nil)
   }
+  
+  @objc public func showRemoteProfilePopup() {
+    print("showing remote profile popup")
+    let profilePopup = ProfilePreviewPopup()
+    view.addSubview(profilePopup)
+  }
 
 }
 
@@ -417,6 +432,8 @@ extension TextChatViewController: MessagesDisplayDelegate {
     avatarView.isHidden = isNextMessageSameSender(at: indexPath)
     avatarView.layer.borderWidth = 2
     avatarView.layer.borderColor = UIColor.blue.cgColor
+    print("avatar stuff")
+    avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showRemoteProfilePopup)))
   }
   
 }
@@ -514,5 +531,7 @@ extension TextChatViewController: MessageLabelDelegate {
   func didSelectCustom(_ pattern: String, match: String?) {
     print("Custom data detector patter selected: \(pattern)")
   }
+  
+  
 
 }

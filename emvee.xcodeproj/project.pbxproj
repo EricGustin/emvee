@@ -39,6 +39,7 @@
 		FA9505CD24A563BA00AD3BEF /* EditGenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CC24A563BA00AD3BEF /* EditGenderViewController.swift */; };
 		FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */; };
 		FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */; };
+		FA9505D324A6617F00AD3BEF /* ProfilePreviewPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +84,7 @@
 		FA9505CC24A563BA00AD3BEF /* EditGenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGenderViewController.swift; sourceTree = "<group>"; };
 		FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCurrentLocationViewController.swift; sourceTree = "<group>"; };
 		FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHometownLocationViewController.swift; sourceTree = "<group>"; };
+		FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePreviewPopup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +204,7 @@
 			children = (
 				FA91C65E24749F2E00895098 /* UIRadioButton.swift */,
 				FA785164249962A5001A8949 /* Popup.swift */,
+				FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */,
 				FA0899C8249C7109005061DB /* UITextView+.swift in Sources */,
 				FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */,
+				FA9505D324A6617F00AD3BEF /* ProfilePreviewPopup.swift in Sources */,
 				FA91C65F24749F2E00895098 /* UIRadioButton.swift in Sources */,
 				FA91C60324709FF000895098 /* NavigationController.swift in Sources */,
 				FA54DC052466232D008227FE /* StyleUtilities.swift in Sources */,
