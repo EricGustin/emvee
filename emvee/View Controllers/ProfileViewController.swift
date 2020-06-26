@@ -87,7 +87,8 @@ class ProfileViewController: UIViewController {
     profilePictureContainer.layer.cornerRadius = UIScreen.main.bounds.width / 4
     profilePictureContainer.layer.masksToBounds = true
     
-    profilePicture = UIImageView(image: UIImage(named: "defaultProfileImage@4x"))
+    profilePicture = UIImageView(image: UIImage())
+    profilePicture.backgroundColor = .white
     profilePicture.translatesAutoresizingMaskIntoConstraints = false
     profilePicture.isUserInteractionEnabled = true
     profilePicture.layer.borderColor = UIColor.white.cgColor

@@ -69,8 +69,9 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           }
           
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
-          vc.modalPresentationStyle = .fullScreen
-          self.present(vc, animated: true, completion: nil)
+          let nc = NavigationController(vc)
+          nc.modalPresentationStyle = .fullScreen
+          self.present(nc, animated: true, completion: nil)
         }
         else {
           let aChatRoom = querySnapshot!.documents[querySnapshot!.count-1] // the last in the array AKA the chat room that has been waiting the longest
@@ -83,8 +84,9 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           let aConversationID = aChatRoom.get("conversationID") as? String ?? "noConversationID"
 
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
-          vc.modalPresentationStyle = .fullScreen
-          self.present(vc, animated: true, completion: nil)
+          let nc = NavigationController(vc)
+          nc.modalPresentationStyle = .fullScreen
+          self.present(nc, animated: true, completion: nil)
         }
       }
     }

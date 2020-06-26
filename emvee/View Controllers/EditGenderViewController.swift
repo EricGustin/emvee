@@ -47,7 +47,7 @@ class EditGenderViewController: UIViewController {
     
     femaleButton = UIButton()
     femaleButton.translatesAutoresizingMaskIntoConstraints = false
-    femaleButton.setTitle("Man", for: .normal)
+    femaleButton.setTitle("Female", for: .normal)
     StyleUtilities.styleBasicInfoButton(femaleButton)
     femaleButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
     view.addSubview(femaleButton)

@@ -31,9 +31,9 @@ final class TextChatViewController: MessagesViewController {
   private var messageListener: ListenerRegistration?
   private var userJoinedListener: ListenerRegistration?
   
-  private var navBar = UINavigationBar()
-  private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
-  private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
+//  private var navBar = UINavigationBar()
+//  private var navItem = UINavigationItem(title: "Waiting for a stranger to join")
+//  private var backItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(backToHome))
   
   private var timeLeft = 60
   private var timer: Timer?
@@ -70,19 +70,12 @@ final class TextChatViewController: MessagesViewController {
     self.becomeFirstResponder()
   }
   
-  override func viewSafeAreaInsetsDidChange() {
-    navBar = UINavigationBar(frame: CGRect(x: 0, y: view.safeAreaInsets.top, width: view.frame.size.width, height: 44))
-    view.addSubview(navBar)
-    navItem.rightBarButtonItem = backItem
-    navBar.setItems([navItem], animated: false)
-    
-    let topInset: CGFloat = navBar.frame.maxY
-    messagesCollectionView.contentInset.top = topInset
-    messagesCollectionView.verticalScrollIndicatorInsets.top = topInset
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    title = "Waiting for a stanger to join"
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(backToHome))
+    
     print("In TextChatViewController")
     //self.view.backgroundColor = UIColor.white
     if conversationRef == nil {
@@ -158,7 +151,7 @@ final class TextChatViewController: MessagesViewController {
               let dateFormatter = DateFormatter()
               dateFormatter.dateFormat = "MMMM dd yyyy"
               let currentDate = dateFormatter.string(from: date)
-              self.navItem.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
+              self.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
               
               // Start countdown to video chat
               if self.timer == nil {
@@ -193,7 +186,7 @@ final class TextChatViewController: MessagesViewController {
                   let dateFormatter = DateFormatter()
                   dateFormatter.dateFormat = "MMMM dd yyyy"
                   let currentDate = dateFormatter.string(from: date)
-                  self.navItem.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
+                  self.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
                   // Start countdown to video chat
                   if self.timer == nil {
                     self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
@@ -248,7 +241,8 @@ final class TextChatViewController: MessagesViewController {
     if timeLeft > 0 {
       timeLeft -= 1
       if timeLeft <= 50 {
-        navItem.title = "Time until video chat: \(timeLeft)"
+//        navItem.title = "Time until video chat: \(timeLeft)"
+        self.title = "Time until video chat: \(timeLeft)"
       }
     }
 
@@ -273,7 +267,7 @@ final class TextChatViewController: MessagesViewController {
   
   private func downloadProfilePictureFromFirebase(uid: String) {
     
-    let profilePictureRef = Storage.storage().reference().child("profilePictures").child(uid)
+    let profilePictureRef = Storage.storage().reference().child("profilePictures/\(uid)/picture0")
     // Download profile picture in memory  with a maximum allowed size of 1MB
     profilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
       if error != nil {
@@ -350,7 +344,7 @@ final class TextChatViewController: MessagesViewController {
   // MARK: Transition
   func transitionToVideoChat() {
     // hide views so that when the user transitions from video -> text -> home, they don't see their old conversation
-    navBar.isHidden = true
+//    navBar.isHidden = true
     messageInputBar.isHidden = true
     messagesCollectionView.isHidden = true
     
