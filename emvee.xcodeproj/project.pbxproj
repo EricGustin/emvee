@@ -25,7 +25,7 @@
 		FA5AD8C5248AF991001DFAB6 /* VideoChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */; };
 		FA6A18D92492BCFD007CE8EF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA6A18D82492BCFD007CE8EF /* GoogleService-Info.plist */; };
 		FA76570B2477213A0022C644 /* MultiSimConfig.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA76570A2477213A0022C644 /* MultiSimConfig.txt */; };
-		FA785165249962A5001A8949 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA785164249962A5001A8949 /* Popup.swift */; };
+		FA785165249962A5001A8949 /* InfoPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA785164249962A5001A8949 /* InfoPopup.swift */; };
 		FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FA246F49F500895098 /* TextChatViewController.swift */; };
 		FA91C5FD246F4ADE00895098 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FC246F4ADE00895098 /* Message.swift */; };
 		FA91C5FF246F56E800895098 /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */; };
@@ -40,6 +40,7 @@
 		FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */; };
 		FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */; };
 		FA9505D324A6617F00AD3BEF /* ProfilePreviewPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */; };
+		FA9505D524A80AA300AD3BEF /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D424A80AA300AD3BEF /* Popup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,7 +71,7 @@
 		FA6A18DD2492BF56007CE8EF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA76570A2477213A0022C644 /* MultiSimConfig.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = MultiSimConfig.txt; sourceTree = "<group>"; };
 		FA76570E247721DB0022C644 /* launch_multiple_simulators.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = launch_multiple_simulators.sh; sourceTree = "<group>"; };
-		FA785164249962A5001A8949 /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
+		FA785164249962A5001A8949 /* InfoPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPopup.swift; sourceTree = "<group>"; };
 		FA91C5FA246F49F500895098 /* TextChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextChatViewController.swift; sourceTree = "<group>"; };
 		FA91C5FC246F4ADE00895098 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		FA91C5FE246F56E800895098 /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
@@ -85,6 +86,7 @@
 		FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCurrentLocationViewController.swift; sourceTree = "<group>"; };
 		FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHometownLocationViewController.swift; sourceTree = "<group>"; };
 		FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePreviewPopup.swift; sourceTree = "<group>"; };
+		FA9505D424A80AA300AD3BEF /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,8 +205,9 @@
 			isa = PBXGroup;
 			children = (
 				FA91C65E24749F2E00895098 /* UIRadioButton.swift */,
-				FA785164249962A5001A8949 /* Popup.swift */,
+				FA785164249962A5001A8949 /* InfoPopup.swift */,
 				FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */,
+				FA9505D424A80AA300AD3BEF /* Popup.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -375,7 +378,7 @@
 				FA9505C724A2B96800AD3BEF /* EditProfileViewController.swift in Sources */,
 				FA54DBED24661C99008227FE /* WelcomeViewController.swift in Sources */,
 				FA91C601246F5BA900895098 /* ChatRoom.swift in Sources */,
-				FA785165249962A5001A8949 /* Popup.swift in Sources */,
+				FA785165249962A5001A8949 /* InfoPopup.swift in Sources */,
 				FA54DBE924661C99008227FE /* AppDelegate.swift in Sources */,
 				FA54DC0D24666A0C008227FE /* ProfileViewController.swift in Sources */,
 				FA0899C8249C7109005061DB /* UITextView+.swift in Sources */,
@@ -386,6 +389,7 @@
 				FA54DC052466232D008227FE /* StyleUtilities.swift in Sources */,
 				FA54DBFD24661CDF008227FE /* SignUpViewController.swift in Sources */,
 				FA54DBFF24661CEA008227FE /* LoginViewController.swift in Sources */,
+				FA9505D524A80AA300AD3BEF /* Popup.swift in Sources */,
 				FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */,
 				FA54DBEB24661C99008227FE /* SceneDelegate.swift in Sources */,
 				FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */,

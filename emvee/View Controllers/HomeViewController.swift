@@ -36,7 +36,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     transitionToProfile()
   }
   @objc func infoButtonClicked() {
-    let infoPopup = Popup()
+    let infoPopup = InfoPopup()
     view.addSubview(infoPopup)
   }
 
