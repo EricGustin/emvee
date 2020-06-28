@@ -314,7 +314,7 @@ class ProfileViewController: UIViewController {
   }
   
   // MARK: Calculations
-  func getAge(currentDate: String, dateOfBirth: String) -> Int {
+  public func getAge(currentDate: String, dateOfBirth: String) -> Int {
     let currentDateArray: [String] = currentDate.wordList
     let dateOfBirthArray: [String] = dateOfBirth.wordList
     var age = Int(currentDateArray[2])! - Int(dateOfBirthArray[2])!

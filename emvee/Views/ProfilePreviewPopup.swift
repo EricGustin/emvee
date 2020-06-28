@@ -11,6 +11,9 @@ import InputBarAccessoryView
 
 class ProfilePreviewPopup: UIView, Popup {
 
+  private var profileImage: UIImage?
+  private var name: String?
+  
   private let container: UIView = {
     let container = UIView()
     container.translatesAutoresizingMaskIntoConstraints = false
@@ -34,8 +37,8 @@ class ProfilePreviewPopup: UIView, Popup {
     return container
   }()
   
-  private var profilePicture: UIImageView = {
-    let picture = UIImageView(image: UIImage())
+  private lazy var profilePicture: UIImageView = {
+    let picture = UIImageView(image: profileImage)
     picture.backgroundColor = .white
     picture.translatesAutoresizingMaskIntoConstraints = false
     picture.isUserInteractionEnabled = true
@@ -44,11 +47,15 @@ class ProfilePreviewPopup: UIView, Popup {
     return picture
   }()
   
+  required init(profileImage: UIImage?, name: String?) {
+    super.init(frame: .zero)
+    self.profileImage = profileImage
+    self.name = name
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
     scrollView.delegate = self
-    
     backgroundColor = UIColor.gray.withAlphaComponent(0.7)
     self.frame = UIScreen.main.bounds
     
@@ -73,18 +80,16 @@ class ProfilePreviewPopup: UIView, Popup {
   internal func setUpSubviews() {
     
     self.addSubview(scrollView)
-    scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-    scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -70).isActive = true  // 20 + the height of the messageInputBar
+    scrollView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
+    scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -70).isActive = true  // 20 + the height of the messageInputBar
     scrollView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     scrollView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-    scrollView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     
     scrollView.addSubview(container)
     container.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
     container.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -70).isActive = true  // 20 + the height of the messageInputBar
     container.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-    container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     
     scrollView.addSubview(profilePictureContainer)
     profilePictureContainer.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true

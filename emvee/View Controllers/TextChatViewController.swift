@@ -69,6 +69,7 @@ final class TextChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+//    let tempPopUp = ProfilePreviewPopup(profilePicture: remoteProfilePicture, name: remoteUserName)
     let tempPopUp = ProfilePreviewPopup()
     view.addSubview(tempPopUp)
     
@@ -366,7 +367,7 @@ final class TextChatViewController: MessagesViewController {
   
   @objc public func showRemoteProfilePopup() {
     print("showing remote profile popup")
-    let profilePopup = ProfilePreviewPopup()
+    let profilePopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteUserName)
     view.addSubview(profilePopup)
   }
 
