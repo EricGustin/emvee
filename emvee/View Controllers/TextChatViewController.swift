@@ -23,7 +23,7 @@ final class TextChatViewController: MessagesViewController {
   private var localProfilePicture: UIImage?
   private var remoteProfilePicture: UIImage?
 
-  private var remoteUserName: String?
+  private var remoteNameAndAge: String?
   
   private let chatRoomRef: DocumentReference?
   
@@ -142,13 +142,14 @@ final class TextChatViewController: MessagesViewController {
               self.downloadProfilePictureFromFirebase(uid: uid0 as! String)
               
               // Display the other user's name and age
-              self.remoteUserName = userDoc.get("firstName") as? String
+              let remoteName = userDoc.get("firstName") as? String
               let remoteUserBirthday = userDoc.get("birthday") ?? ""
               let date = Date()
               let dateFormatter = DateFormatter()
               dateFormatter.dateFormat = "MMMM dd yyyy"
               let currentDate = dateFormatter.string(from: date)
-              self.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
+              self.remoteNameAndAge = "\(remoteName ?? "User"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
+              self.title = "Talking to \(self.remoteNameAndAge ?? "User")"
               
               // Start countdown to video chat
               if self.timer == nil {
@@ -177,13 +178,14 @@ final class TextChatViewController: MessagesViewController {
                   self.downloadProfilePictureFromFirebase(uid: uid1 as! String)
                   
                   // Display the other user's name and age
-                  self.remoteUserName = userDoc.get("firstName") as? String
+                  let remoteName = userDoc.get("firstName") as? String
                   let remoteUserBirthday = userDoc.get("birthday") ?? ""
                   let date = Date()
                   let dateFormatter = DateFormatter()
                   dateFormatter.dateFormat = "MMMM dd yyyy"
                   let currentDate = dateFormatter.string(from: date)
-                  self.title = "Talking to \(self.remoteUserName ?? "Anonymous"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
+                  self.remoteNameAndAge = "\(remoteName ?? "User"), \(self.getOtherUserAge(currentDate: currentDate, dateOfBirth: remoteUserBirthday as! String))"
+                  self.title = "Talking to \(self.remoteNameAndAge ?? "User")"
                   // Start countdown to video chat
                   if self.timer == nil {
                     self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.counter), userInfo: nil, repeats: true)
@@ -367,7 +369,7 @@ final class TextChatViewController: MessagesViewController {
   
   @objc public func showRemoteProfilePopup() {
     print("showing remote profile popup")
-    let profilePopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteUserName)
+    let profilePopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteNameAndAge)
     view.addSubview(profilePopup)
   }
 

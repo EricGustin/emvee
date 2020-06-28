@@ -47,14 +47,35 @@ class ProfilePreviewPopup: UIView, Popup {
     return picture
   }()
   
+  private lazy var nameLabel: UILabel = {
+    let label = UILabel()
+    label.text = self.name
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 18), size: 18)
+    label.textColor = .black
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    return label
+  }()
+  
   required init(profileImage: UIImage?, name: String?) {
     super.init(frame: .zero)
+    print("in required init")
     self.profileImage = profileImage
     self.name = name
+    postInit()
   }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    postInit()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  private func postInit() {
     scrollView.delegate = self
     backgroundColor = UIColor.gray.withAlphaComponent(0.7)
     self.frame = UIScreen.main.bounds
@@ -62,10 +83,6 @@ class ProfilePreviewPopup: UIView, Popup {
     setUpSubviews()
     animateIn()
     setUpGestures()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -91,9 +108,9 @@ class ProfilePreviewPopup: UIView, Popup {
     container.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     
-    scrollView.addSubview(profilePictureContainer)
+    container.addSubview(profilePictureContainer)
     profilePictureContainer.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    NSLayoutConstraint(item: profilePictureContainer, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
+    NSLayoutConstraint(item: profilePictureContainer, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
     profilePictureContainer.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
     profilePictureContainer.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
     profilePictureContainer.contentMode = .scaleAspectFill
@@ -102,7 +119,7 @@ class ProfilePreviewPopup: UIView, Popup {
     
     profilePictureContainer.addSubview(profilePicture)
     profilePicture.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    NSLayoutConstraint(item: profilePicture, attribute: .centerY, relatedBy: .equal, toItem: scrollView, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
+    NSLayoutConstraint(item: profilePicture, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
     profilePicture.leadingAnchor.constraint(equalTo: profilePictureContainer.leadingAnchor, constant: profilePictureContainer.layer.borderWidth).isActive = true
     profilePicture.topAnchor.constraint(equalTo: profilePictureContainer.topAnchor, constant: profilePictureContainer.layer.borderWidth).isActive = true
     profilePicture.trailingAnchor.constraint(equalTo: profilePictureContainer.trailingAnchor, constant: -profilePictureContainer.layer.borderWidth).isActive = true
@@ -111,6 +128,11 @@ class ProfilePreviewPopup: UIView, Popup {
     profilePicture.layer.cornerRadius = UIScreen.main.bounds.width / 5
     profilePicture.layer.masksToBounds = true
     
+
+    container.addSubview(nameLabel)
+    nameLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
+    nameLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
+    
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
   }
@@ -118,8 +140,14 @@ class ProfilePreviewPopup: UIView, Popup {
   internal func animateIn() {
     container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
     self.alpha = 0
+    profilePictureContainer.alpha = 0
+    profilePicture.alpha = 0
+    nameLabel.alpha = 0
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.alpha = 1
+      self.profilePictureContainer.alpha = 1
+      self.profilePicture.alpha = 1
+      self.nameLabel.alpha = 1
       self.container.transform = .identity  // reset transform
     })
   }
@@ -130,6 +158,9 @@ class ProfilePreviewPopup: UIView, Popup {
     UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
       self.alpha = 0
+      self.profilePictureContainer.alpha = 0
+      self.profilePicture.alpha = 0
+      self.nameLabel.alpha = 0
     }) { (complete) in
       if complete {
         self.removeFromSuperview()
