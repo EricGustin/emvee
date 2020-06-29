@@ -22,6 +22,7 @@ final class TextChatViewController: MessagesViewController {
   private var localUserName: String?
   private var localProfilePicture: UIImage?
   private var remoteProfilePicture: UIImage?
+  private var remoteAboutMeText: String?
 
   private var remoteNameAndAge: String?
   
@@ -144,6 +145,7 @@ final class TextChatViewController: MessagesViewController {
               // Display the other user's name and age
               let remoteName = userDoc.get("firstName") as? String
               let remoteUserBirthday = userDoc.get("birthday") ?? ""
+              self.remoteAboutMeText = userDoc.get("bio") as? String
               let date = Date()
               let dateFormatter = DateFormatter()
               dateFormatter.dateFormat = "MMMM dd yyyy"
@@ -369,7 +371,7 @@ final class TextChatViewController: MessagesViewController {
   
   @objc public func showRemoteProfilePopup() {
     print("showing remote profile popup")
-    let profilePopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteNameAndAge)
+    let profilePopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteNameAndAge, aboutMeText: remoteAboutMeText)
     view.addSubview(profilePopup)
   }
 

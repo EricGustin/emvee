@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import InputBarAccessoryView
+import Firebase
 
 class ProfilePreviewPopup: UIView, Popup {
 
   private var profileImage: UIImage?
   private var name: String?
+  private var aboutMeText: String?
   
   private let container: UIView = {
     let container = UIView()
@@ -58,11 +59,29 @@ class ProfilePreviewPopup: UIView, Popup {
     return label
   }()
   
-  required init(profileImage: UIImage?, name: String?) {
+  private lazy var aboutMeTextView: UITextView = {
+    let textView = UITextView()
+    if self.aboutMeText != nil {
+      textView.text = self.aboutMeText
+      textView.translatesAutoresizingMaskIntoConstraints = false
+      textView.isEditable = false
+      textView.isScrollEnabled = true
+      textView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
+      textView.layer.cornerRadius = 25
+      textView.layer.borderColor = UIColor.lightGray.cgColor
+      textView.layer.borderWidth = 0.25
+      textView.backgroundColor = .white
+      textView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+    }
+    return textView
+  }()
+  
+  required init(profileImage: UIImage?, name: String?, aboutMeText: String?) {
     super.init(frame: .zero)
     print("in required init")
     self.profileImage = profileImage
     self.name = name
+    self.aboutMeText = aboutMeText
     postInit()
   }
   
@@ -128,10 +147,15 @@ class ProfilePreviewPopup: UIView, Popup {
     profilePicture.layer.cornerRadius = UIScreen.main.bounds.width / 5
     profilePicture.layer.masksToBounds = true
     
-
     container.addSubview(nameLabel)
     nameLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
     nameLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
+    
+    scrollView.addSubview(aboutMeTextView)
+    aboutMeTextView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 85).isActive = true
+    aboutMeTextView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
+    aboutMeTextView.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.3).isActive = true
+    aboutMeTextView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
     
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
@@ -143,11 +167,13 @@ class ProfilePreviewPopup: UIView, Popup {
     profilePictureContainer.alpha = 0
     profilePicture.alpha = 0
     nameLabel.alpha = 0
+    aboutMeTextView.alpha = 0
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.alpha = 1
       self.profilePictureContainer.alpha = 1
       self.profilePicture.alpha = 1
       self.nameLabel.alpha = 1
+      self.aboutMeTextView.alpha = 1
       self.container.transform = .identity  // reset transform
     })
   }
@@ -161,6 +187,7 @@ class ProfilePreviewPopup: UIView, Popup {
       self.profilePictureContainer.alpha = 0
       self.profilePicture.alpha = 0
       self.nameLabel.alpha = 0
+      self.aboutMeTextView.alpha = 0
     }) { (complete) in
       if complete {
         self.removeFromSuperview()
