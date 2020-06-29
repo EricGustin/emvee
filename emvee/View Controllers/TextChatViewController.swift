@@ -182,6 +182,7 @@ final class TextChatViewController: MessagesViewController {
                   // Display the other user's name and age
                   let remoteName = userDoc.get("firstName") as? String
                   let remoteUserBirthday = userDoc.get("birthday") ?? ""
+                  self.remoteAboutMeText = userDoc.get("bio") as? String
                   let date = Date()
                   let dateFormatter = DateFormatter()
                   dateFormatter.dateFormat = "MMMM dd yyyy"
@@ -224,9 +225,7 @@ final class TextChatViewController: MessagesViewController {
   
   // MARK: - Actions
   @objc func backToHome() {
-    print("isFull set to true. no longer joinable")
     chatRoomRef?.updateData(["isFull": true, "isActive": false])
-    print("invalidate back to home")
     if timer != nil {
       timer!.invalidate()
       timer = nil
@@ -250,7 +249,6 @@ final class TextChatViewController: MessagesViewController {
     }
 
     if timeLeft == 0 {
-      print("hello")
       chatRoomRef?.getDocument(completion: { (document, err) in
         if let document = document, document.exists {
           if document.get("isActive") == nil {

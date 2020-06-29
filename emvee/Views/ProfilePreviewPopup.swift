@@ -18,7 +18,7 @@ class ProfilePreviewPopup: UIView, Popup {
   private let container: UIView = {
     let container = UIView()
     container.translatesAutoresizingMaskIntoConstraints = false
-    container.backgroundColor = .white
+    container.backgroundColor = .systemGray6
     container.layer.cornerRadius = 24
     return container
   }()
@@ -151,7 +151,7 @@ class ProfilePreviewPopup: UIView, Popup {
     nameLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
     nameLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
     
-    scrollView.addSubview(aboutMeTextView)
+    container.addSubview(aboutMeTextView)
     aboutMeTextView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 85).isActive = true
     aboutMeTextView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
     aboutMeTextView.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.3).isActive = true
