@@ -12,13 +12,17 @@ import FirebaseAuth
 
 class SignUpViewController: UIViewController {
   
+  private var datePicker: UIDatePicker?
+  
+  
   @IBOutlet weak var firstNameTextField: UITextField!
   @IBOutlet weak var lastNameTextField: UITextField!
   @IBOutlet weak var emailTextField: UITextField!
   @IBOutlet weak var passwordTextField: UITextField!
+  @IBOutlet weak var dateOfBirthTextField: UITextField!
   @IBOutlet weak var signUpButton: UIButton!
   @IBOutlet weak var errorLabel: UILabel!
-  @IBOutlet weak var datePicker: UIDatePicker!
+  //@IBOutlet weak var datePicker: UIDatePicker!
   @IBAction func cancelButtonClicked(_ sender: UIButton) {
     let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
     
@@ -30,7 +34,10 @@ class SignUpViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In signUpViewController")
-    setUpElements()
+    setUpSubviews()
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+    view.addGestureRecognizer(tapGesture)
     
     firstNameTextField.delegate = self
     lastNameTextField.delegate = self
@@ -38,12 +45,20 @@ class SignUpViewController: UIViewController {
     passwordTextField.delegate = self
   }
   
-  func setUpElements() {
+  func setUpSubviews() {
+    
+    datePicker = UIDatePicker()
+    datePicker?.datePickerMode = .date
+    datePicker?.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+    
+    dateOfBirthTextField.inputView = datePicker
+    
     errorLabel.alpha = 0
     StyleUtilities.styleTextField(firstNameTextField, firstNameTextField.placeholder ?? "")
     StyleUtilities.styleTextField(lastNameTextField, lastNameTextField.placeholder ?? "")
     StyleUtilities.styleTextField(emailTextField, emailTextField.placeholder ?? "")
     StyleUtilities.styleTextField(passwordTextField, passwordTextField.placeholder ?? "")
+    StyleUtilities.styleTextField(dateOfBirthTextField, dateOfBirthTextField.placeholder ?? "")
     StyleUtilities.styleFilledButton(signUpButton)
   }
   
@@ -52,7 +67,8 @@ class SignUpViewController: UIViewController {
     if firstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
       lastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
       emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
-      passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+      passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+      dateOfBirthTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
       return "Please fill in all fields"
     }
     let cleanedPassword = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -87,10 +103,7 @@ class SignUpViewController: UIViewController {
       let lastName = lastNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "MMMM dd yyyy"
-      let dateOfBirth = dateFormatter.string(from: datePicker.date
-      )
+      let dateOfBirth = dateOfBirthTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
         // Check for errors
         if err != nil {
@@ -120,6 +133,17 @@ class SignUpViewController: UIViewController {
         }
       }
     }
+  }
+  
+  @objc private func dateChanged() {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MMMM dd yyyy"
+    dateOfBirthTextField.text = dateFormatter.string(from: datePicker!.date)
+    view.endEditing(true)
+  }
+  
+  @objc private func viewTapped() {
+    view.endEditing(true)
   }
   
 }

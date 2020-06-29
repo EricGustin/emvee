@@ -16,6 +16,8 @@ struct Constants {
     static let settingsViewController = "settingsViewController"
     static let textChatViewController = "textChatViewController"
     static let videoChatViewController = "videoChatViewController"
+    static let signUpViewController = "signUpViewController"
+    static let loginViewController = "loginViewController"
   }
   
   struct Dates {
