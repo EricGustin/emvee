@@ -13,6 +13,8 @@ import FirebaseAuth
 class SignUpViewController: UIViewController {
   
   //  UIViews
+  private var scrollView: UIScrollView?
+  private var navigationBarBackground: UIImageView?
   private var background: UIImageView?
   private var section1VerticalStack: UIStackView?
   private var firstNameTextField: UITextField?
@@ -27,15 +29,20 @@ class SignUpViewController: UIViewController {
   private var cancelButton: UIButton?
   
   @objc func cancelButtonClicked() {
-    let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
-    view.window?.rootViewController = welcomeViewController
-    view.window?.makeKeyAndVisible()
+//    let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
+//    view.window?.rootViewController = welcomeViewController
+//    view.window?.makeKeyAndVisible()
+    self.dismiss(animated: true, completion: nil)
   }
   
   
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    title = "Sign Up"
+    navigationController?.navigationBar.prefersLargeTitles = true
+    
+    
     setUpSubviews()
     setUpGestures()
     setDelegates()
@@ -43,10 +50,25 @@ class SignUpViewController: UIViewController {
   
   private func setUpSubviews() {
     
+//    navigationBarBackground = UIImageView(image: UIImage(named: "background@4x"))
+//    navigationBarBackground?.translatesAutoresizingMaskIntoConstraints = false
+//    navigationBarBackground?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+//    navigationBarBackground?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+//    navigationBarBackground?.heightAnchor.constraint(equalTo: (navigationController?.navigationBar.heightAnchor)!).isActive = true
+    
+    scrollView = UIScrollView()
+    scrollView?.backgroundColor = .clear
+    view.addSubview(scrollView!)
+    scrollView?.translatesAutoresizingMaskIntoConstraints = false
+    scrollView?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+    scrollView?.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+    scrollView?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+    scrollView?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    
     background = UIImageView(image: UIImage(named: "background@4x"))
     background?.translatesAutoresizingMaskIntoConstraints = false
     background?.contentMode = .scaleAspectFill
-    view.addSubview(background!)
+    scrollView?.addSubview(background!)
     background?.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
     background?.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
     background?.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -92,10 +114,10 @@ class SignUpViewController: UIViewController {
     section1VerticalStack?.addArrangedSubview(lastNameTextField!)
     section1VerticalStack?.addArrangedSubview(emailTextField!)
     section1VerticalStack?.addArrangedSubview(passwordTextField!)
-    view.addSubview(section1VerticalStack!)
+    scrollView?.addSubview(section1VerticalStack!)
     section1VerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     section1VerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
-    section1VerticalStack?.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
+    section1VerticalStack?.topAnchor.constraint(equalTo: scrollView!.topAnchor, constant: 40).isActive = true
     section1VerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
     
     dateOfBirthTextField = UITextField()
@@ -108,7 +130,7 @@ class SignUpViewController: UIViewController {
     dateOfBirthTextField?.inputView = datePicker
     StyleUtilities.styleTextField(dateOfBirthTextField!, dateOfBirthTextField!.placeholder ?? "")
     dateOfBirthTextField?.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(dateOfBirthTextField!)
+    scrollView?.addSubview(dateOfBirthTextField!)
     dateOfBirthTextField?.heightAnchor.constraint(equalToConstant: 50).isActive = true
     dateOfBirthTextField?.topAnchor.constraint(equalTo: section1VerticalStack!.bottomAnchor, constant: 40).isActive = true
     dateOfBirthTextField?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
@@ -138,7 +160,7 @@ class SignUpViewController: UIViewController {
     section2VerticalStack?.translatesAutoresizingMaskIntoConstraints = false
     section2VerticalStack?.addArrangedSubview(signUpButton!)
     section2VerticalStack?.addArrangedSubview(errorLabel!)
-    view.addSubview(section2VerticalStack!)
+    scrollView?.addSubview(section2VerticalStack!)
     section2VerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     section2VerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
     section2VerticalStack?.topAnchor.constraint(equalTo: dateOfBirthTextField!.bottomAnchor, constant: 40).isActive = true
@@ -149,11 +171,15 @@ class SignUpViewController: UIViewController {
     cancelButton?.setTitle("Cancel", for: .normal)
     cancelButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 16)
     cancelButton?.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
-    view.addSubview(cancelButton!)
+    scrollView?.addSubview(cancelButton!)
     cancelButton?.translatesAutoresizingMaskIntoConstraints = false
     cancelButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
     cancelButton?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30).isActive = true
     cancelButton?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+    
+    //  And finally, calculate the scrollView's contentSize
+    scrollView?.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 650)
+    
   }
   
   private func setUpGestures() {
