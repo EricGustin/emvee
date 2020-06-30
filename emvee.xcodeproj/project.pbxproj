@@ -41,6 +41,8 @@
 		FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */; };
 		FA9505D324A6617F00AD3BEF /* ProfilePreviewPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */; };
 		FA9505D524A80AA300AD3BEF /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D424A80AA300AD3BEF /* Popup.swift */; };
+		FA9505D724ABE53200AD3BEF /* SetUpProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D624ABE53200AD3BEF /* SetUpProfileViewController.swift */; };
+		FA9505DB24ABEE4300AD3BEF /* Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505DA24ABEE4300AD3BEF /* Calculations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +89,8 @@
 		FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHometownLocationViewController.swift; sourceTree = "<group>"; };
 		FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePreviewPopup.swift; sourceTree = "<group>"; };
 		FA9505D424A80AA300AD3BEF /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
+		FA9505D624ABE53200AD3BEF /* SetUpProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetUpProfileViewController.swift; sourceTree = "<group>"; };
+		FA9505DA24ABEE4300AD3BEF /* Calculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +181,7 @@
 				FA9505CC24A563BA00AD3BEF /* EditGenderViewController.swift */,
 				FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */,
 				FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */,
+				FA9505D624ABE53200AD3BEF /* SetUpProfileViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -187,6 +192,7 @@
 				FA54DC042466232D008227FE /* StyleUtilities.swift */,
 				FA54DC0624662352008227FE /* FormUtilities.swift */,
 				FA54DC0A24663B37008227FE /* Constants.swift */,
+				FA9505DA24ABEE4300AD3BEF /* Calculations.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -388,6 +394,7 @@
 				FA91C60324709FF000895098 /* NavigationController.swift in Sources */,
 				FA54DC052466232D008227FE /* StyleUtilities.swift in Sources */,
 				FA54DBFD24661CDF008227FE /* SignUpViewController.swift in Sources */,
+				FA9505DB24ABEE4300AD3BEF /* Calculations.swift in Sources */,
 				FA54DBFF24661CEA008227FE /* LoginViewController.swift in Sources */,
 				FA9505D524A80AA300AD3BEF /* Popup.swift in Sources */,
 				FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */,
@@ -402,6 +409,7 @@
 				FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */,
 				FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */,
 				FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */,
+				FA9505D724ABE53200AD3BEF /* SetUpProfileViewController.swift in Sources */,
 				FA91C5FD246F4ADE00895098 /* Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

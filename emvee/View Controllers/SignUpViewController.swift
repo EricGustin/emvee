@@ -31,15 +31,19 @@ class SignUpViewController: UIViewController {
   private var preferredGenderLabel: UILabel?
   private var preferredGenderSegmentedControlContainer: UIView?
   private var preferredGenderSegmentedControl: UISegmentedControl?
+  private var hometownVerticalStack: UIStackView?
+  private var hometownLabel: UILabel?
+  private var hometownTextField: UITextField?
+  private var currentLocationVerticalStack: UIStackView?
+  private var currentLocationLabel: UILabel?
+  private var currentLocationTextField: UITextField?
+  
   private var continueVerticalStack: UIStackView?
-  private var signUpButton: UIButton?
+  private var continueButton: UIButton?
   private var errorLabel: UILabel?
   private var cancelButton: UIButton?
   
   @objc func cancelButtonClicked() {
-//    let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
-//    view.window?.rootViewController = welcomeViewController
-//    view.window?.makeKeyAndVisible()
     self.dismiss(animated: true, completion: nil)
   }
   
@@ -47,7 +51,7 @@ class SignUpViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "Sign Up"
+    title = "Basic Info"
     navigationController?.navigationBar.prefersLargeTitles = true
     
     
@@ -225,14 +229,68 @@ class SignUpViewController: UIViewController {
     preferredGenderVerticalStack?.topAnchor.constraint(equalTo: myGenderVerticalStack!.bottomAnchor, constant: 40).isActive = true
     preferredGenderVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
     
-    signUpButton = UIButton()
-    signUpButton?.setTitleColor(.white, for: .normal)
-    signUpButton?.setTitle("Sign Up", for: .normal)
-    signUpButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 16)
-    signUpButton?.addTarget(self, action: #selector(signUpClicked), for: .touchUpInside)
-    StyleUtilities.styleFilledButton(signUpButton!)
-    signUpButton?.translatesAutoresizingMaskIntoConstraints = false
-    signUpButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    hometownLabel = UILabel()
+    hometownLabel?.text = "     My hometown is..."
+    hometownLabel?.textColor = .black
+    hometownLabel?.font = UIFont(name: "American Typewriter", size: 24)
+    hometownLabel?.translatesAutoresizingMaskIntoConstraints = false
+    hometownLabel?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    hometownTextField = UITextField()
+    hometownTextField?.textColor = .black
+    hometownTextField?.placeholder = "Portland, OR"
+    hometownTextField?.font = UIFont(name: "American Typewriter", size: 16)
+    StyleUtilities.styleTextField(hometownTextField!, hometownTextField!.placeholder ?? "")
+    hometownTextField?.translatesAutoresizingMaskIntoConstraints = false
+    hometownTextField?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    hometownVerticalStack = UIStackView()
+    hometownVerticalStack?.axis = .vertical
+    hometownVerticalStack?.spacing = 0
+    hometownVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
+    hometownVerticalStack?.addArrangedSubview(hometownLabel!)
+    hometownVerticalStack?.addArrangedSubview(hometownTextField!)
+    scrollView?.addSubview(hometownVerticalStack!)
+    hometownVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    hometownVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
+    hometownVerticalStack?.topAnchor.constraint(equalTo: preferredGenderVerticalStack!.bottomAnchor, constant: 40).isActive = true
+    hometownVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    
+    currentLocationLabel = UILabel()
+    currentLocationLabel?.text = "     I live in..."
+    currentLocationLabel?.textColor = .black
+    currentLocationLabel?.font = UIFont(name: "American Typewriter", size: 24)
+    currentLocationLabel?.translatesAutoresizingMaskIntoConstraints = false
+    currentLocationLabel?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    currentLocationTextField = UITextField()
+    currentLocationTextField?.textColor = .black
+    currentLocationTextField?.placeholder = "Spokane, WA"
+    currentLocationTextField?.font = UIFont(name: "American Typewriter", size: 16)
+    StyleUtilities.styleTextField(currentLocationTextField!, currentLocationTextField!.placeholder ?? "")
+    currentLocationTextField?.translatesAutoresizingMaskIntoConstraints = false
+    currentLocationTextField?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    currentLocationVerticalStack = UIStackView()
+    currentLocationVerticalStack?.axis = .vertical
+    currentLocationVerticalStack?.spacing = 0
+    currentLocationVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
+    currentLocationVerticalStack?.addArrangedSubview(currentLocationLabel!)
+    currentLocationVerticalStack?.addArrangedSubview(currentLocationTextField!)
+    scrollView?.addSubview(currentLocationVerticalStack!)
+    currentLocationVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    currentLocationVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
+    currentLocationVerticalStack?.topAnchor.constraint(equalTo: hometownVerticalStack!.bottomAnchor, constant: 40).isActive = true
+    currentLocationVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    
+    continueButton = UIButton()
+    continueButton?.setTitleColor(.white, for: .normal)
+    continueButton?.setTitle("Continue", for: .normal)
+    continueButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 16)
+    continueButton?.addTarget(self, action: #selector(continueButtonClicked), for: .touchUpInside)
+    StyleUtilities.styleFilledButton(continueButton!)
+    continueButton?.translatesAutoresizingMaskIntoConstraints = false
+    continueButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
     errorLabel = UILabel()
     errorLabel?.textAlignment = .center
@@ -254,17 +312,17 @@ class SignUpViewController: UIViewController {
     continueVerticalStack?.axis = .vertical
     continueVerticalStack?.spacing = 20
     continueVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
-    continueVerticalStack?.addArrangedSubview(signUpButton!)
+    continueVerticalStack?.addArrangedSubview(continueButton!)
     continueVerticalStack?.addArrangedSubview(errorLabel!)
     continueVerticalStack?.addArrangedSubview(cancelButton!)
     scrollView?.addSubview(continueVerticalStack!)
     continueVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     continueVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
-    continueVerticalStack?.topAnchor.constraint(equalTo: preferredGenderVerticalStack!.bottomAnchor, constant: 60).isActive = true
+    continueVerticalStack?.topAnchor.constraint(equalTo: currentLocationVerticalStack!.bottomAnchor, constant: 60).isActive = true
     continueVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
     
     //  And finally, calculate the scrollView's contentSize
-    scrollView?.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 950)
+    scrollView?.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1250)
     
   }
   
@@ -278,6 +336,8 @@ class SignUpViewController: UIViewController {
     lastNameTextField?.delegate = self
     emailTextField?.delegate = self
     passwordTextField?.delegate = self
+    hometownTextField?.delegate = self
+    currentLocationTextField?.delegate = self
   }
   
   func validateFields() -> String? {
@@ -286,12 +346,21 @@ class SignUpViewController: UIViewController {
       lastNameTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
       emailTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
       passwordTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
-      dateOfBirthTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+      dateOfBirthTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+      hometownTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+      currentLocationTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
       return "Please fill in all fields"
     }
     let cleanedPassword = passwordTextField!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
     if !(FormUtilities.isPasswordValid(cleanedPassword)) {
       return "Please make sure your password is at least 8 characters, contains a special character and a number."
+    }
+    let date = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MMMM dd yyyy"
+    let currentDate = dateFormatter.string(from: date)
+    if Calculations.getAge(currentDate: currentDate, dateOfBirth: dateOfBirthTextField?.text ?? "January 20 2020") < 18 {
+      return "You must be at least 18 years old to use this app."
     }
     return nil
   }
@@ -301,14 +370,20 @@ class SignUpViewController: UIViewController {
     errorLabel?.alpha = 1
   }
   
-  private func transitionToHome() {
-    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-    
-    view.window?.rootViewController = homeViewController
-    view.window?.makeKeyAndVisible()
+//  private func transitionToHome() {
+//    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+//
+//    view.window?.rootViewController = homeViewController
+//    view.window?.makeKeyAndVisible()
+//  }
+  private func transitionToSetUpProfile() {
+    let vc = SetUpProfileViewController()
+    let nc = NavigationController(vc)
+    nc.modalPresentationStyle = .fullScreen
+    self.present(nc, animated: true, completion: nil)
   }
   
-  @objc func signUpClicked(_ sender: Any) {
+  @objc func continueButtonClicked(_ sender: Any) {
     // Validate fields
     let error = validateFields()
     if error != nil {
@@ -322,11 +397,15 @@ class SignUpViewController: UIViewController {
       let email = emailTextField!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       let password = passwordTextField!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       let dateOfBirth = dateOfBirthTextField?.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+      let gender = myGenderSegmentedControl?.titleForSegment(at: myGenderSegmentedControl!.selectedSegmentIndex)
+      let preferredGender = preferredGenderSegmentedControl?.titleForSegment(at: preferredGenderSegmentedControl!.selectedSegmentIndex)
+      let hometown = hometownTextField?.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+      let currentLocation = currentLocationTextField?.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
         // Check for errors
         if err != nil {
           // There is an error
-          self.showError("Error creating user")
+          self.showError("Error creating user. Please enter a valid email address.")
         }
         else {
           // User created successfully. Store relevent informastion
@@ -338,8 +417,12 @@ class SignUpViewController: UIViewController {
             "firstName": firstName,
             "lastName": lastName,
             "birthday": dateOfBirth!,
+            "gender": gender!,
+            "preferredGender": preferredGender!,
+            "hometown": hometown!,
+            "currentLcoation": currentLocation!,
             "uid": userID!,
-            "bio": "",
+            "bio": ""
           ])
           
           // Add the user to the onlineUsers document
@@ -347,7 +430,7 @@ class SignUpViewController: UIViewController {
           print("successfully added user to onlineUsers collection")
           
           // Transition to homescreen
-          self.transitionToHome()
+          self.transitionToSetUpProfile()
         }
       }
     }
