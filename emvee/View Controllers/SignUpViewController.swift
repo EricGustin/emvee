@@ -12,28 +12,22 @@ import FirebaseAuth
 
 class SignUpViewController: UIViewController {
   
-  private var datePicker: UIDatePicker?
-  
+  //  UIViews
+  private var background: UIImageView?
   private var section1VerticalStack: UIStackView?
   private var firstNameTextField: UITextField?
   private var lastNameTextField: UITextField?
   private var emailTextField: UITextField?
   private var passwordTextField: UITextField?
   private var dateOfBirthTextField: UITextField?
+  private var datePicker: UIDatePicker?
   private var section2VerticalStack: UIStackView?
   private var signUpButton: UIButton?
   private var errorLabel: UILabel?
-//  @IBOutlet weak var firstNameTextField: UITextField!
-//  @IBOutlet weak var lastNameTextField: UITextField!
-//  @IBOutlet weak var emailTextField: UITextField!
-//  @IBOutlet weak var passwordTextField: UITextField!
-//  @IBOutlet weak var dateOfBirthTextField: UITextField!
-//  @IBOutlet weak var signUpButton: UIButton!
-//  @IBOutlet weak var errorLabel: UILabel!
-  //@IBOutlet weak var datePicker: UIDatePicker!
-  @IBAction func cancelButtonClicked(_ sender: UIButton) {
+  private var cancelButton: UIButton?
+  
+  @objc func cancelButtonClicked() {
     let welcomeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.welcomeViewController) as? WelcomeViewController
-    
     view.window?.rootViewController = welcomeViewController
     view.window?.makeKeyAndVisible()
   }
@@ -48,6 +42,15 @@ class SignUpViewController: UIViewController {
   }
   
   private func setUpSubviews() {
+    
+    background = UIImageView(image: UIImage(named: "background@4x"))
+    background?.translatesAutoresizingMaskIntoConstraints = false
+    background?.contentMode = .scaleAspectFill
+    view.addSubview(background!)
+    background?.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+    background?.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    background?.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    background?.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     
     firstNameTextField = UITextField()
     firstNameTextField?.textColor = .black
@@ -127,7 +130,7 @@ class SignUpViewController: UIViewController {
     errorLabel?.font = UIFont(name: "American Typewriter", size: 16)
     errorLabel?.alpha = 0
     errorLabel?.translatesAutoresizingMaskIntoConstraints = false
-    errorLabel?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    errorLabel?.heightAnchor.constraint(equalToConstant: 80).isActive = true
     
     section2VerticalStack = UIStackView()
     section2VerticalStack?.axis = .vertical
@@ -140,6 +143,17 @@ class SignUpViewController: UIViewController {
     section2VerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
     section2VerticalStack?.topAnchor.constraint(equalTo: dateOfBirthTextField!.bottomAnchor, constant: 40).isActive = true
     section2VerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    
+    cancelButton = UIButton()
+    cancelButton?.setTitleColor(.black, for: .normal)
+    cancelButton?.setTitle("Cancel", for: .normal)
+    cancelButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 16)
+    cancelButton?.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
+    view.addSubview(cancelButton!)
+    cancelButton?.translatesAutoresizingMaskIntoConstraints = false
+    cancelButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    cancelButton?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30).isActive = true
+    cancelButton?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
   }
   
   private func setUpGestures() {
