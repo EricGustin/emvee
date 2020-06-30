@@ -16,14 +16,20 @@ class SignUpViewController: UIViewController {
   private var scrollView: UIScrollView?
   private var navigationBarBackground: UIImageView?
   private var background: UIImageView?
-  private var section1VerticalStack: UIStackView?
+  private var accountInfoVerticalStack: UIStackView?
   private var firstNameTextField: UITextField?
   private var lastNameTextField: UITextField?
   private var emailTextField: UITextField?
   private var passwordTextField: UITextField?
   private var dateOfBirthTextField: UITextField?
   private var datePicker: UIDatePicker?
-  private var section2VerticalStack: UIStackView?
+  private var myGenderVerticalStack: UIStackView?
+  private var myGenderLabel: UILabel?
+  private var myGenderSegmentedControl: UISegmentedControl?
+  private var preferredGenderVerticalStack: UIStackView?
+  private var preferredGenderLabel: UILabel?
+  private var preferredGenderSegmentedControl: UISegmentedControl?
+  private var continueVerticalStack: UIStackView?
   private var signUpButton: UIButton?
   private var errorLabel: UILabel?
   private var cancelButton: UIButton?
@@ -106,19 +112,19 @@ class SignUpViewController: UIViewController {
     passwordTextField?.translatesAutoresizingMaskIntoConstraints = false
     passwordTextField?.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
-    section1VerticalStack = UIStackView()
-    section1VerticalStack?.axis = .vertical
-    section1VerticalStack?.spacing = 20
-    section1VerticalStack?.translatesAutoresizingMaskIntoConstraints = false
-    section1VerticalStack?.addArrangedSubview(firstNameTextField!)
-    section1VerticalStack?.addArrangedSubview(lastNameTextField!)
-    section1VerticalStack?.addArrangedSubview(emailTextField!)
-    section1VerticalStack?.addArrangedSubview(passwordTextField!)
-    scrollView?.addSubview(section1VerticalStack!)
-    section1VerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    section1VerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
-    section1VerticalStack?.topAnchor.constraint(equalTo: scrollView!.topAnchor, constant: 40).isActive = true
-    section1VerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    accountInfoVerticalStack = UIStackView()
+    accountInfoVerticalStack?.axis = .vertical
+    accountInfoVerticalStack?.spacing = 20
+    accountInfoVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
+    accountInfoVerticalStack?.addArrangedSubview(firstNameTextField!)
+    accountInfoVerticalStack?.addArrangedSubview(lastNameTextField!)
+    accountInfoVerticalStack?.addArrangedSubview(emailTextField!)
+    accountInfoVerticalStack?.addArrangedSubview(passwordTextField!)
+    scrollView?.addSubview(accountInfoVerticalStack!)
+    accountInfoVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    accountInfoVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
+    accountInfoVerticalStack?.topAnchor.constraint(equalTo: scrollView!.topAnchor, constant: 40).isActive = true
+    accountInfoVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
     
     dateOfBirthTextField = UITextField()
     dateOfBirthTextField?.textColor = .black
@@ -132,9 +138,63 @@ class SignUpViewController: UIViewController {
     dateOfBirthTextField?.translatesAutoresizingMaskIntoConstraints = false
     scrollView?.addSubview(dateOfBirthTextField!)
     dateOfBirthTextField?.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    dateOfBirthTextField?.topAnchor.constraint(equalTo: section1VerticalStack!.bottomAnchor, constant: 40).isActive = true
+    dateOfBirthTextField?.topAnchor.constraint(equalTo: accountInfoVerticalStack!.bottomAnchor, constant: 60).isActive = true
     dateOfBirthTextField?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
     dateOfBirthTextField?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    
+    myGenderLabel = UILabel()
+    myGenderLabel?.text = "     I am a..."
+    myGenderLabel?.textColor = .black
+    myGenderLabel?.font = UIFont(name: "American Typewriter", size: 24)
+    myGenderLabel?.translatesAutoresizingMaskIntoConstraints = false
+    myGenderLabel?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    myGenderSegmentedControl = UISegmentedControl()
+    myGenderSegmentedControl?.insertSegment(withTitle: "Male", at: 0, animated: true)
+    myGenderSegmentedControl?.insertSegment(withTitle: "Female", at: 1, animated: true)
+    myGenderSegmentedControl?.insertSegment(withTitle: "Other", at: 2, animated: true)
+    myGenderSegmentedControl?.selectedSegmentIndex = 0
+    myGenderSegmentedControl?.translatesAutoresizingMaskIntoConstraints = false
+    myGenderSegmentedControl?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    myGenderVerticalStack = UIStackView()
+    myGenderVerticalStack?.axis = .vertical
+    myGenderVerticalStack?.spacing = 0
+    myGenderVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
+    myGenderVerticalStack?.addArrangedSubview(myGenderLabel!)
+    myGenderVerticalStack?.addArrangedSubview(myGenderSegmentedControl!)
+    scrollView?.addSubview(myGenderVerticalStack!)
+    myGenderVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    myGenderVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
+    myGenderVerticalStack?.topAnchor.constraint(equalTo: dateOfBirthTextField!.bottomAnchor, constant: 40).isActive = true
+    myGenderVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    
+    preferredGenderLabel = UILabel()
+    preferredGenderLabel?.text = "     I am interested in..."
+    preferredGenderLabel?.textColor = .black
+    preferredGenderLabel?.font = UIFont(name: "American Typewriter", size: 24)
+    preferredGenderLabel?.translatesAutoresizingMaskIntoConstraints = false
+    preferredGenderLabel?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    preferredGenderSegmentedControl = UISegmentedControl()
+    preferredGenderSegmentedControl?.insertSegment(withTitle: "Men", at: 0, animated: true)
+    preferredGenderSegmentedControl?.insertSegment(withTitle: "Women", at: 1, animated: true)
+    preferredGenderSegmentedControl?.insertSegment(withTitle: "All", at: 2, animated: true)
+    preferredGenderSegmentedControl?.selectedSegmentIndex = 0
+    preferredGenderSegmentedControl?.translatesAutoresizingMaskIntoConstraints = false
+    preferredGenderSegmentedControl?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    preferredGenderVerticalStack = UIStackView()
+    preferredGenderVerticalStack?.axis = .vertical
+    preferredGenderVerticalStack?.spacing = 0
+    preferredGenderVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
+    preferredGenderVerticalStack?.addArrangedSubview(preferredGenderLabel!)
+    preferredGenderVerticalStack?.addArrangedSubview(preferredGenderSegmentedControl!)
+    scrollView?.addSubview(preferredGenderVerticalStack!)
+    preferredGenderVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    preferredGenderVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
+    preferredGenderVerticalStack?.topAnchor.constraint(equalTo: myGenderVerticalStack!.bottomAnchor, constant: 40).isActive = true
+    preferredGenderVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
     
     signUpButton = UIButton()
     signUpButton?.setTitleColor(.white, for: .normal)
@@ -154,31 +214,28 @@ class SignUpViewController: UIViewController {
     errorLabel?.translatesAutoresizingMaskIntoConstraints = false
     errorLabel?.heightAnchor.constraint(equalToConstant: 80).isActive = true
     
-    section2VerticalStack = UIStackView()
-    section2VerticalStack?.axis = .vertical
-    section2VerticalStack?.spacing = 20
-    section2VerticalStack?.translatesAutoresizingMaskIntoConstraints = false
-    section2VerticalStack?.addArrangedSubview(signUpButton!)
-    section2VerticalStack?.addArrangedSubview(errorLabel!)
-    scrollView?.addSubview(section2VerticalStack!)
-    section2VerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    section2VerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
-    section2VerticalStack?.topAnchor.constraint(equalTo: dateOfBirthTextField!.bottomAnchor, constant: 40).isActive = true
-    section2VerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
-    
     cancelButton = UIButton()
     cancelButton?.setTitleColor(.black, for: .normal)
     cancelButton?.setTitle("Cancel", for: .normal)
     cancelButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 16)
+    cancelButton?.titleLabel?.textAlignment = .right
     cancelButton?.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
-    scrollView?.addSubview(cancelButton!)
-    cancelButton?.translatesAutoresizingMaskIntoConstraints = false
-    cancelButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    cancelButton?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30).isActive = true
-    cancelButton?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+    
+    continueVerticalStack = UIStackView()
+    continueVerticalStack?.axis = .vertical
+    continueVerticalStack?.spacing = 20
+    continueVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
+    continueVerticalStack?.addArrangedSubview(signUpButton!)
+    continueVerticalStack?.addArrangedSubview(errorLabel!)
+    continueVerticalStack?.addArrangedSubview(cancelButton!)
+    scrollView?.addSubview(continueVerticalStack!)
+    continueVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    continueVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
+    continueVerticalStack?.topAnchor.constraint(equalTo: preferredGenderVerticalStack!.bottomAnchor, constant: 60).isActive = true
+    continueVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
     
     //  And finally, calculate the scrollView's contentSize
-    scrollView?.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 650)
+    scrollView?.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 950)
     
   }
   
