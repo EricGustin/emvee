@@ -25,9 +25,11 @@ class SignUpViewController: UIViewController {
   private var datePicker: UIDatePicker?
   private var myGenderVerticalStack: UIStackView?
   private var myGenderLabel: UILabel?
+  private var myGenderSegmentedControlContainer: UIView?
   private var myGenderSegmentedControl: UISegmentedControl?
   private var preferredGenderVerticalStack: UIStackView?
   private var preferredGenderLabel: UILabel?
+  private var preferredGenderSegmentedControlContainer: UIView?
   private var preferredGenderSegmentedControl: UISegmentedControl?
   private var continueVerticalStack: UIStackView?
   private var signUpButton: UIButton?
@@ -149,20 +151,33 @@ class SignUpViewController: UIViewController {
     myGenderLabel?.translatesAutoresizingMaskIntoConstraints = false
     myGenderLabel?.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
+    myGenderSegmentedControlContainer = UIView()
+    myGenderSegmentedControlContainer?.layer.cornerRadius = 25  // Half of the height of the container
+    myGenderSegmentedControlContainer?.layer.borderColor = UIColor.lightGray.cgColor
+    myGenderSegmentedControlContainer?.layer.borderWidth = 0.25
+    myGenderSegmentedControlContainer?.layer.masksToBounds = true
+    myGenderSegmentedControlContainer?.translatesAutoresizingMaskIntoConstraints = false
+    myGenderSegmentedControlContainer?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
     myGenderSegmentedControl = UISegmentedControl()
+    myGenderSegmentedControl?.backgroundColor = UIColor.init(red: 210/255, green: 210/255, blue: 210/255, alpha: 0.3)
     myGenderSegmentedControl?.insertSegment(withTitle: "Male", at: 0, animated: true)
     myGenderSegmentedControl?.insertSegment(withTitle: "Female", at: 1, animated: true)
     myGenderSegmentedControl?.insertSegment(withTitle: "Other", at: 2, animated: true)
     myGenderSegmentedControl?.selectedSegmentIndex = 0
+    myGenderSegmentedControlContainer?.addSubview(myGenderSegmentedControl!)
     myGenderSegmentedControl?.translatesAutoresizingMaskIntoConstraints = false
-    myGenderSegmentedControl?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    myGenderSegmentedControl?.heightAnchor.constraint(equalToConstant: 55).isActive = true // Make a little bit larger than 50 to account for the fact that the width is a little bit larger
+    myGenderSegmentedControl?.widthAnchor.constraint(equalTo: myGenderSegmentedControlContainer!.widthAnchor, multiplier: 1.015).isActive = true
+    myGenderSegmentedControl?.centerXAnchor.constraint(equalTo: myGenderSegmentedControlContainer!.centerXAnchor).isActive = true
+    myGenderSegmentedControl?.centerYAnchor.constraint(equalTo: myGenderSegmentedControlContainer!.centerYAnchor).isActive = true
     
     myGenderVerticalStack = UIStackView()
     myGenderVerticalStack?.axis = .vertical
     myGenderVerticalStack?.spacing = 0
     myGenderVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
     myGenderVerticalStack?.addArrangedSubview(myGenderLabel!)
-    myGenderVerticalStack?.addArrangedSubview(myGenderSegmentedControl!)
+    myGenderVerticalStack?.addArrangedSubview(myGenderSegmentedControlContainer!)
     scrollView?.addSubview(myGenderVerticalStack!)
     myGenderVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     myGenderVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
@@ -176,20 +191,34 @@ class SignUpViewController: UIViewController {
     preferredGenderLabel?.translatesAutoresizingMaskIntoConstraints = false
     preferredGenderLabel?.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
+    preferredGenderSegmentedControlContainer = UIView()
+    preferredGenderSegmentedControlContainer?.layer.cornerRadius = 25  // Half of the height of the container
+    preferredGenderSegmentedControlContainer?.layer.borderColor = UIColor.lightGray.cgColor
+    preferredGenderSegmentedControlContainer?.layer.borderWidth = 0.25
+    preferredGenderSegmentedControlContainer?.layer.masksToBounds = true
+    preferredGenderSegmentedControlContainer?.translatesAutoresizingMaskIntoConstraints = false
+    preferredGenderSegmentedControlContainer?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
     preferredGenderSegmentedControl = UISegmentedControl()
+    preferredGenderSegmentedControl?.backgroundColor = UIColor.init(red: 210/255, green: 210/255, blue: 210/255, alpha: 0.3)
     preferredGenderSegmentedControl?.insertSegment(withTitle: "Men", at: 0, animated: true)
     preferredGenderSegmentedControl?.insertSegment(withTitle: "Women", at: 1, animated: true)
     preferredGenderSegmentedControl?.insertSegment(withTitle: "All", at: 2, animated: true)
     preferredGenderSegmentedControl?.selectedSegmentIndex = 0
     preferredGenderSegmentedControl?.translatesAutoresizingMaskIntoConstraints = false
-    preferredGenderSegmentedControl?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    preferredGenderSegmentedControlContainer?.addSubview(preferredGenderSegmentedControl!)
+    preferredGenderSegmentedControl?.translatesAutoresizingMaskIntoConstraints = false
+    preferredGenderSegmentedControl?.heightAnchor.constraint(equalToConstant: 55).isActive = true  // Make a little bit larger than 50 to account for the fact that the width is a little bit larger
+    preferredGenderSegmentedControl?.widthAnchor.constraint(equalTo: preferredGenderSegmentedControlContainer!.widthAnchor, multiplier: 1.015).isActive = true
+    preferredGenderSegmentedControl?.centerXAnchor.constraint(equalTo: preferredGenderSegmentedControlContainer!.centerXAnchor).isActive = true
+    preferredGenderSegmentedControl?.centerYAnchor.constraint(equalTo: preferredGenderSegmentedControlContainer!.centerYAnchor).isActive = true
     
     preferredGenderVerticalStack = UIStackView()
     preferredGenderVerticalStack?.axis = .vertical
     preferredGenderVerticalStack?.spacing = 0
     preferredGenderVerticalStack?.translatesAutoresizingMaskIntoConstraints = false
     preferredGenderVerticalStack?.addArrangedSubview(preferredGenderLabel!)
-    preferredGenderVerticalStack?.addArrangedSubview(preferredGenderSegmentedControl!)
+    preferredGenderVerticalStack?.addArrangedSubview(preferredGenderSegmentedControlContainer!)
     scrollView?.addSubview(preferredGenderVerticalStack!)
     preferredGenderVerticalStack?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
     preferredGenderVerticalStack?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
