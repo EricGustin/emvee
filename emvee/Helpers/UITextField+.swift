@@ -1,14 +1,14 @@
 //
-//  UITextView+.swift
+//  UITextField+.swift
 //  emvee
 //
-//  Created by Eric Gustin on 6/18/20.
+//  Created by Eric Gustin on 7/1/20.
 //  Copyright © 2020 Eric Gustin. All rights reserved.
 //
 
 import UIKit
 
-extension UITextView {
+extension UITextField {
   
   func addKeyboardToolBar(leftTitle: String, rightTitle: String, target: Any, selector: Selector) {
     

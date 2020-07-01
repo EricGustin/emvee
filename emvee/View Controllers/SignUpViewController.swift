@@ -145,9 +145,11 @@ class SignUpViewController: UIViewController {
     dateOfBirthTextField?.textColor = .black
     dateOfBirthTextField?.placeholder = "Date Of Birth"
     dateOfBirthTextField?.font = UIFont(name: "American Typewriter", size: 16)
+    dateOfBirthTextField?.addKeyboardToolBar(leftTitle: "", rightTitle: "Done", target: self, selector: #selector(doneEditingDatePicker))
     datePicker = UIDatePicker()
     datePicker?.datePickerMode = .date
-    datePicker?.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+    datePicker?.minimumDate = Date(timeIntervalSince1970: -1262217600)  // January 01 1930
+    datePicker?.maximumDate = Date()
     dateOfBirthTextField?.inputView = datePicker
     StyleUtilities.styleTextField(dateOfBirthTextField!, dateOfBirthTextField!.placeholder ?? "")
     dateOfBirthTextField?.translatesAutoresizingMaskIntoConstraints = false
@@ -471,7 +473,7 @@ class SignUpViewController: UIViewController {
     }
   }
   
-  @objc private func dateChanged() {
+  @objc private func doneEditingDatePicker() {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "MMMM dd yyyy"
     dateOfBirthTextField?.text = dateFormatter.string(from: datePicker!.date)
@@ -494,4 +496,6 @@ extension SignUpViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     currentSelectedTextField = textField
   }
+  
+  
 }
