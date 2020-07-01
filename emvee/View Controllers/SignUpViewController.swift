@@ -409,10 +409,8 @@ class SignUpViewController: UIViewController {
 //    view.window?.makeKeyAndVisible()
 //  }
   private func transitionToSetUpProfile() {
-    let vc = SetUpProfileViewController()
-    let nc = NavigationController(vc)
-    nc.modalPresentationStyle = .fullScreen
-    self.present(nc, animated: true, completion: nil)
+    let vc = EditProfileViewController()
+    show(vc, sender: nil)
   }
   
   @objc func continueButtonClicked(_ sender: Any) {

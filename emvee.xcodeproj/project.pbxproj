@@ -44,6 +44,7 @@
 		FA9505D724ABE53200AD3BEF /* SetUpProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D624ABE53200AD3BEF /* SetUpProfileViewController.swift */; };
 		FA9505DB24ABEE4300AD3BEF /* Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505DA24ABEE4300AD3BEF /* Calculations.swift */; };
 		FA9505DD24AD20E700AD3BEF /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505DC24AD20E700AD3BEF /* UITextField+.swift */; };
+		FA9505DF24AD365200AD3BEF /* EditableProfileSuperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505DE24AD365200AD3BEF /* EditableProfileSuperViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +94,7 @@
 		FA9505D624ABE53200AD3BEF /* SetUpProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetUpProfileViewController.swift; sourceTree = "<group>"; };
 		FA9505DA24ABEE4300AD3BEF /* Calculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculations.swift; sourceTree = "<group>"; };
 		FA9505DC24AD20E700AD3BEF /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextField+.swift"; path = "emvee/Helpers/UITextField+.swift"; sourceTree = SOURCE_ROOT; };
+		FA9505DE24AD365200AD3BEF /* EditableProfileSuperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableProfileSuperViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,11 +181,12 @@
 				FA91C5FA246F49F500895098 /* TextChatViewController.swift */,
 				FA91C60224709FF000895098 /* NavigationController.swift */,
 				FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */,
-				FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */,
 				FA9505CC24A563BA00AD3BEF /* EditGenderViewController.swift */,
 				FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */,
 				FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */,
+				FA9505DE24AD365200AD3BEF /* EditableProfileSuperViewController.swift */,
 				FA9505D624ABE53200AD3BEF /* SetUpProfileViewController.swift */,
+				FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				FA5AD8C5248AF991001DFAB6 /* VideoChatViewController.swift in Sources */,
 				FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */,
 				FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */,
+				FA9505DF24AD365200AD3BEF /* EditableProfileSuperViewController.swift in Sources */,
 				FA54DC152467C168008227FE /* SettingsViewController.swift in Sources */,
 				FA9505D724ABE53200AD3BEF /* SetUpProfileViewController.swift in Sources */,
 				FA91C5FD246F4ADE00895098 /* Message.swift in Sources */,
