@@ -111,6 +111,7 @@ class SignUpViewController: UIViewController {
     
     emailTextField = UITextField()
     emailTextField?.textColor = .black
+    emailTextField?.autocapitalizationType = UITextAutocapitalizationType(rawValue: 0)!  // no capitalization
     emailTextField?.placeholder = "Email"
     emailTextField?.font = UIFont(name: "American Typewriter", size: 16)
     StyleUtilities.styleTextField(emailTextField!, emailTextField!.placeholder ?? "")
@@ -119,6 +120,7 @@ class SignUpViewController: UIViewController {
     
     passwordTextField = UITextField()
     passwordTextField?.textColor = .black
+    passwordTextField?.isSecureTextEntry = true
     passwordTextField?.placeholder = "Password"
     passwordTextField?.font = UIFont(name: "American Typewriter", size: 16)
     StyleUtilities.styleTextField(passwordTextField!, passwordTextField!.placeholder ?? "")
