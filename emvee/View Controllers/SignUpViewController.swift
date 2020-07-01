@@ -14,7 +14,6 @@ class SignUpViewController: UIViewController {
   
   //  UIViews
   private var scrollView: UIScrollView?
-  private var navigationBarBackground: UIImageView?
   private var background: UIImageView?
   private var accountInfoVerticalStack: UIStackView?
   private var firstNameTextField: UITextField?
@@ -64,16 +63,12 @@ class SignUpViewController: UIViewController {
   
   private func setUpNavigationBar() {
     title = "Basic Info"
-    navigationController?.navigationBar.prefersLargeTitles = true
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont(name: "American Typewriter", size: 28)!]
+    //navigationController?.navigationBar.prefersLargeTitles = true
+    navigationController?.navigationBar.backgroundColor = .systemGray6
   }
   
   private func setUpSubviews() {
-    
-//    navigationBarBackground = UIImageView(image: UIImage(named: "background@4x"))
-//    navigationBarBackground?.translatesAutoresizingMaskIntoConstraints = false
-//    navigationBarBackground?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-//    navigationBarBackground?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-//    navigationBarBackground?.heightAnchor.constraint(equalTo: (navigationController?.navigationBar.heightAnchor)!).isActive = true
     
     scrollView = UIScrollView()
     scrollView?.backgroundColor = .clear
