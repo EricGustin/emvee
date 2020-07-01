@@ -37,11 +37,12 @@ class SignUpViewController: UIViewController {
   private var currentLocationVerticalStack: UIStackView?
   private var currentLocationLabel: UILabel?
   private var currentLocationTextField: UITextField?
-  
   private var continueVerticalStack: UIStackView?
   private var continueButton: UIButton?
   private var errorLabel: UILabel?
   private var cancelButton: UIButton?
+  
+  private var currentSelectedTextField: UITextField?
   
   @objc func cancelButtonClicked() {
     self.dismiss(animated: true, completion: nil)
@@ -51,13 +52,19 @@ class SignUpViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "Basic Info"
-    navigationController?.navigationBar.prefersLargeTitles = true
-    
-    
+    setUpNavigationBar()
     setUpSubviews()
     setUpGestures()
     setDelegates()
+    
+    // Adjust scrollView's inset when needed e.g. when keyboard is shown / is hidden
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+  }
+  
+  private func setUpNavigationBar() {
+    title = "Basic Info"
+    navigationController?.navigationBar.prefersLargeTitles = true
   }
   
   private func setUpSubviews() {
@@ -340,7 +347,33 @@ class SignUpViewController: UIViewController {
     currentLocationTextField?.delegate = self
   }
   
-  func validateFields() -> String? {
+  @objc func adjustInsetForKeyboard(_ notification: Notification) {
+    
+    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    
+    let keyboardScreenEndFrame = keyboardValue.cgRectValue
+    let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+    
+    let willHideKeyboard = notification.name == UIResponder.keyboardWillHideNotification
+    if currentSelectedTextField == dateOfBirthTextField { return }
+    //  If currentSelectedTextField == dateOfBirthTextField, then sometimes it is nil, so use guard to be safe.
+    guard let newBounds = currentSelectedTextField?.convert(currentSelectedTextField!.bounds, to: nil) else { return }
+    print(newBounds.maxY - newBounds.height/2)
+    print(keyboardViewEndFrame.minY)
+    let spaceBetweenTextFieldAndKeyboard = keyboardViewEndFrame.minY - newBounds.maxY
+    print("spacing: \(spaceBetweenTextFieldAndKeyboard)")
+    if spaceBetweenTextFieldAndKeyboard < 10 {
+      if !willHideKeyboard { // if keyboard will show
+        scrollView!.setContentOffset(CGPoint(x: 0, y: scrollView!.contentOffset.y + abs(spaceBetweenTextFieldAndKeyboard) + 20), animated: true)
+      }
+    }
+    scrollView!.scrollIndicatorInsets = scrollView!.contentInset
+    
+    // disable or enable user interaction for all views that can be interacted with
+    scrollView!.isScrollEnabled = willHideKeyboard
+  }
+  
+  private func validateFields() -> String? {
     // Check that all fields are filled in
     if firstNameTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
       lastNameTextField?.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
@@ -365,7 +398,7 @@ class SignUpViewController: UIViewController {
     return nil
   }
   
-  func showError(_ message: String) {
+  private func showError(_ message: String) {
     errorLabel?.text = message
     errorLabel?.alpha = 1
   }
@@ -454,5 +487,9 @@ extension SignUpViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return true
+  }
+  
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    currentSelectedTextField = textField
   }
 }

@@ -43,7 +43,7 @@ class EditProfileViewController: UIViewController {
     setupSubviews()
     downloadProfilePicturesFromFirebase()
     
-    // Adjust scrollView's inset when needed
+    // Adjust scrollView's inset when needed e.g. when keyboard is shown / is hidden
     NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
   }
