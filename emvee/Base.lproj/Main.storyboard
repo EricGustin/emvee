@@ -162,124 +162,9 @@
                     <view key="view" contentMode="scaleToFill" id="Vel-bX-b47">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="JIB-tE-STR">
-                                <rect key="frame" x="40" y="124" width="92.5" height="103.5"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPr-eX-alM">
-                                        <rect key="frame" x="0.0" y="0.0" width="92.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="mE6-yw-2be">
-                                        <rect key="frame" x="0.0" y="25.5" width="92.5" height="78"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="pTH-CW-06Q">
-                                                <rect key="frame" x="0.0" y="0.0" width="24" height="78"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hou-rL-x6x">
-                                                        <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                        <state key="normal" image="radioOff"/>
-                                                        <state key="selected" image="radioOn"/>
-                                                        <connections>
-                                                            <action selector="radioButton1Clicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="gBv-FP-OqT"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ini-yp-Uxh">
-                                                        <rect key="frame" x="0.0" y="27" width="24" height="24"/>
-                                                        <state key="normal" image="radioOff"/>
-                                                        <state key="selected" image="radioOn"/>
-                                                        <connections>
-                                                            <action selector="radioButton2Clicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="8ug-nc-HzL"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PNF-Sg-ZRS">
-                                                        <rect key="frame" x="0.0" y="54" width="24" height="24"/>
-                                                        <state key="normal" image="radioOff"/>
-                                                        <state key="selected" image="radioOn"/>
-                                                        <connections>
-                                                            <action selector="radioButton3Clicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="Um2-P8-8TC"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ww1-Wl-6L2">
-                                                <rect key="frame" x="34" y="0.0" width="58.5" height="78"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Men" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceg-OM-MmL">
-                                                        <rect key="frame" x="0.0" y="0.0" width="58.5" height="24"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Women" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2c-kP-tgo">
-                                                        <rect key="frame" x="0.0" y="24" width="58.5" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAd-X4-CoZ">
-                                                        <rect key="frame" x="0.0" y="54" width="58.5" height="24"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="ceg-OM-MmL" firstAttribute="centerY" secondItem="hou-rL-x6x" secondAttribute="centerY" id="42j-LB-JZg"/>
-                                            <constraint firstItem="c2c-kP-tgo" firstAttribute="centerY" secondItem="Ini-yp-Uxh" secondAttribute="centerY" id="7iW-Ad-WUL"/>
-                                            <constraint firstItem="OAd-X4-CoZ" firstAttribute="centerY" secondItem="PNF-Sg-ZRS" secondAttribute="centerY" id="yHz-nG-iMU"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nlt-K0-pVI">
-                                <rect key="frame" x="40" y="423" width="334" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="ERr-Tq-eGk"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Save Settings" backgroundImage="greater"/>
-                                <connections>
-                                    <action selector="saveSettingsButtonClicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="SdM-ry-cUc"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sJM-s8-Pgh">
-                                <rect key="frame" x="40" y="513" width="334" height="50"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Logout">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="logoutButtonClicked:" destination="PSm-v9-tyL" eventType="touchUpInside" id="Wmc-Hz-cCk"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="centerX" secondItem="Nlt-K0-pVI" secondAttribute="centerX" id="Ecf-dT-KA9"/>
-                            <constraint firstItem="JIB-tE-STR" firstAttribute="top" secondItem="Bfk-2E-dk3" secondAttribute="top" constant="80" id="GHM-3K-oyJ"/>
-                            <constraint firstItem="Nlt-K0-pVI" firstAttribute="centerY" secondItem="Vel-bX-b47" secondAttribute="centerY" id="Htc-oE-iCl"/>
-                            <constraint firstItem="Nlt-K0-pVI" firstAttribute="centerX" secondItem="Vel-bX-b47" secondAttribute="centerX" id="NLv-bE-0v2"/>
-                            <constraint firstItem="Bfk-2E-dk3" firstAttribute="trailing" secondItem="Nlt-K0-pVI" secondAttribute="trailing" constant="40" id="W9S-aQ-Wr4"/>
-                            <constraint firstItem="Nlt-K0-pVI" firstAttribute="leading" secondItem="Bfk-2E-dk3" secondAttribute="leading" constant="40" id="dlx-Zz-X1N"/>
-                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="top" secondItem="Nlt-K0-pVI" secondAttribute="bottom" constant="40" id="iiA-fB-3Un"/>
-                            <constraint firstItem="JIB-tE-STR" firstAttribute="leading" secondItem="Bfk-2E-dk3" secondAttribute="leading" constant="40" id="jTW-nR-cuB"/>
-                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="width" secondItem="Nlt-K0-pVI" secondAttribute="width" id="pPz-X1-WBF"/>
-                            <constraint firstItem="sJM-s8-Pgh" firstAttribute="height" secondItem="Nlt-K0-pVI" secondAttribute="height" id="vDs-33-14l"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Bfk-2E-dk3"/>
                     </view>
-                    <connections>
-                        <outlet property="logoutButton" destination="sJM-s8-Pgh" id="kIS-Tq-ERM"/>
-                        <outlet property="radioButton1" destination="hou-rL-x6x" id="0Qc-sl-4tT"/>
-                        <outlet property="radioButton2" destination="Ini-yp-Uxh" id="HlU-Fd-Ycy"/>
-                        <outlet property="radioButton3" destination="PNF-Sg-ZRS" id="Grc-8I-z7n"/>
-                        <outlet property="saveSettingsButton" destination="Nlt-K0-pVI" id="9Po-5K-kc4"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Owx-tt-eAr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -423,9 +308,6 @@
         <image name="background@4x" width="4433" height="7880"/>
         <image name="end@4x" width="292" height="292"/>
         <image name="end_pressed@4x" width="292" height="292"/>
-        <image name="greater" width="128" height="128"/>
         <image name="mute@4x" width="744" height="744"/>
-        <image name="radioOff" width="24" height="24"/>
-        <image name="radioOn" width="24" height="24"/>
     </resources>
 </document>

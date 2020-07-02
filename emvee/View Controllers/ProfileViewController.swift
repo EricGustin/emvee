@@ -267,9 +267,12 @@ class ProfileViewController: UIViewController {
   }
   
   private func transitionToSettings() {
-    let settingsViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.settingsViewController) as? SettingsViewController
-    view.window?.rootViewController = settingsViewController
-    view.window?.makeKeyAndVisible()
+//    let vc = SettingsViewController()
+//    let nc = NavigationController(vc)
+//    nc.modalPresentationStyle = .fullScreen
+//    self.present(nc, animated: true, completion: nil)
+    let vc = SettingsViewController()
+    show(vc, sender: nil)
   }
   
   private func transitionToHome() {
