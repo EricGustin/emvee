@@ -16,14 +16,14 @@ class EditableProfileSuperViewController: UIViewController {
   private var profilePictureVertStack: UIStackView!
   private var profilePicturesHorizStacks: [UIStackView]!
   private var profilePicturesContainer: [UIView]!
-  private var profilePictures: [UIImageView]!
+  var profilePictures: [UIImageView]!
   private var deleteProfilePictureButtonContainers: [UIView]!
   private var deleteProfilePictureButtons: [UIButton]!
   private var aboutMeLabel: UILabel!
   var aboutMeTextView: UITextView!
+  var savedAboutMeText: String?
   private var aboutMeCharsRemainingLabel: UILabel!
   //  Variables & constants
-  private var savedAboutMeText: String?
   private var profilePictureBeingEditedIndex: Int!  // The index of the profile picture being edited
   private var profilePictureBeingDeletedIndex: Int!  // The index of the profile picture that was deleted
   
@@ -40,21 +40,6 @@ class EditableProfileSuperViewController: UIViewController {
     NotificationCenter.default.addObserver(self, selector: #selector(adjustInsetForKeyboard(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    let userID = Auth.auth().currentUser?.uid
-    let db = Firestore.firestore()
-    
-    db.collection("users").document(userID!).getDocument { (snapshot, error) in
-      if let document = snapshot {
-        let bio = document.get("bio")
-        
-        self.aboutMeTextView.text = bio as? String
-        self.savedAboutMeText = bio as? String
-        self.displayBioCharsLeft()
-      }
-    }
-    textViewDidChange(aboutMeTextView) // initialize a proper size for the textView
-  }
   
   private func setupSubviews() {
     
@@ -111,9 +96,8 @@ class EditableProfileSuperViewController: UIViewController {
       profilePicturesContainer[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.
       
       // Set up each profile picture view
-      profilePictures.append(UIImageView(image: UIImage()))
-      profilePictures[index].backgroundColor = .white
-      profilePictures[index].contentMode = .scaleAspectFill
+      profilePictures.append(UIImageView(image: UIImage(systemName: "plus")))
+      changeProfileImageToPlusSignFormat(index: index)
       
       profilePictures[index].translatesAutoresizingMaskIntoConstraints = false
       profilePictures[index].isUserInteractionEnabled = true
@@ -267,7 +251,7 @@ class EditableProfileSuperViewController: UIViewController {
       }
     }
   }
-  // I want to "Build the Future".
+
   private func changeProfileImageToPlusSignFormat(index: Int) {
     profilePictures[index].image = UIImage(systemName: "plus")
     profilePictures[index].tintColor = .lightGray
@@ -330,7 +314,6 @@ class EditableProfileSuperViewController: UIViewController {
             print("Error deleting profile picture.")
           }
         }
-       // break
       }
     }
     

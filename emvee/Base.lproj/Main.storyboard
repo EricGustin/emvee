@@ -14,20 +14,7 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9q0-ix-6pX">
-                                <rect key="frame" x="168" y="433" width="78" height="30"/>
-                                <state key="normal" title="Test button"/>
-                                <connections>
-                                    <segue destination="cCt-J9-4By" kind="presentation" id="L2c-HS-Fht"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="9q0-ix-6pX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0FR-Wj-2mH"/>
-                            <constraint firstItem="9q0-ix-6pX" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Nxj-tf-gVB"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="vXF-WO-4MY"/>
@@ -421,7 +408,7 @@
             <objects>
                 <viewController storyboardIdentifier="profileViewController" id="cCt-J9-4By" customClass="ProfileViewController" customModule="emvee" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XvO-hh-yA7">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="VQ9-Dh-EKL"/>

@@ -99,13 +99,7 @@ class WelcomeViewController: UIViewController {
   }
   
   @objc private func transitionToSignUp() {
-//    let vc = SignUpViewController()
-//    let nc = NavigationController(vc)
-//    nc.modalPresentationStyle = .fullScreen
-//    self.present(nc, animated: true, completion: nil)
-    
-    // temp:
-    let vc = SetUpProfileViewController()
+    let vc = SignUpViewController()
     let nc = NavigationController(vc)
     nc.modalPresentationStyle = .fullScreen
     self.present(nc, animated: true, completion: nil)

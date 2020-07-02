@@ -273,16 +273,19 @@ class ProfileViewController: UIViewController {
   }
   
   private func transitionToHome() {
-    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-    view.window?.rootViewController = homeViewController
-    view.window?.makeKeyAndVisible()
+//    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+//    view.window?.rootViewController = homeViewController
+//    view.window?.makeKeyAndVisible()
+    self.dismiss(animated: true, completion: nil)
   }
   
   @objc private func transitionToEditProfile() {
-    let vc = EditProfileViewController()
-    let nc = NavigationController(vc)
-    nc.modalPresentationStyle = .fullScreen
-    self.present(nc, animated: true, completion: nil)
+//    let vc = EditProfileViewController()
+//    let nc = NavigationController(vc)
+//    nc.modalPresentationStyle = .fullScreen
+//    self.present(nc, animated: true, completion: nil)
+    let vc = SettingsViewController()
+    show(vc, sender: nil)
   }
   
   // MARK: - Firebase Stuff

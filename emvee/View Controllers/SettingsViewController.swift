@@ -39,6 +39,7 @@ class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In settingsViewController")
+    view.backgroundColor = .systemGray6
     setUpViews()
     setUpElements()
     

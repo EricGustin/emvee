@@ -224,10 +224,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   
     
   @objc func transitionToProfile() {
-    let profileViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.profileViewController) as? ProfileViewController
-    // Make profile ViewController appear fullscrean
-    view.window?.rootViewController = profileViewController
-    view.window?.makeKeyAndVisible()
+    let vc = ProfileViewController()
+    let nc = NavigationController(vc)
+    nc.modalPresentationStyle = .fullScreen
+    self.present(nc, animated: true, completion: nil)
   }
   
   

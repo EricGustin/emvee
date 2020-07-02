@@ -384,6 +384,10 @@ class SignUpViewController: UIViewController {
       return "Please fill in all fields"
     }
     let cleanedPassword = passwordTextField!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+    let cleanedEmail = emailTextField!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+    if !(FormUtilities.isValidEmail(cleanedEmail)) {
+      return "Please make sure your email was typed correctly."
+    }
     if !(FormUtilities.isPasswordValid(cleanedPassword)) {
       return "Please make sure your password is at least 8 characters, contains a special character and a number."
     }
@@ -402,14 +406,17 @@ class SignUpViewController: UIViewController {
     errorLabel?.alpha = 1
   }
   
-//  private func transitionToHome() {
-//    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-//
-//    view.window?.rootViewController = homeViewController
-//    view.window?.makeKeyAndVisible()
-//  }
-  private func transitionToSetUpProfile() {
-    let vc = EditProfileViewController()
+  private func transitionToSetUpProfile(_ firstName: String, _ lastName: String, _ email: String, _ password: String!, _ dateOfBirth: String, _ gender: String, _ preferredGender: String, _ hometown: String, _ currentLocation: String) {
+    let vc = SetUpProfileViewController()
+    vc.firstName = firstName
+    vc.lastName = lastName
+    vc.email = email
+    vc.password = password
+    vc.dateOfBirth = dateOfBirth
+    vc.gender = gender
+    vc.preferredGender = preferredGender
+    vc.hometown = hometown
+    vc.currentLocation = currentLocation
     show(vc, sender: nil)
   }
   
@@ -431,38 +438,9 @@ class SignUpViewController: UIViewController {
       let preferredGender = preferredGenderSegmentedControl?.titleForSegment(at: preferredGenderSegmentedControl!.selectedSegmentIndex)
       let hometown = hometownTextField?.text!.trimmingCharacters(in: .whitespacesAndNewlines)
       let currentLocation = currentLocationTextField?.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-      Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
-        // Check for errors
-        if err != nil {
-          // There is an error
-          self.showError("Error creating user. Please enter a valid email address.")
-        }
-        else {
-          // User created successfully. Store relevent informastion
-          let db = Firestore.firestore() // initialize an instance of Cloud Firestore
-          let userID = Auth.auth().currentUser?.uid
 
-          // Add a new document with a custom ID
-          db.collection("users").document(userID!).setData([
-            "firstName": firstName,
-            "lastName": lastName,
-            "birthday": dateOfBirth!,
-            "gender": gender!,
-            "preferredGender": preferredGender!,
-            "hometown": hometown!,
-            "currentLcoation": currentLocation!,
-            "uid": userID!,
-            "bio": ""
-          ])
-          
-          // Add the user to the onlineUsers document
-          db.collection("onlineUsers").document(userID!).setData(["userID": userID!])
-          print("successfully added user to onlineUsers collection")
-          
-          // Transition to homescreen
-          self.transitionToSetUpProfile()
-        }
-      }
+      // TODO: if email does not already exist, then:
+      self.transitionToSetUpProfile(firstName, lastName, email, password, dateOfBirth!, gender!, preferredGender!, hometown!, currentLocation!)
     }
   }
   

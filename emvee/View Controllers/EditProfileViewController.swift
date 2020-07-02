@@ -19,6 +19,23 @@ class EditProfileViewController: EditableProfileSuperViewController {
   private var hometownButton: UIButton!
   private var hometownGreaterThanImage: UIImageView!
   
+  
+  override func viewWillAppear(_ animated: Bool) {
+    let userID = Auth.auth().currentUser?.uid
+    let db = Firestore.firestore()
+    
+    db.collection("users").document(userID!).getDocument { (snapshot, error) in
+      if let document = snapshot {
+        let bio = document.get("bio")
+        
+        self.aboutMeTextView.text = bio as? String
+        self.savedAboutMeText = bio as? String
+        self.displayBioCharsLeft()
+      }
+    }
+    textViewDidChange(aboutMeTextView) // initialize a proper size for the textView
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpNavigationBar()
