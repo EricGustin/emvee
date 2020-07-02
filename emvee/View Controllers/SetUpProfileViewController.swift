@@ -103,7 +103,13 @@ class SetUpProfileViewController: EditableProfileSuperViewController {
             // Add the user to the onlineUsers document
             db.collection("onlineUsers").document(userID!).setData(["userID": userID!])
             print("successfully added user to onlineUsers collection")
-  
+            
+            // Upload pictures to firebase storage
+            for i in 0..<self.profilePictures.count {
+              if self.profilePictures[i].image == UIImage(systemName: "plus") { break }
+              self.uploadProfilePictureToFirebase(i)
+            }
+            
             // Transition to homescreen
             self.transitionToHome()
           }

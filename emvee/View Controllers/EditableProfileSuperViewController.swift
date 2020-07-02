@@ -227,7 +227,10 @@ class EditableProfileSuperViewController: UIViewController {
     
   }
   
-  private func uploadProfilePictureToFirebase() {
+  func uploadProfilePictureToFirebase(_ i: Int? = nil) {
+    if i != nil {
+      profilePictureBeingEditedIndex = i!
+    }
     guard let image = profilePictures[profilePictureBeingEditedIndex].image,
       let nonCompressedData = image.jpegData(compressionQuality: 1.0),
       let data = image.jpegData(compressionQuality: CGFloat((1048576) / nonCompressedData.count)) // 1024*1024 = 1048576 bytes = 1mb
