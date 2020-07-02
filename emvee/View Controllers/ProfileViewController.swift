@@ -280,12 +280,12 @@ class ProfileViewController: UIViewController {
   }
   
   @objc private func transitionToEditProfile() {
+    let vc = EditProfileViewController()
+    let nc = NavigationController(vc)
+    nc.modalPresentationStyle = .fullScreen
+    self.present(nc, animated: true, completion: nil)
 //    let vc = EditProfileViewController()
-//    let nc = NavigationController(vc)
-//    nc.modalPresentationStyle = .fullScreen
-//    self.present(nc, animated: true, completion: nil)
-    let vc = SettingsViewController()
-    show(vc, sender: nil)
+//    show(vc, sender: nil)
   }
   
   // MARK: - Firebase Stuff
