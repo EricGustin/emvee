@@ -59,7 +59,16 @@ class ProfilePreviewPopup: UIView, Popup {
     return label
   }()
   
-  private lazy var aboutMeTextView: UITextView = {
+  private var aboutRemoteUserLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
+    label.textColor = .black
+    label.textAlignment = .center
+    return label
+  }()
+  
+  private lazy var aboutRemoteUserTextView: UITextView = {
     let textView = UITextView()
     if self.aboutMeText != nil {
       textView.text = self.aboutMeText
@@ -74,6 +83,61 @@ class ProfilePreviewPopup: UIView, Popup {
       textView.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
     }
     return textView
+  }()
+  
+  private var basicInfoLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
+    label.textColor = .black
+    label.textAlignment = .center
+    return label
+  }()
+  
+  
+  private var genderButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(button)
+    button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    return button
+  }()
+  
+  private var preferredGenderButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(button)
+    button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    return button
+  }()
+  
+  private var hometownButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(button)
+    button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    return button
+  }()
+  
+  private var currentLocationButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(button)
+    button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    return button
+  }()
+  
+  private lazy var basicInfoVerticalStack: UIStackView = {
+    let stack = UIStackView()
+    stack.axis = .vertical
+    stack.spacing = 20
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.addArrangedSubview(basicInfoLabel)
+    stack.addArrangedSubview(genderButton)
+    stack.addArrangedSubview(preferredGenderButton)
+    stack.addArrangedSubview(hometownButton)
+    stack.addArrangedSubview(currentLocationButton)
+    return stack
   }()
   
   required init(profileImage: UIImage?, name: String?, aboutMeText: String?) {
@@ -116,8 +180,8 @@ class ProfilePreviewPopup: UIView, Popup {
   internal func setUpSubviews() {
     
     self.addSubview(scrollView)
-    scrollView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
-    scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -70).isActive = true  // 20 + the height of the messageInputBar
+    scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+    scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -70).isActive = true  // 20 + the height of the messageInputBar
     scrollView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     scrollView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     
@@ -127,7 +191,7 @@ class ProfilePreviewPopup: UIView, Popup {
     container.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     
-    container.addSubview(profilePictureContainer)
+    scrollView.addSubview(profilePictureContainer)
     profilePictureContainer.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
     NSLayoutConstraint(item: profilePictureContainer, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
     profilePictureContainer.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
@@ -147,15 +211,15 @@ class ProfilePreviewPopup: UIView, Popup {
     profilePicture.layer.cornerRadius = UIScreen.main.bounds.width / 5
     profilePicture.layer.masksToBounds = true
     
-    container.addSubview(nameLabel)
+    scrollView.addSubview(nameLabel)
     nameLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
     nameLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
     
-    container.addSubview(aboutMeTextView)
-    aboutMeTextView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 85).isActive = true
-    aboutMeTextView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
-    aboutMeTextView.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.3).isActive = true
-    aboutMeTextView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+    scrollView.addSubview(aboutRemoteUserTextView)
+    aboutRemoteUserTextView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 85).isActive = true
+    aboutRemoteUserTextView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
+    aboutRemoteUserTextView.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.3).isActive = true
+    aboutRemoteUserTextView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
     
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
@@ -167,13 +231,13 @@ class ProfilePreviewPopup: UIView, Popup {
     profilePictureContainer.alpha = 0
     profilePicture.alpha = 0
     nameLabel.alpha = 0
-    aboutMeTextView.alpha = 0
+    aboutRemoteUserTextView.alpha = 0
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.alpha = 1
       self.profilePictureContainer.alpha = 1
       self.profilePicture.alpha = 1
       self.nameLabel.alpha = 1
-      self.aboutMeTextView.alpha = 1
+      self.aboutRemoteUserTextView.alpha = 1
       self.container.transform = .identity  // reset transform
     })
   }
@@ -187,7 +251,7 @@ class ProfilePreviewPopup: UIView, Popup {
       self.profilePictureContainer.alpha = 0
       self.profilePicture.alpha = 0
       self.nameLabel.alpha = 0
-      self.aboutMeTextView.alpha = 0
+      self.aboutRemoteUserTextView.alpha = 0
     }) { (complete) in
       if complete {
         self.removeFromSuperview()

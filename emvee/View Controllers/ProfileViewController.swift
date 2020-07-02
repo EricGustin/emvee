@@ -276,9 +276,6 @@ class ProfileViewController: UIViewController {
   }
   
   private func transitionToHome() {
-//    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-//    view.window?.rootViewController = homeViewController
-//    view.window?.makeKeyAndVisible()
     self.dismiss(animated: true, completion: nil)
   }
   

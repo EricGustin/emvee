@@ -70,9 +70,6 @@ final class TextChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-//    let tempPopUp = ProfilePreviewPopup(profilePicture: remoteProfilePicture, name: remoteUserName)
-    let tempPopUp = ProfilePreviewPopup()
-    view.addSubview(tempPopUp)
     
     print("In TextChatViewController")
     //self.view.backgroundColor = UIColor.white

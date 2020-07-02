@@ -65,6 +65,7 @@ class SetUpProfileViewController: EditableProfileSuperViewController {
     errorLabel?.topAnchor.constraint(equalTo: signUpButton!.bottomAnchor, constant: 40).isActive = true
     errorLabel?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
     errorLabel?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    
   }
   
     @objc func signUpButtonClicked(_ sender: Any) {
