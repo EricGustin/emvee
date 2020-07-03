@@ -23,6 +23,7 @@ final class TextChatViewController: MessagesViewController {
   private var localProfilePicture: UIImage?
   private var remoteProfilePicture: UIImage?
   private var remoteAboutMeText: String?
+  private var remoteUserUID: String?
 
   private var remoteNameAndAge: String?
   
@@ -35,6 +36,8 @@ final class TextChatViewController: MessagesViewController {
   
   private var timeLeft = 60
   private var timer: Timer?
+  
+  private var profilePreviewPopup: ProfilePreviewPopup?
   
   init(user: User, chatRoomID: String, conversationID: String) { // initializer for joining an already existing chat room
     self.localUser = user
@@ -70,7 +73,6 @@ final class TextChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     print("In TextChatViewController")
     //self.view.backgroundColor = UIColor.white
     if conversationRef == nil {
@@ -127,6 +129,7 @@ final class TextChatViewController: MessagesViewController {
         guard let uid0 = document.get("person0uid") else { return }
         if uid0 as! String != self.localUser.uid { // case where if this is the second person in the chat
           // then this user is the second person to join, so we can get the other person's name and info without using a listener
+          self.remoteUserUID = uid0 as? String
           let remoteUserRef = self.db.collection("users").document("\(uid0)")
           remoteUserRef.getDocument { (userDoc, err) in
             if let userDoc = userDoc, userDoc.exists {
@@ -164,6 +167,7 @@ final class TextChatViewController: MessagesViewController {
             }
             guard let uid1 = document.get("person1uid") else { return }
             if uid1 as! String != "" {
+              self.remoteUserUID = uid1 as? String
               let remoteUser = self.db.collection("users").document("\(uid1)")
               remoteUser.getDocument { (userDoc, err) in
                 if let userDoc = userDoc, userDoc.exists {
@@ -365,9 +369,10 @@ final class TextChatViewController: MessagesViewController {
   }
   
   @objc public func showRemoteProfilePopup() {
-    print("showing remote profile popup")
-    let profilePopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteNameAndAge, aboutMeText: remoteAboutMeText)
-    view.addSubview(profilePopup)
+    if profilePreviewPopup == nil || !profilePreviewPopup!.isDescendant(of: view) {
+      profilePreviewPopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteNameAndAge, aboutMeText: remoteAboutMeText, remoteUserUID: remoteUserUID)
+      view.addSubview(profilePreviewPopup!)
+    }
   }
 
 }

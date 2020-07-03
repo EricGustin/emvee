@@ -8,12 +8,14 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 class ProfilePreviewPopup: UIView, Popup {
 
   private var profileImage: UIImage?
   private var name: String?
   private var aboutMeText: String?
+  private var remoteUserUID: String?
   
   private let container: UIView = {
     let container = UIView()
@@ -64,7 +66,6 @@ class ProfilePreviewPopup: UIView, Popup {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
     label.textColor = .black
-    label.textAlignment = .center
     return label
   }()
   
@@ -90,7 +91,6 @@ class ProfilePreviewPopup: UIView, Popup {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
     label.textColor = .black
-    label.textAlignment = .center
     return label
   }()
   
@@ -100,6 +100,7 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     return button
   }()
   
@@ -108,6 +109,7 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     return button
   }()
   
@@ -116,6 +118,7 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     return button
   }()
   
@@ -124,6 +127,7 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     return button
   }()
   
@@ -140,9 +144,10 @@ class ProfilePreviewPopup: UIView, Popup {
     return stack
   }()
   
-  required init(profileImage: UIImage?, name: String?, aboutMeText: String?) {
+  required init(profileImage: UIImage?, name: String?, aboutMeText: String?, remoteUserUID: String?) {
     super.init(frame: .zero)
     print("in required init")
+    self.remoteUserUID = remoteUserUID
     self.profileImage = profileImage
     self.name = name
     self.aboutMeText = aboutMeText
@@ -158,11 +163,16 @@ class ProfilePreviewPopup: UIView, Popup {
     fatalError("init(coder:) has not been implemented")
   }
   
+  deinit {
+    print("deinitializing.")
+  }
+  
   private func postInit() {
     scrollView.delegate = self
     backgroundColor = UIColor.gray.withAlphaComponent(0.7)
     self.frame = UIScreen.main.bounds
     
+    getRemoteUserFieldsFromFirebase()
     setUpSubviews()
     animateIn()
     setUpGestures()
@@ -174,6 +184,21 @@ class ProfilePreviewPopup: UIView, Popup {
     guard let location = touch?.location(in: self) else { return }
     if !container.frame.contains(location) {
       animateOut()
+    }
+  }
+  
+  private func getRemoteUserFieldsFromFirebase() {
+    // TODO: Get the bio and name fields as well instead of passing them as a parameter of the class
+    let db = Firestore.firestore()
+    db.collection("users").document(remoteUserUID!).getDocument { (snapshot, error) in
+      if let document = snapshot {
+        self.aboutRemoteUserLabel.text = "    About \(document.get("firstName") ?? "")"
+        self.basicInfoLabel.text = "    Basic info about \(document.get("firstName") ?? "")"
+        self.genderButton.setTitle("I am a \(document.get("gender") ?? "")", for: .normal)
+        self.preferredGenderButton.setTitle("I am interested in \(document.get("preferredGender") ?? "")", for: .normal)
+        self.hometownButton.setTitle("I am from \(document.get("hometown") ?? "")", for: .normal)
+        self.currentLocationButton.setTitle("I am living in \(document.get("currentLcoation") ?? "")", for: .normal)
+      }
     }
   }
   
@@ -215,25 +240,41 @@ class ProfilePreviewPopup: UIView, Popup {
     nameLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
     nameLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
     
+    scrollView.addSubview(aboutRemoteUserLabel)
+    aboutRemoteUserLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    aboutRemoteUserLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 85).isActive = true
+    aboutRemoteUserLabel.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
+    aboutRemoteUserLabel.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.3).isActive = true
+    aboutRemoteUserLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+    
     scrollView.addSubview(aboutRemoteUserTextView)
-    aboutRemoteUserTextView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 85).isActive = true
+    aboutRemoteUserTextView.topAnchor.constraint(equalTo: aboutRemoteUserLabel.bottomAnchor, constant: 0).isActive = true
     aboutRemoteUserTextView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
     aboutRemoteUserTextView.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.3).isActive = true
     aboutRemoteUserTextView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
     
+    scrollView.addSubview(basicInfoVerticalStack)
+    basicInfoVerticalStack.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 40).isActive = true
+    basicInfoVerticalStack.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -40).isActive = true
+    basicInfoVerticalStack.topAnchor.constraint(equalTo: aboutRemoteUserTextView.bottomAnchor, constant: 60).isActive = true
+    
     // Lastly, calculate the content size of the scrollView
-    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1400)
   }
   
   internal func animateIn() {
     container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
     self.alpha = 0
+    self.scrollView.alpha = 0
+    self.container.alpha = 0
     profilePictureContainer.alpha = 0
     profilePicture.alpha = 0
     nameLabel.alpha = 0
     aboutRemoteUserTextView.alpha = 0
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.alpha = 1
+      self.container.alpha = 1
+      self.scrollView.alpha = 1
       self.profilePictureContainer.alpha = 1
       self.profilePicture.alpha = 1
       self.nameLabel.alpha = 1
@@ -248,6 +289,8 @@ class ProfilePreviewPopup: UIView, Popup {
     UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
       self.alpha = 0
+      self.container.alpha = 0
+      self.scrollView.alpha = 0
       self.profilePictureContainer.alpha = 0
       self.profilePicture.alpha = 0
       self.nameLabel.alpha = 0
