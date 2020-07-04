@@ -27,8 +27,10 @@ class ProfileViewController: UIViewController {
   private var aboutMeTextView: UITextView!
   private var myBasicInfoLabel: UILabel!
   private var genderButton: UIButton!
-  private var locationButton: UIButton!
+  private var preferredGenderButton: UIButton!
   private var hometownButton: UIButton!
+  private var currentLocationButton: UIButton!
+
 
   private var savedAboutMeText: String?
   
@@ -177,7 +179,6 @@ class ProfileViewController: UIViewController {
     
     genderButton = UIButton()
     genderButton.translatesAutoresizingMaskIntoConstraints = false
-    genderButton.setTitle("Man", for: .normal)
     StyleUtilities.styleBasicInfoButton(genderButton)
     genderButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
     scrollView.addSubview(genderButton)
@@ -186,24 +187,32 @@ class ProfileViewController: UIViewController {
     genderButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     genderButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
-    locationButton = UIButton()
-    locationButton.translatesAutoresizingMaskIntoConstraints = false
-    locationButton.setTitle("Lives in Spokane, WA", for: .normal)
-    StyleUtilities.styleBasicInfoButton(locationButton)
-    locationButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
-    scrollView.addSubview(locationButton)
-    locationButton.topAnchor.constraint(equalTo: genderButton.bottomAnchor, constant: 5).isActive = true
-    locationButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
-    locationButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-    locationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    preferredGenderButton = UIButton()
+    preferredGenderButton.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(preferredGenderButton)
+    preferredGenderButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    scrollView.addSubview(preferredGenderButton)
+    preferredGenderButton.topAnchor.constraint(equalTo: genderButton.bottomAnchor, constant: 5).isActive = true
+    preferredGenderButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    preferredGenderButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    preferredGenderButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+    currentLocationButton = UIButton()
+    currentLocationButton.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(currentLocationButton)
+    currentLocationButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    scrollView.addSubview(currentLocationButton)
+    currentLocationButton.topAnchor.constraint(equalTo: preferredGenderButton.bottomAnchor, constant: 5).isActive = true
+    currentLocationButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    currentLocationButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    currentLocationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
     hometownButton = UIButton()
     hometownButton.translatesAutoresizingMaskIntoConstraints = false
-    hometownButton.setTitle("From Stayton, OR", for: .normal)
     StyleUtilities.styleBasicInfoButton(hometownButton)
     hometownButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
     scrollView.addSubview(hometownButton)
-    hometownButton.topAnchor.constraint(equalTo: locationButton.bottomAnchor, constant: 5).isActive = true
+    hometownButton.topAnchor.constraint(equalTo: currentLocationButton.bottomAnchor, constant: 5).isActive = true
     hometownButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     hometownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     hometownButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -261,6 +270,10 @@ class ProfileViewController: UIViewController {
         
         self.nameAndAgeLabel.text = "\(firstName), \(age)"
         self.aboutMeTextView.text = bio as? String
+        self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
+        self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
+        self.hometownButton.setTitle("From \(document.get("hometown") ?? "somewhere on earth")", for: .normal)
+        self.currentLocationButton.setTitle("Living in \(document.get("currentLcoation") ?? "a city on earth")", for: .normal)
       }
     }
     downloadProfilePictureFromFirebase()
