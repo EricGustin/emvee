@@ -29,7 +29,11 @@ class EditProfileViewController: EditableProfileSuperViewController {
     db.collection("users").document(userID!).getDocument { (snapshot, error) in
       if let document = snapshot {
         let bio = document.get("bio")
-        
+        print(self.preferredGenderButton)
+        self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
+        self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
+        self.hometownButton.setTitle("From \(document.get("hometown") ?? "somewhere on earth")", for: .normal)
+        self.currentLocationButton.setTitle("Living in \(document.get("currentLcoation") ?? "a city on earth")", for: .normal)
         self.aboutMeTextView.text = bio as? String
         self.savedAboutMeText = bio as? String
         self.displayBioCharsLeft()
@@ -62,7 +66,6 @@ class EditProfileViewController: EditableProfileSuperViewController {
     
     genderButton = UIButton()
     genderButton.translatesAutoresizingMaskIntoConstraints = false
-    genderButton.setTitle("Man", for: .normal)
     StyleUtilities.styleBasicInfoButton(genderButton)
     genderButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
     scrollView.addSubview(genderButton)
@@ -72,12 +75,32 @@ class EditProfileViewController: EditableProfileSuperViewController {
     genderButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     genderButton.addTarget(self, action: #selector(transitionToEditGender), for: .touchUpInside)
     
+    preferredGenderButton = UIButton()
+    preferredGenderButton.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(preferredGenderButton)
+    preferredGenderButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    scrollView.addSubview(preferredGenderButton)
+    preferredGenderButton.topAnchor.constraint(equalTo: genderButton.bottomAnchor, constant: 5).isActive = true
+    preferredGenderButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    preferredGenderButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    preferredGenderButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+    hometownButton = UIButton()
+    hometownButton.translatesAutoresizingMaskIntoConstraints = false
+    StyleUtilities.styleBasicInfoButton(hometownButton)
+    hometownButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+    scrollView.addSubview(hometownButton)
+    hometownButton.topAnchor.constraint(equalTo: preferredGenderButton.bottomAnchor, constant: 5).isActive = true
+    hometownButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+    hometownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    hometownButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
     currentLocationButton = UIButton()
     currentLocationButton.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(currentLocationButton)
     currentLocationButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
     scrollView.addSubview(currentLocationButton)
-    currentLocationButton.topAnchor.constraint(equalTo: genderButton.bottomAnchor, constant: 5).isActive = true
+    currentLocationButton.topAnchor.constraint(equalTo: hometownButton.bottomAnchor, constant: 5).isActive = true
     currentLocationButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     currentLocationButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     currentLocationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -89,6 +112,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
     genderGreaterThanImage.tintColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0)
     genderGreaterThanImage.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
     genderButton.addSubview(genderGreaterThanImage)
+    currentLocationButton.topAnchor.constraint(equalTo: currentLocationButton.bottomAnchor, constant: 5).isActive = true
     genderGreaterThanImage.centerYAnchor.constraint(equalTo: genderButton.centerYAnchor).isActive = true
     genderGreaterThanImage.trailingAnchor.constraint(equalTo: genderButton.trailingAnchor, constant: -genderButton.layer.cornerRadius / 2).isActive = true
     
@@ -100,17 +124,6 @@ class EditProfileViewController: EditableProfileSuperViewController {
     currentLocationButton.addSubview(currentLocationGreaterThanImage)
     currentLocationGreaterThanImage.centerYAnchor.constraint(equalTo: currentLocationButton.centerYAnchor).isActive = true
     currentLocationGreaterThanImage.trailingAnchor.constraint(equalTo: currentLocationButton.trailingAnchor, constant: -currentLocationButton.layer.cornerRadius / 2).isActive = true
-    
-    hometownButton = UIButton()
-    hometownButton.translatesAutoresizingMaskIntoConstraints = false
-    StyleUtilities.styleBasicInfoButton(hometownButton)
-    hometownButton.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
-    scrollView.addSubview(hometownButton)
-    hometownButton.topAnchor.constraint(equalTo: currentLocationButton.bottomAnchor, constant: 5).isActive = true
-    hometownButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
-    hometownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-    hometownButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    hometownButton.addTarget(self, action: #selector(transitionToEditHometownLocation), for: .touchUpInside)
     
     hometownGreaterThanImage = UIImageView(image: UIImage(systemName: "greaterthan"))
     hometownGreaterThanImage.translatesAutoresizingMaskIntoConstraints = false

@@ -13,8 +13,6 @@ import FirebaseStorage
 
 class ProfileViewController: UIViewController {
   
-
-  
   private var scrollView: UIScrollView!
   private var settingsButton: UIButton!
   private var homeButton: UIButton!
