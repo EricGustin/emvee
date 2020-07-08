@@ -101,6 +101,7 @@ class EditableProfileSuperViewController: UIViewController {
       
       profilePictures[index].translatesAutoresizingMaskIntoConstraints = false
       profilePictures[index].isUserInteractionEnabled = true
+      profilePictures[index].contentMode = .scaleAspectFit
       profilePictures[index].layer.borderWidth = 4.75
       profilePictures[index].layer.borderColor = UIColor.white.cgColor
       profilePictures[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40 - 1.5) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. The 1.5 is profilePicturesContainer[index].layer.borderWidth * 6. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.

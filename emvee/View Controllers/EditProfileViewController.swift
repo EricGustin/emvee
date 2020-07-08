@@ -29,7 +29,6 @@ class EditProfileViewController: EditableProfileSuperViewController {
     db.collection("users").document(userID!).getDocument { (snapshot, error) in
       if let document = snapshot {
         let bio = document.get("bio")
-        print(self.preferredGenderButton)
         self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
         self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
         self.hometownButton.setTitle("From \(document.get("hometown") ?? "somewhere on earth")", for: .normal)
