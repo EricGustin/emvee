@@ -221,15 +221,17 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   
     
   @objc func transitionToProfile() {
+//    let vc = ProfileViewController()
+//    let nc = NavigationController(vc)
+//    nc.modalPresentationStyle = .fullScreen
+//    self.present(nc, animated: true, completion: nil)
     let vc = ProfileViewController()
-    let nc = NavigationController(vc)
-    nc.modalPresentationStyle = .fullScreen
-    self.present(nc, animated: true, completion: nil)
+    show(vc, sender: nil)
   }
   
   
   // MARK: -- NOTE THIS IS A TESTING FUNCTION AND NOT FOR PRODUCTION USE
-  func transitionToVideoChat() {
+  private func transitionToVideoChat() {
     let vc = VideoChatViewController(chatRoomID: "234")
     vc.modalPresentationStyle = .fullScreen
     self.present(vc, animated: true, completion: nil)

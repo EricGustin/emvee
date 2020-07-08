@@ -40,6 +40,64 @@ class ProfileViewController: UIViewController {
   @objc func settingsButtonClicked(_ sender: UIButton) {
     transitionToSettings()
   }
+    
+  @objc func profilePictureTapped() { // change so that it gives a preview of how other people see their profile
+    
+  }
+  
+  @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
+    if gesture.direction == .left {
+      transitionToHome()
+    } else if gesture.direction == .right {
+      transitionToSettings()
+    }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    
+    // Get user data from Firebase Database
+    let userID = Auth.auth().currentUser?.uid
+    let db = Firestore.firestore()
+    
+    db.collection("users").document(userID!).getDocument { (snapshot, error) in
+      if let document = snapshot {
+        let firstName = document.get("firstName") ?? ""
+        let dateOfBirth = document.get("birthday")
+        let bio = document.get("bio")
+        // Calculate user's age
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd yyyy"
+        let currentDate = dateFormatter.string(from: date)
+        let age: Int = self.getAge(currentDate: currentDate as String, dateOfBirth: dateOfBirth! as! String)
+        
+        self.nameAndAgeLabel.text = "\(firstName), \(age)"
+        self.aboutMeTextView.text = bio as? String
+        self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
+        self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
+        self.hometownButton.setTitle("From \(document.get("hometown") ?? "somewhere on earth")", for: .normal)
+        self.currentLocationButton.setTitle("Living in \(document.get("currentLcoation") ?? "a city on earth")", for: .normal)
+      }
+    }
+    downloadProfilePictureFromFirebase()
+  }
+  
+  // MARK: - Navigation
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    view.backgroundColor = .systemGray6
+    setUpSubViews()
+    setUpNavigationBar()
+    
+    let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
+    leftSwipeGesture.direction = .left
+    view.addGestureRecognizer(leftSwipeGesture)
+    let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
+    rightSwipeGesture.direction = .right
+    view.addGestureRecognizer(rightSwipeGesture)
+  
+  }
   
   private func setUpSubViews() {
     
@@ -217,64 +275,11 @@ class ProfileViewController: UIViewController {
     
     // Lastly, calculate the content size of the scrollView
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
-    
-  }
-    
-  @objc func profilePictureTapped() { // change so that it gives a preview of how other people see their profile
-    
   }
   
-  @objc func swipeDetected(gesture: UISwipeGestureRecognizer) {
-    if gesture.direction == .left {
-      transitionToHome()
-    } else if gesture.direction == .right {
-      transitionToSettings()
-    }
-  }
-  
-  // MARK: - Navigation
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    view.backgroundColor = .systemGray6
-    setUpSubViews()
-    
-    let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
-    leftSwipeGesture.direction = .left
-    view.addGestureRecognizer(leftSwipeGesture)
-    let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
-    rightSwipeGesture.direction = .right
-    view.addGestureRecognizer(rightSwipeGesture)
-  
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    
-    // Get user data from Firebase Database
-    let userID = Auth.auth().currentUser?.uid
-    let db = Firestore.firestore()
-    
-    db.collection("users").document(userID!).getDocument { (snapshot, error) in
-      if let document = snapshot {
-        let firstName = document.get("firstName") ?? ""
-        let dateOfBirth = document.get("birthday")
-        let bio = document.get("bio")
-        // Calculate user's age
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM dd yyyy"
-        let currentDate = dateFormatter.string(from: date)
-        let age: Int = self.getAge(currentDate: currentDate as String, dateOfBirth: dateOfBirth! as! String)
-        
-        self.nameAndAgeLabel.text = "\(firstName), \(age)"
-        self.aboutMeTextView.text = bio as? String
-        self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
-        self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
-        self.hometownButton.setTitle("From \(document.get("hometown") ?? "somewhere on earth")", for: .normal)
-        self.currentLocationButton.setTitle("Living in \(document.get("currentLcoation") ?? "a city on earth")", for: .normal)
-      }
-    }
-    downloadProfilePictureFromFirebase()
+  private func setUpNavigationBar() {
+    navigationItem.leftBarButtonItem = UIBarButtonItem(customView: settingsButton!)
+    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: homeButton!)
   }
   
   private func transitionToSettings() {
@@ -295,8 +300,6 @@ class ProfileViewController: UIViewController {
     let nc = NavigationController(vc)
     nc.modalPresentationStyle = .fullScreen
     self.present(nc, animated: true, completion: nil)
-//    let vc = EditProfileViewController()
-//    show(vc, sender: nil)
   }
   
   // MARK: - Firebase Stuff
