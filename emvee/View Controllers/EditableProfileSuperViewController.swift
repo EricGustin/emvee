@@ -96,12 +96,12 @@ class EditableProfileSuperViewController: UIViewController {
       profilePicturesContainer[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.
       
       // Set up each profile picture view
-      profilePictures.append(UIImageView(image: UIImage(systemName: "plus")))
+      profilePictures.append(UIImageView(image: UIImage()))
       changeProfileImageToPlusSignFormat(index: index)
       
       profilePictures[index].translatesAutoresizingMaskIntoConstraints = false
       profilePictures[index].isUserInteractionEnabled = true
-      profilePictures[index].contentMode = .scaleAspectFit
+      profilePictures[index].contentMode = .center
       profilePictures[index].layer.borderWidth = 4.75
       profilePictures[index].layer.borderColor = UIColor.white.cgColor
       profilePictures[index].layer.cornerRadius = (UIScreen.main.bounds.width - 40 - 1.5) / 6  // 40 represents the sum of profilePictureVertStack leading and trailing, and the spacing of the profilePicturesHorizStacks. The 1.5 is profilePicturesContainer[index].layer.borderWidth * 6. Divide by 6 because there are 3 profile pictures per row and you want the radius of each photo, so we divide by 6.
@@ -219,6 +219,7 @@ class EditableProfileSuperViewController: UIViewController {
           self.changeProfileImageToPlusSignFormat(index: i)
           return
         } else {
+          self.changeProfileImageToNormalFormat(index: i)
           let aProfilePicture = UIImage(data: data!)
           self.profilePictures[i].image = aProfilePicture
           self.deleteProfilePictureButtonContainers[i].isHidden = false
