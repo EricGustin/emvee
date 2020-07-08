@@ -43,11 +43,6 @@ class SignUpViewController: UIViewController {
   
   private var currentSelectedTextField: UITextField?
   
-  @objc func cancelButtonClicked() {
-    self.dismiss(animated: true, completion: nil)
-  }
-  
-  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -418,6 +413,10 @@ class SignUpViewController: UIViewController {
     vc.hometown = hometown
     vc.currentLocation = currentLocation
     show(vc, sender: nil)
+  }
+  
+  @objc func cancelButtonClicked() {
+    self.dismiss(animated: true, completion: nil)
   }
   
   @objc func continueButtonClicked(_ sender: Any) {

@@ -292,7 +292,8 @@ class ProfileViewController: UIViewController {
   }
   
   private func transitionToHome() {
-    self.dismiss(animated: true, completion: nil)
+    let vc = HomeViewController()
+    show(vc, sender: nil)
   }
   
   @objc private func transitionToEditProfile() {

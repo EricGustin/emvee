@@ -39,9 +39,8 @@ class SettingsViewController: UIViewController {
   // MARK: - Transistions
   func transitionToWelcome() {
     let vc = WelcomeViewController()
-    let nc = NavigationController(vc)
-    nc.modalPresentationStyle = .fullScreen
-    self.present(nc, animated: true, completion: nil)
+    vc.modalPresentationStyle = .fullScreen
+    self.present(vc, animated: true, completion: nil)
   }
   
   @objc func transitionToProfile() {

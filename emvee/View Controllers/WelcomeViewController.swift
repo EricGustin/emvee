@@ -106,9 +106,10 @@ class WelcomeViewController: UIViewController {
   }
   
   @objc private func transitionToLogin() {
-    let vc = storyboard?.instantiateViewController(identifier: Constants.Storyboard.loginViewController) as? LoginViewController
-    view.window?.rootViewController = vc
-    view.window?.makeKeyAndVisible()
+    let vc = LoginViewController()
+    let nc = NavigationController(vc)
+    nc.modalPresentationStyle = .fullScreen
+    self.present(nc, animated: true, completion: nil)
   }
   
 }
