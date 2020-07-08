@@ -42,10 +42,10 @@ class WelcomeViewController: UIViewController {
   }
   
   func transitionToHome() {
-    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-    
-    view.window?.rootViewController = homeViewController
-    view.window?.makeKeyAndVisible()
+    let vc = HomeViewController()
+    let nc = NavigationController(vc)
+    nc.modalPresentationStyle = .fullScreen
+    self.present(nc, animated: true, completion: nil)
   }
   
   func setUpSubviews() {

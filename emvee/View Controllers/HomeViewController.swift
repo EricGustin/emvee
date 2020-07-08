@@ -98,6 +98,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     setUpViews()
     setUpGestures()
+    setUpNavigationBar()
     UserDefaults.standard.set(true, forKey: "isUserSignedIn")
     UserDefaults.standard.set(false, forKey: "isComingFromVideo")
   }
@@ -119,11 +120,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     profileButton?.tintColor = .systemTeal
     profileButton?.addTarget(self, action: #selector(profileButtonClicked), for: .touchUpInside)
     view.addSubview(profileButton!)
-    let profileButtonWidth = NSLayoutConstraint(item: profileButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
-    let profileButtonHeight = NSLayoutConstraint(item: profileButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
-    let profileButtonLeading = NSLayoutConstraint(item: profileButton!, attribute: .leading, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .leadingMargin, multiplier: 1.0, constant: 20)
-    let profileButtonTop = NSLayoutConstraint(item: profileButton!, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1.0, constant: 20)
-    view.addConstraints([profileButtonWidth, profileButtonHeight, profileButtonLeading, profileButtonTop])
+    profileButton?.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    profileButton?.widthAnchor.constraint(equalToConstant: 40).isActive = true
     
     // set up infoButton
     infoButton = UIButton(type: .custom)
@@ -132,24 +130,17 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     infoButton?.tintColor = .systemTeal
     infoButton?.addTarget(self, action: #selector(infoButtonClicked), for: .touchUpInside)
     view.addSubview(infoButton!)
-    let infoButtonWidth = NSLayoutConstraint(item: infoButton!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
-    let infoButtonHeight = NSLayoutConstraint(item: infoButton!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40)
-    let infoButtontrailing = NSLayoutConstraint(item: infoButton!, attribute: .trailing, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .trailingMargin, multiplier: 1.0, constant: -20)
-    let infoButtonTop = NSLayoutConstraint(item: infoButton!, attribute: .top, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .top, multiplier: 1.0, constant: 20)
-    view.addConstraints([infoButtonWidth, infoButtonHeight, infoButtontrailing, infoButtonTop])
+    infoButton?.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    infoButton?.widthAnchor.constraint(equalToConstant: 40).isActive = true
     
     // Set up emvee label
-    emveeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+    emveeLabel = UILabel()
     emveeLabel?.text = "emvee"
     emveeLabel?.textColor = .black
     emveeLabel?.textAlignment = .center
     emveeLabel?.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 36), size: 36)
     emveeLabel?.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(emveeLabel!)
-    let emveeLabelCenterX = NSLayoutConstraint(item: emveeLabel!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.0, constant: 0)
-    let emveeLabelCenterY = NSLayoutConstraint(item: emveeLabel!, attribute: .centerY, relatedBy: .equal, toItem: profileButton, attribute: .centerY, multiplier: 1.0, constant: 0)
-    view.addConstraints([emveeLabelCenterX, emveeLabelCenterY])
-    
+
     // Set up GetToChattingButton
     getToChattingButton = UIButton(type: .custom)
     getToChattingButton?.setTitle("Get To Chatting", for: .normal)
@@ -180,11 +171,11 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     containerView?.translatesAutoresizingMaskIntoConstraints = false
     
     // Constraints for arrowCircle view
-    let arrowCircleTop = NSLayoutConstraint(item: arrowCircleImage!, attribute: .top, relatedBy: .equal, toItem: profileButton, attribute: .bottom, multiplier: 1.0, constant: 50)
+    arrowCircleImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
     let arrowCircleBottom = NSLayoutConstraint(item: arrowCircleImage!, attribute: .bottom, relatedBy: .equal, toItem: getToChattingButton, attribute: .top, multiplier: 1.0, constant: -50)
     let arrowCircleWidth = NSLayoutConstraint(item: arrowCircleImage!, attribute: .width, relatedBy: .equal, toItem: arrowCircleImage!, attribute: .height, multiplier: 1.0, constant: 0)
     let arrowCircleCenterX = NSLayoutConstraint(item: arrowCircleImage!, attribute: .centerX, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .centerX, multiplier: 1.0, constant: 0)
-    view.addConstraints([arrowCircleTop, arrowCircleBottom, arrowCircleWidth, arrowCircleCenterX])
+    view.addConstraints([arrowCircleBottom, arrowCircleWidth, arrowCircleCenterX])
     
     let containerCenterX = containerView!.centerXAnchor.constraint(equalTo: arrowCircleImage.centerXAnchor)
     let containerBottom = containerView!.bottomAnchor.constraint(equalTo: arrowCircleImage.bottomAnchor)
@@ -193,6 +184,12 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     NSLayoutConstraint.activate([containerCenterX, containerBottom, containerWidth, containerTop])
     
     view.layoutIfNeeded()
+  }
+  
+  func setUpNavigationBar() {
+    navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileButton!)
+    navigationItem.titleView = emveeLabel!
+    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton!)
   }
   
   @objc public func arrowCircleTapDetected() {
