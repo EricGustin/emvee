@@ -13,9 +13,8 @@ import FirebaseAuth
 import Firebase
 
 class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
-  
-  let currentUser = Auth.auth().currentUser
-  
+
+  // UIViews
   var arrowCircleImage: UIImageView!
   var arrowCircleFlippedImage: UIImageView!
   var profileButton: UIButton?
@@ -24,14 +23,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   var getToChattingButton: UIButton?
   var containerView: UIView?
   
+  // Other Variables & Constants
   var spinsRemaining = 10
-  
-  //@IBOutlet weak var profileButton: UIButton!
-  @IBOutlet weak var enterVideoChatRoomButton: UIButton!
+  let currentUser = Auth.auth().currentUser
 
-  
-  
-  
   @objc func profileButtonClicked(_ sender: UIButton) {
     transitionToProfile()
   }

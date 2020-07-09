@@ -20,6 +20,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
   private var currentLocationGreaterThanImage: UIImageView!
   private var hometownButton: UIButton!
   private var hometownGreaterThanImage: UIImageView!
+  private var currentLocationText: String!
   
   
   override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +33,8 @@ class EditProfileViewController: EditableProfileSuperViewController {
         self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
         self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
         self.hometownButton.setTitle("From \(document.get("hometown") ?? "somewhere on earth")", for: .normal)
-        self.currentLocationButton.setTitle("Living in \(document.get("currentLcoation") ?? "a city on earth")", for: .normal)
+        self.currentLocationText = "\(document.get("currentLcoation") ?? "a city on earth")"
+        self.currentLocationButton.setTitle("Living in \(self.currentLocationText ?? "a city on earth")", for: .normal)
         self.aboutMeTextView.text = bio as? String
         self.savedAboutMeText = bio as? String
         self.displayBioCharsLeft()
@@ -135,12 +137,15 @@ class EditProfileViewController: EditableProfileSuperViewController {
   }
   
   @objc func transitionToEditGender() {
-    let vc = EditGenderViewController()
+    let vc = EditBasicInfoViewController(title: "Edit Gender", labelText: "I am a...", numOfButtons: 3)
+    vc.buttons[0].setTitle("Man", for: .normal)
+    vc.buttons[1].setTitle("Woman", for: .normal)
+    vc.buttons[2].setTitle("Other", for: .normal)
     show(vc, sender: nil)
   }
   
   @objc func transitionToEditCurrentLocation() {
-    let vc = EditCurrentLocationViewController()
+    let vc = EditBasicInfoViewController(title: "Edit Current Location", labelText: "I am living in...", numOfButtons: 0, textFieldText: currentLocationText)
     show(vc, sender: nil)
   }
   
