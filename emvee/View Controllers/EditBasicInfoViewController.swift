@@ -19,6 +19,7 @@ class EditBasicInfoViewController: UIViewController {
   private var buttonTag: Int?
   var textField = UITextField()
   private var verticalStack: UIStackView?
+  private var errorLabel: UILabel?
   
   private var checkmarks = [UIImageView]()
   
@@ -83,6 +84,13 @@ class EditBasicInfoViewController: UIViewController {
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
+    errorLabel = UILabel()
+    errorLabel?.text = "Field cannot be empty"
+    errorLabel?.alpha = 0
+    errorLabel?.font = UIFont(name: "American Typewriter", size: 16)
+    errorLabel?.textColor = .systemRed
+    errorLabel?.textAlignment = .center
+    
     verticalStack = UIStackView()
     verticalStack?.axis = .vertical
     verticalStack?.spacing = 5
@@ -94,6 +102,7 @@ class EditBasicInfoViewController: UIViewController {
     if buttons.count == 0 { // the only time buttons.count will be zero is if there needs to be a textfield
       verticalStack?.addArrangedSubview(textField)
     }
+    verticalStack?.addArrangedSubview(errorLabel!)
     view.addSubview(verticalStack!)
     verticalStack?.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
     verticalStack?.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
@@ -112,6 +121,7 @@ class EditBasicInfoViewController: UIViewController {
   
   private func setUpNavigationBar() {
     self.title = navBarTitle
+    navigationController?.hidesBarsWhenKeyboardAppears = true
   }
   
   private func setUpDelegates() {
@@ -163,7 +173,25 @@ class EditBasicInfoViewController: UIViewController {
 extension EditBasicInfoViewController: UITextFieldDelegate {
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
+    if (textField.text == "" || textField.text == nil) {
+      errorLabel?.alpha = 1
+    } else {
+      textField.resignFirstResponder()
+      view.isUserInteractionEnabled = true
+      UIView.animate(withDuration: 0.3) {
+        self.errorLabel?.alpha = 0
+        self.navigationController?.isNavigationBarHidden = false
+      }
+      return true
+    }
+    return false
+  }
+  
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    print("Started")
+    view.isUserInteractionEnabled = false
+    //navigationController?.barHideOnTapGestureRecognizer
+    
     return true
   }
   
