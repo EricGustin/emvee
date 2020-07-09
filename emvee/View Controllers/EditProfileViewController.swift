@@ -27,6 +27,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
   
   
   override func viewWillAppear(_ animated: Bool) {
+    title = "EditProfile"
     let userID = Auth.auth().currentUser?.uid
     let db = Firestore.firestore()
     
@@ -54,6 +55,11 @@ class EditProfileViewController: EditableProfileSuperViewController {
     setUpNavigationBar()
     setUpSubviews()
   }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    title = "Save"
+  }
+  
   
   private func setUpNavigationBar() {
     title = "Edit Profile"

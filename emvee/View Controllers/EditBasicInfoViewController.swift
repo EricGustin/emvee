@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
 
 class EditBasicInfoViewController: UIViewController {
   
@@ -45,6 +47,11 @@ class EditBasicInfoViewController: UIViewController {
     self.view.backgroundColor = .systemGray6
     setUpSubviews()
     setUpNavigationBar()
+    setUpDelegates()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    uploadChangesToFirebase()
   }
   
   private func setUpSubviews() {
@@ -59,12 +66,14 @@ class EditBasicInfoViewController: UIViewController {
       buttons[i].translatesAutoresizingMaskIntoConstraints = false
       StyleUtilities.styleBasicInfoButton(buttons[i])
       buttons[i].tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+      buttons[i].tag = i
       if i == buttonTag {
         buttons[i].setTitleColor(.systemGreen, for: .normal)
       } else {
         buttons[i].setTitleColor(.black, for: .normal)
       }
       buttons[i].heightAnchor.constraint(equalToConstant: 35).isActive = true
+      buttons[i].addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonClicked)))
     }
     
     textField.textColor = .black
@@ -103,11 +112,59 @@ class EditBasicInfoViewController: UIViewController {
   
   private func setUpNavigationBar() {
     self.title = navBarTitle
-//    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonClicked))
   }
   
-//  @objc private func saveButtonClicked() {
-//    let vc = EditProfileViewController()
-//    show(vc, sender: nil)
-//  }
+  private func setUpDelegates() {
+    textField.delegate = self
+  }
+  
+  @objc private func buttonClicked(_ gestureRecognizer: UITapGestureRecognizer) {
+    guard gestureRecognizer.view != nil else { return }
+    buttonTag = gestureRecognizer.view!.tag
+    for i in 0..<buttons.count {
+      if i == buttonTag {
+        checkmarks[i].isHidden = false
+        buttons[i].setTitleColor(.systemGreen, for: .normal)
+      } else {
+        checkmarks[i].isHidden = true
+        buttons[i].setTitleColor(.black, for: .normal)
+      }
+    }
+  }
+  
+  private func uploadChangesToFirebase() {
+    guard let userID = Auth.auth().currentUser?.uid else {
+      print("Error getting userID")
+      return
+    }
+    var fieldName = ""
+    if buttons.count > 0 {
+      if buttons[0].titleLabel?.text == "Male" {
+        fieldName = "gender"
+      } else if buttons[0].titleLabel?.text == "Men" {
+        fieldName = "preferredGender"
+      }
+    } else if title == "Edit Current Location" {
+      fieldName = "currentLcoation"
+    } else if title == "Edit Hometown" {
+      fieldName = "hometown"
+    }
+    var newValue = ""
+    if buttonTag != nil {
+      newValue = buttons[buttonTag!].titleLabel!.text ?? ""
+    } else {
+      newValue = textField.text!
+    }
+    let db = Firestore.firestore()
+    db.collection("users").document(userID).updateData([fieldName: newValue])
+  }
+}
+
+extension EditBasicInfoViewController: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+  
 }
