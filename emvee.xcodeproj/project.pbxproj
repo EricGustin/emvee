@@ -36,7 +36,6 @@
 		FA9505C324A15C0400AD3BEF /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C224A15C0400AD3BEF /* UILabel+.swift */; };
 		FA9505C724A2B96800AD3BEF /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */; };
 		FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */; };
-		FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */; };
 		FA9505D124A5685200AD3BEF /* EditHometownLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */; };
 		FA9505D324A6617F00AD3BEF /* ProfilePreviewPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */; };
 		FA9505D524A80AA300AD3BEF /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505D424A80AA300AD3BEF /* Popup.swift */; };
@@ -86,7 +85,6 @@
 		FA9505C224A15C0400AD3BEF /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+.swift"; path = "emvee/Views/UILabel+.swift"; sourceTree = SOURCE_ROOT; };
 		FA9505C624A2B96800AD3BEF /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+.swift"; path = "emvee/View Controllers/UIViewController+.swift"; sourceTree = SOURCE_ROOT; };
-		FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCurrentLocationViewController.swift; sourceTree = "<group>"; };
 		FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHometownLocationViewController.swift; sourceTree = "<group>"; };
 		FA9505D224A6617F00AD3BEF /* ProfilePreviewPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePreviewPopup.swift; sourceTree = "<group>"; };
 		FA9505D424A80AA300AD3BEF /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 				FA91C5FA246F49F500895098 /* TextChatViewController.swift */,
 				FA91C60224709FF000895098 /* NavigationController.swift */,
 				FA5AD8C4248AF991001DFAB6 /* VideoChatViewController.swift */,
-				FA9505CE24A5679700AD3BEF /* EditCurrentLocationViewController.swift */,
 				FA9505D024A5685200AD3BEF /* EditHometownLocationViewController.swift */,
 				FA9505DE24AD365200AD3BEF /* EditableProfileSuperViewController.swift */,
 				FA9505D624ABE53200AD3BEF /* SetUpProfileViewController.swift */,
@@ -405,7 +402,6 @@
 				FA54DBFF24661CEA008227FE /* LoginViewController.swift in Sources */,
 				FA9505DD24AD20E700AD3BEF /* UITextField+.swift in Sources */,
 				FA9505D524A80AA300AD3BEF /* Popup.swift in Sources */,
-				FA9505CF24A5679700AD3BEF /* EditCurrentLocationViewController.swift in Sources */,
 				FA54DBEB24661C99008227FE /* SceneDelegate.swift in Sources */,
 				FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */,
 				FA54DC0724662352008227FE /* FormUtilities.swift in Sources */,

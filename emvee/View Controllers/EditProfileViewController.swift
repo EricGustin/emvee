@@ -21,6 +21,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
   private var hometownButton: UIButton!
   private var hometownGreaterThanImage: UIImageView!
   private var currentLocationText: String!
+  private var hometownText: String!
   
   
   override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +33,8 @@ class EditProfileViewController: EditableProfileSuperViewController {
         let bio = document.get("bio")
         self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
         self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
-        self.hometownButton.setTitle("From \(document.get("hometown") ?? "somewhere on earth")", for: .normal)
+        self.hometownText = "\(document.get("hometown") ?? "somewhere on earth")"
+        self.hometownButton.setTitle("From \(self.hometownText ?? "somewhere on earth")", for: .normal)
         self.currentLocationText = "\(document.get("currentLcoation") ?? "a city on earth")"
         self.currentLocationButton.setTitle("Living in \(self.currentLocationText ?? "a city on earth")", for: .normal)
         self.aboutMeTextView.text = bio as? String
@@ -85,6 +87,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
     preferredGenderButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     preferredGenderButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     preferredGenderButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    preferredGenderButton.addTarget(self, action: #selector(transitionToEditPreferredGender), for: .touchUpInside)
     
     hometownButton = UIButton()
     hometownButton.translatesAutoresizingMaskIntoConstraints = false
@@ -95,6 +98,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
     hometownButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
     hometownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     hometownButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    hometownButton.addTarget(self, action: #selector(transitionToEditHometownLocation), for: .touchUpInside)
     
     currentLocationButton = UIButton()
     currentLocationButton.translatesAutoresizingMaskIntoConstraints = false
@@ -113,9 +117,17 @@ class EditProfileViewController: EditableProfileSuperViewController {
     genderGreaterThanImage.tintColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0)
     genderGreaterThanImage.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
     genderButton.addSubview(genderGreaterThanImage)
-    currentLocationButton.topAnchor.constraint(equalTo: currentLocationButton.bottomAnchor, constant: 5).isActive = true
     genderGreaterThanImage.centerYAnchor.constraint(equalTo: genderButton.centerYAnchor).isActive = true
     genderGreaterThanImage.trailingAnchor.constraint(equalTo: genderButton.trailingAnchor, constant: -genderButton.layer.cornerRadius / 2).isActive = true
+    
+    preferredGenderGreaterThanImage = UIImageView(image: UIImage(systemName: "greaterthan"))
+    preferredGenderGreaterThanImage.translatesAutoresizingMaskIntoConstraints = false
+    preferredGenderGreaterThanImage.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+    preferredGenderGreaterThanImage.tintColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0)
+    preferredGenderGreaterThanImage.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
+    preferredGenderButton.addSubview(preferredGenderGreaterThanImage)
+    preferredGenderGreaterThanImage.centerYAnchor.constraint(equalTo: preferredGenderButton.centerYAnchor).isActive = true
+    preferredGenderGreaterThanImage.trailingAnchor.constraint(equalTo: preferredGenderButton.trailingAnchor, constant: -preferredGenderButton.layer.cornerRadius / 2).isActive = true
     
     currentLocationGreaterThanImage = UIImageView(image: UIImage(systemName: "greaterthan"))
     currentLocationGreaterThanImage.translatesAutoresizingMaskIntoConstraints = false
@@ -136,21 +148,29 @@ class EditProfileViewController: EditableProfileSuperViewController {
     hometownGreaterThanImage.trailingAnchor.constraint(equalTo: hometownButton.trailingAnchor, constant: -hometownButton.layer.cornerRadius / 2).isActive = true
   }
   
-  @objc func transitionToEditGender() {
+  @objc private func transitionToEditGender() {
     let vc = EditBasicInfoViewController(title: "Edit Gender", labelText: "I am a...", numOfButtons: 3)
-    vc.buttons[0].setTitle("Man", for: .normal)
-    vc.buttons[1].setTitle("Woman", for: .normal)
+    vc.buttons[0].setTitle("Male", for: .normal)
+    vc.buttons[1].setTitle("Female", for: .normal)
     vc.buttons[2].setTitle("Other", for: .normal)
     show(vc, sender: nil)
   }
   
-  @objc func transitionToEditCurrentLocation() {
+  @objc private func transitionToEditPreferredGender() {
+    let vc = EditBasicInfoViewController(title: "Edit Preferred Gender(s)", labelText: "I'm interested in...", numOfButtons: 3)
+    vc.buttons[0].setTitle("Men", for: .normal)
+    vc.buttons[1].setTitle("Women", for: .normal)
+    vc.buttons[2].setTitle("All", for: .normal)
+    show(vc, sender: nil)
+  }
+  
+  @objc private func transitionToEditCurrentLocation() {
     let vc = EditBasicInfoViewController(title: "Edit Current Location", labelText: "I am living in...", numOfButtons: 0, textFieldText: currentLocationText)
     show(vc, sender: nil)
   }
   
-  @objc func transitionToEditHometownLocation() {
-    let vc = EditHometownLocationViewController()
+  @objc private func transitionToEditHometownLocation() {
+    let vc = EditBasicInfoViewController(title: "Edit Hometown", labelText: "I am from...", numOfButtons: 0, textFieldText: hometownText)
     show(vc, sender: nil)
   }
   

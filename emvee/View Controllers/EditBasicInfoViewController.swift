@@ -78,12 +78,13 @@ class EditBasicInfoViewController: UIViewController {
     verticalStack?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
   }
   
-//  view.addSubview(maleButton)
-//  maleButton.topAnchor.constraint(equalTo: iAmALabel.bottomAnchor, constant: 5).isActive = true
-//  maleButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
-//  maleButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-//  maleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
   private func setUpNavigationBar() {
     self.title = navBarTitle
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonClicked))
+  }
+  
+  @objc private func saveButtonClicked() {
+    let vc = EditProfileViewController()
+    show(vc, sender: nil)
   }
 }
