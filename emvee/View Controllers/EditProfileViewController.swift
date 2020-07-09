@@ -57,13 +57,17 @@ class EditProfileViewController: EditableProfileSuperViewController {
   }
   
   override func viewWillDisappear(_ animated: Bool) {
-    title = "Save"
+    UIView.animate(withDuration: 0.8) {
+      self.title = "Save"
+    }
   }
   
   
   private func setUpNavigationBar() {
-    title = "Edit Profile"
+    title = "Edit  Profile"
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 24), size: 24)]
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(transitionToProfile))
+    navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 18), size: 18)], for: .normal)
   }
   
   private func setUpSubviews() {

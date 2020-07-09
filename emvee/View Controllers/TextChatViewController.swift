@@ -221,7 +221,9 @@ final class TextChatViewController: MessagesViewController {
   
   private func setUpNavigationBar() {
     title = "Waiting for a stanger to join"
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 16), size: 16)]
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leave", style: .done, target: self, action: #selector(backToHome))
+    navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)], for: .normal)
   }
   
   // MARK: - Actions

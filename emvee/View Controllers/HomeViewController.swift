@@ -19,7 +19,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   var arrowCircleFlippedImage: UIImageView!
   var profileButton: UIButton?
   var infoButton: UIButton?
-  var emveeLabel: UILabel?
   var getToChattingButton: UIButton?
   var containerView: UIView?
   
@@ -127,14 +126,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     view.addSubview(infoButton!)
     infoButton?.heightAnchor.constraint(equalToConstant: 40).isActive = true
     infoButton?.widthAnchor.constraint(equalToConstant: 40).isActive = true
-    
-    // Set up emvee label
-    emveeLabel = UILabel()
-    emveeLabel?.text = "emvee"
-    emveeLabel?.textColor = .black
-    emveeLabel?.textAlignment = .center
-    emveeLabel?.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 36), size: 36)
-    emveeLabel?.translatesAutoresizingMaskIntoConstraints = false
 
     // Set up GetToChattingButton
     getToChattingButton = UIButton(type: .custom)
@@ -183,7 +174,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   
   func setUpNavigationBar() {
     navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileButton!)
-    navigationItem.titleView = emveeLabel!
+    title = "emvee"
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton!)
   }
   

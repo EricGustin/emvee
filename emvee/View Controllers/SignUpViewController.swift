@@ -58,7 +58,7 @@ class SignUpViewController: UIViewController {
   
   private func setUpNavigationBar() {
     title = "Basic Info"
-    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont(name: "American Typewriter", size: 28)!]
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
     //navigationController?.navigationBar.prefersLargeTitles = true
     navigationController?.navigationBar.backgroundColor = .systemGray6
   }
