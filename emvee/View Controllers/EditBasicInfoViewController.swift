@@ -10,17 +10,25 @@ import UIKit
 
 class EditBasicInfoViewController: UIViewController {
   
+  // Parameter stuff
   private var navBarTitle: String?
   private var label = UILabel()
   var buttons = [UIButton]()
+  private var buttonTag: Int?
   var textField = UITextField()
   private var verticalStack: UIStackView?
   
-  init(title: String, labelText: String, numOfButtons: Int, textFieldText: String? = nil) {
+  private var checkmarks = [UIImageView]()
+  
+  init(title: String, labelText: String, numOfButtons: Int, buttonTag: Int? = nil, textFieldText: String? = nil) {
     self.navBarTitle = title
     self.label.text = "    " + labelText
     for _ in 0..<numOfButtons {
       self.buttons.append(UIButton())
+      self.checkmarks.append(UIImageView(image: UIImage(systemName: "checkmark")))
+    }
+    if buttonTag != nil {
+      self.buttonTag = buttonTag
     }
     if textFieldText != nil {
       self.textField.text = textFieldText
@@ -47,11 +55,16 @@ class EditBasicInfoViewController: UIViewController {
     label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
     label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
     
-    for button in buttons {
-      button.translatesAutoresizingMaskIntoConstraints = false
-      StyleUtilities.styleBasicInfoButton(button)
-      button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
-      button.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    for i in 0..<buttons.count {
+      buttons[i].translatesAutoresizingMaskIntoConstraints = false
+      StyleUtilities.styleBasicInfoButton(buttons[i])
+      buttons[i].tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
+      if i == buttonTag {
+        buttons[i].setTitleColor(.systemGreen, for: .normal)
+      } else {
+        buttons[i].setTitleColor(.black, for: .normal)
+      }
+      buttons[i].heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
     textField.textColor = .black
@@ -76,15 +89,25 @@ class EditBasicInfoViewController: UIViewController {
     verticalStack?.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
     verticalStack?.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
     verticalStack?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+    for i in 0..<checkmarks.count {
+      checkmarks[i].isHidden = !(i == buttonTag ?? -1)
+      checkmarks[i].translatesAutoresizingMaskIntoConstraints = false
+      checkmarks[i].tintColor = .systemGreen
+      checkmarks[i].preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12, weight: .heavy)
+      buttons[i].addSubview(checkmarks[i])
+      checkmarks[i].centerYAnchor.constraint(equalTo: buttons[i].centerYAnchor).isActive = true
+      checkmarks[i].trailingAnchor.constraint(equalTo: buttons[i].trailingAnchor, constant: -buttons[i].layer.cornerRadius / 2).isActive = true
+    }
   }
   
   private func setUpNavigationBar() {
     self.title = navBarTitle
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonClicked))
+//    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonClicked))
   }
   
-  @objc private func saveButtonClicked() {
-    let vc = EditProfileViewController()
-    show(vc, sender: nil)
-  }
+//  @objc private func saveButtonClicked() {
+//    let vc = EditProfileViewController()
+//    show(vc, sender: nil)
+//  }
 }

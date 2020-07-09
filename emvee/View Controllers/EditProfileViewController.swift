@@ -22,6 +22,8 @@ class EditProfileViewController: EditableProfileSuperViewController {
   private var hometownGreaterThanImage: UIImageView!
   private var currentLocationText: String!
   private var hometownText: String!
+  private var preferredGenderText: String!
+  private var genderText: String!
   
   
   override func viewWillAppear(_ animated: Bool) {
@@ -31,8 +33,10 @@ class EditProfileViewController: EditableProfileSuperViewController {
     db.collection("users").document(userID!).getDocument { (snapshot, error) in
       if let document = snapshot {
         let bio = document.get("bio")
-        self.preferredGenderButton.setTitle("Interested in \(document.get("preferredGender") ?? "finding friends")", for: .normal)
-        self.genderButton.setTitle("\(document.get("gender") ?? "")", for: .normal)
+        self.preferredGenderText = "\(document.get("preferredGender") ?? "finding friends")"
+        self.preferredGenderButton.setTitle("Interested in \(self.preferredGenderText ?? "finding friends")", for: .normal)
+        self.genderText = "\(document.get("gender") ?? "")"
+        self.genderButton.setTitle("\(self.genderText ?? "")", for: .normal)
         self.hometownText = "\(document.get("hometown") ?? "somewhere on earth")"
         self.hometownButton.setTitle("From \(self.hometownText ?? "somewhere on earth")", for: .normal)
         self.currentLocationText = "\(document.get("currentLcoation") ?? "a city on earth")"
@@ -148,8 +152,20 @@ class EditProfileViewController: EditableProfileSuperViewController {
     hometownGreaterThanImage.trailingAnchor.constraint(equalTo: hometownButton.trailingAnchor, constant: -hometownButton.layer.cornerRadius / 2).isActive = true
   }
   
+  private func getButtonTag(text: String) -> Int? {
+    switch text {
+      case "Male": return 0
+      case "Men": return 0
+      case "Female": return 1
+      case "Women": return 1
+      case "Other": return 2
+      case "All": return 2
+      default: return nil
+    }
+  }
+  
   @objc private func transitionToEditGender() {
-    let vc = EditBasicInfoViewController(title: "Edit Gender", labelText: "I am a...", numOfButtons: 3)
+    let vc = EditBasicInfoViewController(title: "Edit Gender", labelText: "I am a...", numOfButtons: 3, buttonTag: getButtonTag(text: genderText))
     vc.buttons[0].setTitle("Male", for: .normal)
     vc.buttons[1].setTitle("Female", for: .normal)
     vc.buttons[2].setTitle("Other", for: .normal)
@@ -157,7 +173,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
   }
   
   @objc private func transitionToEditPreferredGender() {
-    let vc = EditBasicInfoViewController(title: "Edit Preferred Gender(s)", labelText: "I'm interested in...", numOfButtons: 3)
+    let vc = EditBasicInfoViewController(title: "Edit Preferred Gender(s)", labelText: "I'm interested in...", numOfButtons: 3, buttonTag: getButtonTag(text: preferredGenderText))
     vc.buttons[0].setTitle("Men", for: .normal)
     vc.buttons[1].setTitle("Women", for: .normal)
     vc.buttons[2].setTitle("All", for: .normal)
