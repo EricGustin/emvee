@@ -1,5 +1,5 @@
 # emvee: Messege and video chat with strangers
-![](readme_images/welcomeScreen.png)
+<img src="readme_images/welcomeScreen.png" width="152" >
 ![](readme_images/signUpScreen.png)
 ![](readme_images/homeScreen.png)
 ![](readme_images/textChatScreen.png)
