@@ -134,9 +134,7 @@ class SetUpProfileViewController: EditableProfileSuperViewController {
   
     private func transitionToHome() {
       let vc = HomeViewController()
-      let nc = NavigationController(vc)
-      nc.modalPresentationStyle = .fullScreen
-      self.present(nc, animated: true, completion: nil)
+      navigationController?.pushViewControllerFromBottom(rootVC: vc)
     }
   
 }

@@ -12,7 +12,7 @@ class NavigationController: UINavigationController {
   
   init(_ rootVC: UIViewController) {
     super.init(nibName: nil, bundle: nil)
-    pushViewController(rootVC, animated: false)
+    //pushViewController(rootVC, animated: false)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -38,5 +38,7 @@ class NavigationController: UINavigationController {
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return topViewController?.preferredStatusBarStyle ?? .default
   }
+  
+  
   
 }

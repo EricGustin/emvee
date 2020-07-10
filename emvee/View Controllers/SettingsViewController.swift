@@ -12,12 +12,8 @@ import FirebaseFirestore
 
 class SettingsViewController: UIViewController {
   
-  // Navigation Bar And Items
-  let navBar = UINavigationBar()
-  let navItem = UINavigationItem(title: "Settings")
-  let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(transitionToProfile))
   private var logoutButton: UIButton?
-  
+  private var profileButton: UIButton?
   
   
   // MARK: - Navigation
@@ -25,8 +21,8 @@ class SettingsViewController: UIViewController {
     super.viewDidLoad()
     print("In settingsViewController")
     view.backgroundColor = .systemGray6
-    setUpNavigationBar()
     setUpSubviews()
+    setUpNavigationBar()
     
     let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     swipeGesture.direction = .left
@@ -39,12 +35,11 @@ class SettingsViewController: UIViewController {
   // MARK: - Transistions
   func transitionToWelcome() {
     let vc = WelcomeViewController()
-    vc.modalPresentationStyle = .fullScreen
-    self.present(vc, animated: true, completion: nil)
+    navigationController?.pushViewControllerFromBottom(rootVC: vc)
   }
   
   @objc func transitionToProfile() {
-    self.dismiss(animated: true, completion: nil)
+    navigationController?.popViewControllerToLeft()
   }
   
   // MARK: - Actions
@@ -74,10 +69,24 @@ class SettingsViewController: UIViewController {
   }
   
   private func setUpNavigationBar() {
-    
+    title = "Settings"
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
+    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton!)
+    navigationItem.leftBarButtonItem = UIBarButtonItem()
   }
   
   private func setUpSubviews() {
+    
+    profileButton = UIButton()
+    profileButton?.translatesAutoresizingMaskIntoConstraints = false
+    profileButton?.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
+    profileButton?.tintColor = .systemTeal
+    view.addSubview(profileButton!)
+    profileButton?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+    profileButton?.widthAnchor.constraint(equalToConstant: 40).isActive = true
+    profileButton?.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    profileButton?.addTarget(self, action: #selector(transitionToProfile), for: .touchUpInside)
+    
     logoutButton = UIButton()
     logoutButton?.setTitleColor(.white, for: .normal)
     logoutButton?.setTitle("Logout", for: .normal)

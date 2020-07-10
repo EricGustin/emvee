@@ -412,11 +412,11 @@ class SignUpViewController: UIViewController {
     vc.preferredGender = preferredGender
     vc.hometown = hometown
     vc.currentLocation = currentLocation
-    show(vc, sender: nil)
+    navigationController?.pushViewControllerFromRightToLeft(rootVC: vc)
   }
   
   @objc func cancelButtonClicked() {
-    self.dismiss(animated: true, completion: nil)
+    navigationController?.popViewControllerToRight()
   }
   
   @objc func continueButtonClicked(_ sender: Any) {

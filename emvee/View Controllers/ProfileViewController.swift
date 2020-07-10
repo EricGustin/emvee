@@ -285,24 +285,17 @@ class ProfileViewController: UIViewController {
   }
   
   private func transitionToSettings() {
-//    let vc = SettingsViewController()
-//    let nc = NavigationController(vc)
-//    nc.modalPresentationStyle = .fullScreen
-//    self.present(nc, animated: true, completion: nil)
     let vc = SettingsViewController()
-    show(vc, sender: nil)
+    navigationController?.pushViewControllerFromLeftToRight(rootVC: vc)
   }
   
   private func transitionToHome() {
-    let vc = HomeViewController()
-    show(vc, sender: nil)
+    navigationController?.popViewControllerToLeft()
   }
   
   @objc private func transitionToEditProfile() {
     let vc = EditProfileViewController()
-    let nc = NavigationController(vc)
-    nc.modalPresentationStyle = .fullScreen
-    self.present(nc, animated: true, completion: nil)
+    navigationController?.pushViewControllerFromBottom(rootVC: vc)
   }
   
   // MARK: - Firebase Stuff

@@ -19,6 +19,13 @@ class WelcomeViewController: UIViewController {
   private var verticalStack: UIStackView?
 
   
+  override func viewWillAppear(_ animated: Bool) {
+    navigationController?.isNavigationBarHidden = true
+  }
+  override func viewWillDisappear(_ animated: Bool) {
+    navigationController?.isNavigationBarHidden = false
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
@@ -45,10 +52,11 @@ class WelcomeViewController: UIViewController {
     let vc = HomeViewController()
     let nc = NavigationController(vc)
     nc.modalPresentationStyle = .fullScreen
+    nc.pushViewControllerFromRightToLeft(rootVC: vc)
     self.present(nc, animated: true, completion: nil)
   }
   
-  func setUpSubviews() {
+  private func setUpSubviews() {
     
     background = UIImageView(image: UIImage(named: "background@4x"))
     background?.translatesAutoresizingMaskIntoConstraints = false
@@ -100,16 +108,13 @@ class WelcomeViewController: UIViewController {
   
   @objc private func transitionToSignUp() {
     let vc = SignUpViewController()
-    let nc = NavigationController(vc)
-    nc.modalPresentationStyle = .fullScreen
-    self.present(nc, animated: true, completion: nil)
+    navigationController?.pushViewControllerFromRightToLeft(rootVC: vc)
   }
   
   @objc private func transitionToLogin() {
     let vc = LoginViewController()
-    let nc = NavigationController(vc)
-    nc.modalPresentationStyle = .fullScreen
-    self.present(nc, animated: true, completion: nil)
+    navigationController?.pushViewControllerFromRightToLeft(rootVC: vc)
+    
   }
   
 }

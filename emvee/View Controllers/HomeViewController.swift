@@ -33,10 +33,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     let infoPopup = InfoPopup()
     view.addSubview(infoPopup)
   }
-
-  @IBAction func joinVideoChatRoom(_ sender: Any) {
-    transitionToVideoChat()
-  }
   
   @objc func joinChatRoom() {
     let db = Firestore.firestore()
@@ -63,9 +59,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           }
           
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
-          let nc = NavigationController(vc)
-          nc.modalPresentationStyle = .fullScreen
-          self.present(nc, animated: true, completion: nil)
+//          let nc = NavigationController(vc)
+//          nc.modalPresentationStyle = .fullScreen
+//          self.present(nc, animated: true, completion: nil)
+          self.navigationController?.pushViewControllerFromBottom(rootVC: vc)
         }
         else {
           let aChatRoom = querySnapshot!.documents[querySnapshot!.count-1] // the last in the array AKA the chat room that has been waiting the longest
@@ -78,9 +75,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           let aConversationID = aChatRoom.get("conversationID") as? String ?? "noConversationID"
 
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
-          let nc = NavigationController(vc)
-          nc.modalPresentationStyle = .fullScreen
-          self.present(nc, animated: true, completion: nil)
+//          let nc = NavigationController(vc)
+//          nc.modalPresentationStyle = .fullScreen
+//          self.present(nc, animated: true, completion: nil)
+          self.navigationController?.pushViewControllerFromBottom(rootVC: vc)
         }
       }
     }
@@ -206,24 +204,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     }
   }
   
-    
   @objc func transitionToProfile() {
-//    let vc = ProfileViewController()
-//    let nc = NavigationController(vc)
-//    nc.modalPresentationStyle = .fullScreen
-//    self.present(nc, animated: true, completion: nil)
     let vc = ProfileViewController()
-    show(vc, sender: nil)
+    navigationController?.pushViewControllerFromLeftToRight(rootVC: vc)
   }
-  
-  
-  // MARK: -- NOTE THIS IS A TESTING FUNCTION AND NOT FOR PRODUCTION USE
-  private func transitionToVideoChat() {
-    let vc = VideoChatViewController(chatRoomID: "234")
-    vc.modalPresentationStyle = .fullScreen
-    self.present(vc, animated: true, completion: nil)
-  }
-  
-
-  
 }

@@ -52,8 +52,8 @@ class EditProfileViewController: EditableProfileSuperViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    setUpNavigationBar()
     setUpSubviews()
+    setUpNavigationBar()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -68,6 +68,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
     navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 24), size: 24)]
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(transitionToProfile))
     navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 18), size: 18)], for: .normal)
+    navigationItem.leftBarButtonItem = UIBarButtonItem()
   }
   
   private func setUpSubviews() {
@@ -201,7 +202,7 @@ class EditProfileViewController: EditableProfileSuperViewController {
   }
   
   @objc private func transitionToProfile() {
-    self.dismiss(animated: true, completion: nil)
+    navigationController?.popViewControllerToBottom()
   }
   
 }

@@ -21,8 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   window = UIWindow(frame: windowScene.coordinateSpace.bounds)
   window?.windowScene = windowScene
-  window?.rootViewController = WelcomeViewController()
   window?.makeKeyAndVisible()
+  let vc = WelcomeViewController()
+  let nc = NavigationController(vc)
+  window?.rootViewController = nc
+  nc.pushViewController(vc, animated: false)
  }
 
  func sceneDidDisconnect(_ scene: UIScene) {

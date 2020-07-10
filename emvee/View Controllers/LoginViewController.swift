@@ -117,10 +117,8 @@ class LoginViewController: UIViewController {
   }
   
   private func transitionToHome() {
-    let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-    
-    view.window?.rootViewController = homeViewController
-    view.window?.makeKeyAndVisible()
+    let vc = HomeViewController()
+    navigationController?.pushViewControllerFromBottom(rootVC: vc)
   }
   
   func validateFields() -> String? {
@@ -136,7 +134,7 @@ class LoginViewController: UIViewController {
   }
   
   @objc func cancelButtonClicked(_ sender: UIButton) {
-    self.dismiss(animated: true, completion: nil)
+    navigationController?.popViewControllerToRight()
   }
   
   @objc func loginButtonClicked(_ sender: Any) {

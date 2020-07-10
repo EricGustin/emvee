@@ -34,8 +34,9 @@ final class TextChatViewController: MessagesViewController {
   private var messageListener: ListenerRegistration?
   private var userJoinedListener: ListenerRegistration?
   
-  private var timeLeft = 60
+  private var timeLeft = 10
   private var timer: Timer?
+  private var localUserLeftChat: Bool?
   
   private var profilePreviewPopup: ProfilePreviewPopup?
   
@@ -108,8 +109,7 @@ final class TextChatViewController: MessagesViewController {
         self.timer!.invalidate()
         self.timer = nil
       }
-      
-      if self.view.window != nil {
+      if !(self.localUserLeftChat ?? false) {
         if snapshot.get("isActive") != nil { // if its not nil, then it is must be false i.e chat has ended
           
           
@@ -224,6 +224,7 @@ final class TextChatViewController: MessagesViewController {
     navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 16), size: 16)]
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leave", style: .done, target: self, action: #selector(backToHome))
     navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)], for: .normal)
+    navigationItem.leftBarButtonItem = UIBarButtonItem() // Temporary is overwritten once the remote user joins the chat.
   }
   
   // MARK: - Actions
@@ -237,7 +238,11 @@ final class TextChatViewController: MessagesViewController {
       self.timer!.invalidate()
       self.timer = nil
     }
-    self.dismiss(animated: true, completion: nil)
+//    self.dismiss(animated: true, completion: nil)
+    inputAccessoryView?.isHidden = true
+    inputAccessoryView?.resignFirstResponder()
+    localUserLeftChat = true
+    navigationController?.popViewControllerToBottom()
   }
   
   @objc func counter() {

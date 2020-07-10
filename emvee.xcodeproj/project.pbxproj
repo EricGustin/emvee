@@ -44,6 +44,7 @@
 		FA9505DD24AD20E700AD3BEF /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505DC24AD20E700AD3BEF /* UITextField+.swift */; };
 		FA9505DF24AD365200AD3BEF /* EditableProfileSuperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9505DE24AD365200AD3BEF /* EditableProfileSuperViewController.swift */; };
 		FAA8446B24B6899700043F4D /* EditBasicInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA8446A24B6899700043F4D /* EditBasicInfoViewController.swift */; };
+		FAA8446D24B8EF5500043F4D /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA8446C24B8EF5500043F4D /* UINavigationController+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +94,7 @@
 		FA9505DC24AD20E700AD3BEF /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextField+.swift"; path = "emvee/Helpers/UITextField+.swift"; sourceTree = SOURCE_ROOT; };
 		FA9505DE24AD365200AD3BEF /* EditableProfileSuperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableProfileSuperViewController.swift; sourceTree = "<group>"; };
 		FAA8446A24B6899700043F4D /* EditBasicInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBasicInfoViewController.swift; sourceTree = "<group>"; };
+		FAA8446C24B8EF5500043F4D /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UINavigationController+.swift"; path = "emvee/View Controllers/UINavigationController+.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +229,7 @@
 				FA9505C224A15C0400AD3BEF /* UILabel+.swift */,
 				FA9505CA24A5336B00AD3BEF /* UIViewController+.swift */,
 				FA9505DC24AD20E700AD3BEF /* UITextField+.swift */,
+				FAA8446C24B8EF5500043F4D /* UINavigationController+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				FA54DBEB24661C99008227FE /* SceneDelegate.swift in Sources */,
 				FA9505CB24A5336B00AD3BEF /* UIViewController+.swift in Sources */,
 				FA54DC0724662352008227FE /* FormUtilities.swift in Sources */,
+				FAA8446D24B8EF5500043F4D /* UINavigationController+.swift in Sources */,
 				FA54DC0124661D01008227FE /* HomeViewController.swift in Sources */,
 				FA91C5FB246F49F500895098 /* TextChatViewController.swift in Sources */,
 				FA54DC0B24663B37008227FE /* Constants.swift in Sources */,
