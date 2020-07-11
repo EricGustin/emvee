@@ -89,7 +89,6 @@ class ProfileViewController: UIViewController {
     view.backgroundColor = .systemGray6
     setUpSubViews()
     setUpNavigationBar()
-    
     let leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeDetected(gesture:)))
     leftSwipeGesture.direction = .left
     view.addGestureRecognizer(leftSwipeGesture)
@@ -195,6 +194,7 @@ class ProfileViewController: UIViewController {
     scrollView.addSubview(nameAndAgeLabel)
     nameAndAgeLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
     nameAndAgeLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
+    nameAndAgeLabel.heightAnchor.constraint(equalToConstant: 23).isActive = true
     
     aboutMeLabel = UILabel()
     aboutMeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -274,7 +274,7 @@ class ProfileViewController: UIViewController {
     hometownButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
     // Lastly, calculate the content size of the scrollView
-    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: view.frame.width * 0.8 + 453)
   }
   
   private func setUpNavigationBar() {

@@ -161,6 +161,9 @@ class EditProfileViewController: EditableProfileSuperViewController {
     hometownButton.addSubview(hometownGreaterThanImage)
     hometownGreaterThanImage.centerYAnchor.constraint(equalTo: hometownButton.centerYAnchor).isActive = true
     hometownGreaterThanImage.trailingAnchor.constraint(equalTo: hometownButton.trailingAnchor, constant: -hometownButton.layer.cornerRadius / 2).isActive = true
+    
+    // Lastly, calculate the content size of the scrollView
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: view.frame.width * 0.3 + (UIScreen.main.bounds.width-40)/1.5 + 410)
   }
   
   private func getButtonTag(text: String) -> Int? {

@@ -42,7 +42,7 @@ class SetUpProfileViewController: EditableProfileSuperViewController {
     
     signUpButton = UIButton()
     signUpButton?.setTitleColor(.white, for: .normal)
-    signUpButton?.setTitle("Continue", for: .normal)
+    signUpButton?.setTitle("Sign Up", for: .normal)
     signUpButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 16)
     signUpButton?.addTarget(self, action: #selector(signUpButtonClicked), for: .touchUpInside)
     StyleUtilities.styleFilledButton(signUpButton!)
@@ -61,10 +61,13 @@ class SetUpProfileViewController: EditableProfileSuperViewController {
     errorLabel?.alpha = 0
     scrollView.addSubview(errorLabel!)
     errorLabel?.translatesAutoresizingMaskIntoConstraints = false
-    errorLabel?.heightAnchor.constraint(equalToConstant: 80).isActive = true
-    errorLabel?.topAnchor.constraint(equalTo: signUpButton!.bottomAnchor, constant: 40).isActive = true
+    errorLabel?.heightAnchor.constraint(equalToConstant: 60).isActive = true
+    errorLabel?.topAnchor.constraint(equalTo: signUpButton!.bottomAnchor, constant: 5).isActive = true
     errorLabel?.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
     errorLabel?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
+    
+    // Lastly, calculate the content size of the scrollView
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: view.frame.width * 0.3 + (UIScreen.main.bounds.width-40)/1.5 + 330)
     
   }
   

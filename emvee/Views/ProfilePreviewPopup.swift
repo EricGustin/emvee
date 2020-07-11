@@ -27,6 +27,7 @@ class ProfilePreviewPopup: UIView, Popup {
   
   private let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
+    scrollView.showsHorizontalScrollIndicator = false
     scrollView.translatesAutoresizingMaskIntoConstraints = false
     scrollView.backgroundColor = .clear
     return scrollView
@@ -101,7 +102,7 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
-    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 35).isActive = true
     return button
   }()
   
@@ -110,7 +111,7 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
-    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 35).isActive = true
     return button
   }()
   
@@ -119,7 +120,7 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
-    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 35).isActive = true
     return button
   }()
   
@@ -128,14 +129,14 @@ class ProfilePreviewPopup: UIView, Popup {
     button.translatesAutoresizingMaskIntoConstraints = false
     StyleUtilities.styleBasicInfoButton(button)
     button.tintColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0)
-    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 35).isActive = true
     return button
   }()
   
   private lazy var basicInfoVerticalStack: UIStackView = {
     let stack = UIStackView()
     stack.axis = .vertical
-    stack.spacing = 20
+    stack.spacing = 5
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.addArrangedSubview(basicInfoLabel)
     stack.addArrangedSubview(genderButton)
@@ -209,6 +210,7 @@ class ProfilePreviewPopup: UIView, Popup {
     scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
     scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -70).isActive = true  // 20 + the height of the messageInputBar
     scrollView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
+    
     scrollView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     
     scrollView.addSubview(container)
@@ -238,14 +240,14 @@ class ProfilePreviewPopup: UIView, Popup {
     profilePicture.layer.masksToBounds = true
     
     scrollView.addSubview(nameLabel)
+    nameLabel.heightAnchor.constraint(equalToConstant: 23).isActive = true
     nameLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
     nameLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
     
     scrollView.addSubview(aboutRemoteUserLabel)
     aboutRemoteUserLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    aboutRemoteUserLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 85).isActive = true
+    aboutRemoteUserLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 80).isActive = true
     aboutRemoteUserLabel.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
-    aboutRemoteUserLabel.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.3).isActive = true
     aboutRemoteUserLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
     
     scrollView.addSubview(aboutRemoteUserTextView)
@@ -255,12 +257,12 @@ class ProfilePreviewPopup: UIView, Popup {
     aboutRemoteUserTextView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
     
     scrollView.addSubview(basicInfoVerticalStack)
-    basicInfoVerticalStack.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 40).isActive = true
-    basicInfoVerticalStack.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -40).isActive = true
+    basicInfoVerticalStack.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
     basicInfoVerticalStack.topAnchor.constraint(equalTo: aboutRemoteUserTextView.bottomAnchor, constant: 60).isActive = true
+    basicInfoVerticalStack.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
     
     // Lastly, calculate the content size of the scrollView
-    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1400)
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: self.frame.width * 0.64 + (self.frame.height-90) * 0.125 + 550)
   }
   
   internal func animateIn() {
@@ -312,4 +314,9 @@ extension ProfilePreviewPopup : UIScrollViewDelegate {
       animateOut()
     }
   }
+//  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//    if scrollView.contentOffset.x>0 || scrollView.contentOffset.x<0 {
+//          scrollView.contentOffset.x = 0
+//      }
+//  }
 }

@@ -55,9 +55,6 @@ class EditableProfileSuperViewController: UIViewController {
     aboutMeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
     aboutMeLabel.topAnchor.constraint(equalTo: profilePictureVertStack.bottomAnchor, constant: 80).isActive = true
     
-    // Lastly, calculate the content size of the scrollView
-    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
-    
     aboutMeTextView = UITextView()
     aboutMeTextView.delegate = self
     aboutMeTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -83,7 +80,6 @@ class EditableProfileSuperViewController: UIViewController {
     scrollView.addSubview(aboutMeCharsRemainingLabel)
     aboutMeCharsRemainingLabel.bottomAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
     aboutMeCharsRemainingLabel.trailingAnchor.constraint(equalTo: aboutMeTextView.trailingAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
-    
   }
   
   private func setUpProfilePictures() {

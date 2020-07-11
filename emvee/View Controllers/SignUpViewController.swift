@@ -308,6 +308,7 @@ class SignUpViewController: UIViewController {
     cancelButton?.titleLabel?.font = UIFont(name: "American Typewriter", size: 16)
     cancelButton?.titleLabel?.textAlignment = .right
     cancelButton?.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
+    cancelButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
     continueVerticalStack = UIStackView()
     continueVerticalStack?.axis = .vertical
@@ -323,7 +324,7 @@ class SignUpViewController: UIViewController {
     continueVerticalStack?.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40).isActive = true
     
     //  And finally, calculate the scrollView's contentSize
-    scrollView?.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1250)
+    scrollView?.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1270)
     
   }
   
