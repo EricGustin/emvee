@@ -77,6 +77,7 @@ class ProfilePreviewPopup: UIView, Popup {
       textView.isEditable = false
       textView.isScrollEnabled = true
       textView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
+      textView.textColor = .black
       textView.layer.cornerRadius = 25
       textView.layer.borderColor = UIColor.lightGray.cgColor
       textView.layer.borderWidth = 0.25

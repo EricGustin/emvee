@@ -139,7 +139,7 @@ class SignUpViewController: UIViewController {
     datePicker = UIDatePicker()
     datePicker?.datePickerMode = .date
     datePicker?.minimumDate = Date(timeIntervalSince1970: -1262217600)  // January 01 1930
-    datePicker?.maximumDate = Date()
+    datePicker?.maximumDate = Date(timeInterval: 31536000, since: Date())
     dateOfBirthTextField?.inputView = datePicker
     StyleUtilities.styleTextField(dateOfBirthTextField!, dateOfBirthTextField!.placeholder ?? "")
     dateOfBirthTextField?.translatesAutoresizingMaskIntoConstraints = false

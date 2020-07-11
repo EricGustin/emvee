@@ -62,6 +62,7 @@ class EditableProfileSuperViewController: UIViewController {
     aboutMeTextView.delegate = self
     aboutMeTextView.translatesAutoresizingMaskIntoConstraints = false
     aboutMeTextView.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 12), size: 12)
+    aboutMeTextView.textColor = .black
     aboutMeTextView.layer.cornerRadius = 25
     aboutMeTextView.layer.borderColor = UIColor.lightGray.cgColor
     aboutMeTextView.layer.borderWidth = 0.25
