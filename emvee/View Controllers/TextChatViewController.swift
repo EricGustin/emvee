@@ -270,9 +270,6 @@ final class TextChatViewController: MessagesViewController {
     }
   }
   
-  // MARK: - Helpers
-
-  
   private func downloadProfilePictureFromFirebase(uid: String) {
     
     let profilePictureRef = Storage.storage().reference().child("profilePictures/\(uid)/picture0")
@@ -342,7 +339,7 @@ final class TextChatViewController: MessagesViewController {
     }
   }
   
-  func isNextMessageSameSender(at indexPath: IndexPath) -> Bool {
+  private func isNextMessageSameSender(at indexPath: IndexPath) -> Bool {
       guard indexPath.section + 1 < messages.count else { return false }
     return messages[indexPath.section].sender.senderId == messages[indexPath.section + 1].sender.senderId
   }
@@ -365,15 +362,12 @@ final class TextChatViewController: MessagesViewController {
   // MARK: Transition
   func transitionToVideoChat() {
     // hide views so that when the user transitions from video -> text -> home, they don't see their old conversation
-//    navBar.isHidden = true
     messageInputBar.isHidden = true
     messagesCollectionView.isHidden = true
     navigationController?.navigationBar.isHidden = true
     
     let vc = VideoChatViewController(chatRoomID: chatRoomID)
     navigationController?.pushViewControllerFromBottom(rootVC: vc)
-//    vc.modalPresentationStyle = .fullScreen
-//    self.present(vc, animated: true, completion: nil)
   }
   
   @objc public func showRemoteProfilePopup() {

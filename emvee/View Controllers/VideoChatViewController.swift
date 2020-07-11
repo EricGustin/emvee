@@ -228,7 +228,7 @@ class VideoChatViewController: UIViewController {
   }
   
   // MARK: Transitions
-  func transitionToHome() {
+  private func transitionToHome() {
     UserDefaults.standard.set(true, forKey: "isComingFromVideoChat")
     camera?.stopCapture()
     navigationController?.pushViewController(HomeViewController(), animated: false)

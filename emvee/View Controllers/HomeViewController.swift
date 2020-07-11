@@ -15,12 +15,13 @@ import Firebase
 class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
 
   // UIViews
-  var arrowCircleImage: UIImageView!
-  var arrowCircleFlippedImage: UIImageView!
-  var profileButton: UIButton?
-  var infoButton: UIButton?
-  var getToChattingButton: UIButton?
-  var containerView: UIView?
+  private var arrowCircleImage: UIImageView!
+  private var arrowCircleFlippedImage: UIImageView!
+  private var profileButton: UIButton?
+  private var infoButton: UIButton?
+  private var getToChattingButton: UIButton?
+  private var containerView: UIView?
+  private var infoPopup: InfoPopup?
   
   // Other Variables & Constants
   var spinsRemaining = 10
@@ -30,8 +31,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     transitionToProfile()
   }
   @objc func infoButtonClicked() {
-    let infoPopup = InfoPopup()
-    view.addSubview(infoPopup)
+    if infoPopup == nil || !infoPopup!.isDescendant(of: view) {
+      infoPopup = InfoPopup()
+      view.addSubview(infoPopup!)
+    }
   }
   
   @objc func joinChatRoom() {
@@ -94,7 +97,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     UserDefaults.standard.set(false, forKey: "isComingFromVideo")
   }
   
-  func setUpGestures() {
+  private func setUpGestures() {
     let arrowCircleTapGesture = UITapGestureRecognizer(target: self, action: #selector(arrowCircleTapDetected))
     containerView?.addGestureRecognizer(arrowCircleTapGesture)
     
@@ -102,7 +105,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     view.addGestureRecognizer(swipeRightGesture)
   }
   
-  func setUpViews() {
+  private func setUpViews() {
   
     // set up profileButton
     profileButton = UIButton(type: .custom)
