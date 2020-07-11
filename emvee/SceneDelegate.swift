@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -22,7 +24,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   window = UIWindow(frame: windowScene.coordinateSpace.bounds)
   window?.windowScene = windowScene
   window?.makeKeyAndVisible()
-  let vc = WelcomeViewController()
+  var vc = UIViewController()
+  if Auth.auth().currentUser?.uid == nil {
+    UserDefaults.standard.set(false, forKey: "isUserSignedIn")
+    vc = WelcomeViewController()
+  }
+  if UserDefaults.standard.bool(forKey: "isUserSignedIn") {
+    guard let userID = Auth.auth().currentUser?.uid else {
+      print("Error accessing userID")
+      vc = WelcomeViewController()
+      UserDefaults.standard.set(false, forKey: "isUserSignedIn")
+      let nc = NavigationController(vc)
+      window?.rootViewController = nc
+      nc.pushViewController(vc, animated: false)
+      return
+    }
+    let db = Firestore.firestore()
+    db.collection("onlineUsers").document(userID).setData(["userID": userID])
+    vc = HomeViewController()
+  }
   let nc = NavigationController(vc)
   window?.rootViewController = nc
   nc.pushViewController(vc, animated: false)

@@ -36,16 +36,6 @@ class WelcomeViewController: UIViewController {
     if Auth.auth().currentUser?.uid == nil { // check if as user is signed in
       UserDefaults.standard.set(false, forKey: "isUserSignedIn")
     }
-    if UserDefaults.standard.bool(forKey: "isUserSignedIn") {
-      guard let userID = Auth.auth().currentUser?.uid else {
-        print("Error accessing userID")
-        return
-      }
-      let db = Firestore.firestore() // initialize an instance of Cloud Firestore
-      // Add the user to the onlineUsers document
-      db.collection("onlineUsers").document(userID).setData(["userID": userID])
-      transitionToHome()
-    }
   }
   
   func transitionToHome() {

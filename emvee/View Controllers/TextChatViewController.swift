@@ -238,7 +238,6 @@ final class TextChatViewController: MessagesViewController {
       self.timer!.invalidate()
       self.timer = nil
     }
-//    self.dismiss(animated: true, completion: nil)
     inputAccessoryView?.isHidden = true
     inputAccessoryView?.resignFirstResponder()
     localUserLeftChat = true
@@ -369,10 +368,12 @@ final class TextChatViewController: MessagesViewController {
 //    navBar.isHidden = true
     messageInputBar.isHidden = true
     messagesCollectionView.isHidden = true
+    navigationController?.navigationBar.isHidden = true
     
     let vc = VideoChatViewController(chatRoomID: chatRoomID)
-    vc.modalPresentationStyle = .fullScreen
-    self.present(vc, animated: true, completion: nil)
+    navigationController?.pushViewControllerFromBottom(rootVC: vc)
+//    vc.modalPresentationStyle = .fullScreen
+//    self.present(vc, animated: true, completion: nil)
   }
   
   @objc public func showRemoteProfilePopup() {

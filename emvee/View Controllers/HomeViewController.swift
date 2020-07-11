@@ -59,9 +59,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           }
           
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
-//          let nc = NavigationController(vc)
-//          nc.modalPresentationStyle = .fullScreen
-//          self.present(nc, animated: true, completion: nil)
           self.navigationController?.pushViewControllerFromBottom(rootVC: vc)
         }
         else {
@@ -75,13 +72,15 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
           let aConversationID = aChatRoom.get("conversationID") as? String ?? "noConversationID"
 
           let vc = TextChatViewController(user: self.currentUser!, chatRoomID: aChatRoomID, conversationID: aConversationID)
-//          let nc = NavigationController(vc)
-//          nc.modalPresentationStyle = .fullScreen
-//          self.present(nc, animated: true, completion: nil)
           self.navigationController?.pushViewControllerFromBottom(rootVC: vc)
         }
       }
     }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    navigationController?.navigationBar.isHidden = false
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
   }
   
   override func viewDidLoad() {
