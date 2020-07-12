@@ -58,6 +58,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
  func sceneDidBecomeActive(_ scene: UIScene) {
   // Called when the scene has moved from an inactive state to an active state.
   // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+  print("Did become active")
+  guard let userID = Auth.auth().currentUser?.uid else {
+    print("Error accessing userID")
+    return
+  }
+  let db = Firestore.firestore() // initialize an instance of Cloud Firestore
+  // Add the user to the onlineUsers collection
+    db.collection("onlineUsers").document(userID).setData(["userID": userID])
+  print("successfully added user to onlineUsers collection")
  }
 
  func sceneWillResignActive(_ scene: UIScene) {
@@ -74,6 +83,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // Called as the scene transitions from the foreground to the background.
   // Use this method to save data, release shared resources, and store enough scene-specific state information
   // to restore the scene back to its current state.
+  print("Did enter background")
+  guard let userID = Auth.auth().currentUser?.uid else {
+    print("Error accessing userID")
+    return
+  }
+  let db = Firestore.firestore() // initialize an instance of Cloud Firestore
+  db.collection("onlineUsers").document(userID).delete() { err in
+    if let err = err {
+      print("Error removing document: \(err)")
+    } else {
+      print("OnlineUser successfully removed! in appdelegate")
+    }
+  }
  }
 
 

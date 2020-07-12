@@ -102,7 +102,7 @@ class InfoPopup : UIView, Popup {
     stack.heightAnchor.constraint(equalTo: container.heightAnchor, multiplier: 0.9).isActive = true
     stack.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.9).isActive = true
     
-    button.heightAnchor.constraint(equalToConstant: 50 * 0.9).isActive = true
+    button.heightAnchor.constraint(equalToConstant: 50).isActive = true
     button.widthAnchor.constraint(equalTo: self.safeAreaLayoutGuide.widthAnchor, multiplier: 0.7 * 0.9).isActive = true
     button.addTarget(self, action: #selector(animateOut), for: .touchUpInside)
   }

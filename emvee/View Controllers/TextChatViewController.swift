@@ -34,7 +34,7 @@ final class TextChatViewController: MessagesViewController {
   private var messageListener: ListenerRegistration?
   private var userJoinedListener: ListenerRegistration?
   
-  private var timeLeft = 180
+  private var timeLeft = 5
   private var timer: Timer?
   private var localUserLeftChat: Bool?
   
@@ -71,11 +71,12 @@ final class TextChatViewController: MessagesViewController {
     
     self.becomeFirstResponder()
   }
-  
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     print("In TextChatViewController")
-    //self.view.backgroundColor = UIColor.white
+    addNotifications()
+    
     if conversationRef == nil {
       conversationRef = db.collection("activeChatRooms").document(chatRoomID).collection(conversationID)
     }
@@ -217,6 +218,11 @@ final class TextChatViewController: MessagesViewController {
     
     downloadProfilePictureFromFirebase(uid: localUser.uid)
     setUpNavigationBar()
+  }
+  
+  private func addNotifications() {
+    let notificationCenter = NotificationCenter.default
+    notificationCenter.addObserver(self, selector: #selector(backToHome), name: UIApplication.didEnterBackgroundNotification, object: nil)
   }
   
   private func setUpNavigationBar() {

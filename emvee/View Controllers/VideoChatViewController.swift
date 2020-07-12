@@ -80,7 +80,7 @@ class VideoChatViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     print("in video view controller")
-    
+    addNotifications()
     requestAccessToken()
     setupViews()
     
@@ -114,6 +114,11 @@ class VideoChatViewController: UIViewController {
       previewView?.addGestureRecognizer(tap)
       remoteView?.addGestureRecognizer(tap)
     }
+  }
+  
+  private func addNotifications() {
+    let notificationCenter = NotificationCenter.default
+    notificationCenter.addObserver(self, selector: #selector(goHome), name: UIApplication.didEnterBackgroundNotification, object: nil)
   }
   
   func requestAccessToken() {
@@ -225,6 +230,10 @@ class VideoChatViewController: UIViewController {
     let flipCameraButtonVertical = NSLayoutConstraint(item: flipCameraButton!, attribute: .centerY, relatedBy: .equal, toItem: disconnectButton, attribute: .centerY, multiplier: 1, constant: 0)
     view.addConstraints([flipCameraButtonWidth, flipCameraButtonHeight, flipCameraButtonHorizontal, flipCameraButtonVertical])
     flipCameraButton?.layer.cornerRadius = flipCameraButtonWidth.constant / 2
+  }
+  
+  @objc func goHome() {
+    transitionToHome()
   }
   
   // MARK: Transitions
