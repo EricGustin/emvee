@@ -16,18 +16,10 @@ class ProfileViewController: UIViewController {
   private var scrollView: UIScrollView!
   private var settingsButton: UIButton!
   private var homeButton: UIButton!
-  
-  
-  
-  private var profilePicturesContainer: UIView! // Done
-  private var profilePicturesScrollView: UIScrollView! // in progress
+  private var profilePicturesContainer: UIView!
+  private var profilePicturesScrollView: UIScrollView!
   private var profilePictures = [UIImageView]()
   private var editProfileButton: UIButton!
-  
-//  private var profilePicture: UIImageView!
-//  private var editProfilePictureButtonContainer: UIView!
-//  private var editProfilePictureButton: UIButton!
-  
   private var nameAndAgeLabel: UILabel!
   private var aboutMeLabel: UILabel!
   private var aboutMeTextView: UITextView!
@@ -36,8 +28,7 @@ class ProfileViewController: UIViewController {
   private var preferredGenderButton: UIButton!
   private var hometownButton: UIButton!
   private var currentLocationButton: UIButton!
-
-
+  
   private var savedAboutMeText: String?
   
   // MARK: - ACTIONS
@@ -147,16 +138,17 @@ class ProfileViewController: UIViewController {
     
     // ScrollView that holds profile pictures
     profilePicturesScrollView = UIScrollView()
+    profilePicturesScrollView.delegate = self
     profilePicturesScrollView.backgroundColor = .white
     profilePicturesScrollView.isPagingEnabled = true
     profilePicturesScrollView.showsVerticalScrollIndicator = false
+    profilePicturesScrollView.showsHorizontalScrollIndicator = false
     profilePicturesScrollView.layer.borderColor = UIColor.white.cgColor
     profilePicturesScrollView.layer.borderWidth = 5
     profilePicturesScrollView.layer.masksToBounds = true
     profilePicturesScrollView.frame = CGRect(x: view.safeAreaLayoutGuide.layoutFrame.width/4, y: view.safeAreaLayoutGuide.layoutFrame.height/12, width: UIScreen.main.bounds.width/2, height: UIScreen.main.bounds.width/2)
     profilePicturesScrollView.layer.cornerRadius = profilePicturesScrollView.frame.width / 2
     scrollView.addSubview(profilePicturesScrollView)
-    profilePicturesScrollView.contentSize = CGSize(width: 0, height: profilePicturesScrollView.frame.height)
     
     // Add profile pictures to profilePicturesScrollView
     profilePictures = [UIImageView]()
@@ -169,7 +161,7 @@ class ProfileViewController: UIViewController {
     editProfileButton.layer.cornerRadius = (UIScreen.main.bounds.width/6 + 0.5)/2
     editProfileButton.tintColor = .lightGray
     scrollView.addSubview(editProfileButton)
-    //    editProfileButton.addTarget(self, action: #selector(transitionToEditProfile), for: .touchUpInside)
+    editProfileButton.addTarget(self, action: #selector(transitionToEditProfile), for: .touchUpInside)
     
     nameAndAgeLabel = UILabel()
     nameAndAgeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -303,27 +295,23 @@ class ProfileViewController: UIViewController {
     
     var imageIndex = 0
     for i in 0..<6 {
-      print("Begin of iteration: \(i)")
       let aProfilePictureRef = Storage.storage().reference().child("profilePictures/\(userID)/picture\(i)")
       // Download profile picture in memory  with a maximum allowed size of 1MB
       aProfilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
         if error != nil {
-          print("Error getting profile picture data or no picture exists. \(i)")
           return
         } else {
-          print("Image found at \(i)")
           let aProfilePicture = UIImage(data: data!)
           self.profilePictures[i].image = aProfilePicture
           self.profilePictures[imageIndex].frame = CGRect(x: CGFloat(imageIndex) * self.view.safeAreaLayoutGuide.layoutFrame.width/2, y: 0, width: UIScreen.main.bounds.width/2, height: UIScreen.main.bounds.width/2)
           self.profilePictures[imageIndex].contentMode = .scaleAspectFill
           self.profilePictures[imageIndex].clipsToBounds = true
           self.profilePicturesScrollView.addSubview(self.profilePictures[imageIndex])
-          self.profilePicturesScrollView.contentSize.width += self.profilePicturesScrollView.frame.width
+          self.profilePicturesScrollView.contentSize.width += (self.profilePicturesContainer.frame.width - 0.5)
           imageIndex += 1
         }
       }
     }
-    
   }
   
   // MARK: Calculations
@@ -353,8 +341,17 @@ extension String {
 
 extension ProfileViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    print("resigning keyboard")
     textField.resignFirstResponder()
     return true
+  }
+}
+
+extension ProfileViewController: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if scrollView.contentOffset.x < 0 {
+      scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+    } else if scrollView.contentOffset.x > (scrollView.contentSize.width - profilePicturesContainer.frame.width) {
+      scrollView.setContentOffset(CGPoint(x: scrollView.contentSize.width - profilePicturesContainer.frame.width, y: 0), animated: false)
+    }
   }
 }
