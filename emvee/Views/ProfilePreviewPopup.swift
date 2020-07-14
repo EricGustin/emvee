@@ -12,7 +12,6 @@ import FirebaseDatabase
 
 class ProfilePreviewPopup: UIView, Popup {
 
-  private var profileImage: UIImage!
   private var profilePictures = [UIImageView]()
   private var name: String?
   private var aboutMeText: String?
@@ -53,15 +52,6 @@ class ProfilePreviewPopup: UIView, Popup {
     scrollView.layer.borderWidth = 5
     scrollView.layer.masksToBounds = true
     return scrollView
-  }()
-  
-  private lazy var profilePicture: UIImageView = {
-    let picture = UIImageView(image: profileImage)
-    picture.backgroundColor = .white
-    picture.translatesAutoresizingMaskIntoConstraints = false
-    picture.isUserInteractionEnabled = true
-    picture.layer.borderColor = UIColor.white.cgColor
-    return picture
   }()
   
   private lazy var nameLabel: UILabel = {
@@ -159,11 +149,9 @@ class ProfilePreviewPopup: UIView, Popup {
     return stack
   }()
   
-  required init(profileImage: UIImage?, name: String?, aboutMeText: String?, remoteUserUID: String?) {
+  required init(name: String?, aboutMeText: String?, remoteUserUID: String?) {
     super.init(frame: .zero)
-    print("in required init")
     self.remoteUserUID = remoteUserUID
-    self.profileImage = profileImage
     self.name = name
     self.aboutMeText = aboutMeText
     postInit()
@@ -178,9 +166,7 @@ class ProfilePreviewPopup: UIView, Popup {
     fatalError("init(coder:) has not been implemented")
   }
   
-  deinit {
-    print("deinitializing.")
-  }
+  deinit {}
   
   private func postInit() {
     scrollView.delegate = self
@@ -308,22 +294,26 @@ class ProfilePreviewPopup: UIView, Popup {
   
   internal func animateIn() {
     container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
+    scrollView.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
     self.alpha = 0
     self.scrollView.alpha = 0
+    self.profilePicturesScrollView.alpha = 0
     self.container.alpha = 0
     profilePicturesContainer.alpha = 0
-    profilePicture.alpha = 0
     nameLabel.alpha = 0
     aboutRemoteUserTextView.alpha = 0
+    basicInfoVerticalStack.alpha = 0
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.alpha = 1
       self.container.alpha = 1
       self.scrollView.alpha = 1
       self.profilePicturesContainer.alpha = 1
-      self.profilePicture.alpha = 1
+      self.profilePicturesScrollView.alpha = 1
       self.nameLabel.alpha = 1
       self.aboutRemoteUserTextView.alpha = 1
+      self.basicInfoVerticalStack.alpha = 1
       self.container.transform = .identity  // reset transform
+      self.scrollView.transform = .identity
     })
   }
   
@@ -332,13 +322,15 @@ class ProfilePreviewPopup: UIView, Popup {
   func animateOut() {
     UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
       self.container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
+      self.scrollView.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
       self.alpha = 0
       self.container.alpha = 0
       self.scrollView.alpha = 0
       self.profilePicturesContainer.alpha = 0
-      self.profilePicture.alpha = 0
+      self.profilePicturesScrollView.alpha = 0
       self.nameLabel.alpha = 0
       self.aboutRemoteUserTextView.alpha = 0
+      self.basicInfoVerticalStack.alpha = 0
     }) { (complete) in
       if complete {
         self.removeFromSuperview()

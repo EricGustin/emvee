@@ -377,7 +377,7 @@ final class TextChatViewController: MessagesViewController {
   
   @objc public func showRemoteProfilePopup() {
     if profilePreviewPopup == nil || !profilePreviewPopup!.isDescendant(of: view) {
-      profilePreviewPopup = ProfilePreviewPopup(profileImage: remoteProfilePicture, name: remoteNameAndAge, aboutMeText: remoteAboutMeText, remoteUserUID: remoteUserUID)
+      profilePreviewPopup = ProfilePreviewPopup(name: remoteNameAndAge, aboutMeText: remoteAboutMeText, remoteUserUID: remoteUserUID)
       view.addSubview(profilePreviewPopup!)
     }
   }
