@@ -89,7 +89,6 @@ class ProfileViewController: UIViewController {
       for _ in 0..<6 { profilePictures.append(UIImageView()) }
       downloadProfilePicturesFromFirebase()
     }
-    
   }
   
   // MARK: - Navigation

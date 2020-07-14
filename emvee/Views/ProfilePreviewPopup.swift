@@ -12,7 +12,8 @@ import FirebaseDatabase
 
 class ProfilePreviewPopup: UIView, Popup {
 
-  private var profileImage: UIImage?
+  private var profileImage: UIImage!
+  private var profilePictures = [UIImageView]()
   private var name: String?
   private var aboutMeText: String?
   private var remoteUserUID: String?
@@ -33,12 +34,25 @@ class ProfilePreviewPopup: UIView, Popup {
     return scrollView
   }()
   
-  private let profilePictureContainer: UIView = {
+  private let profilePicturesContainer: UIView = {
     let container = UIView()
     container.translatesAutoresizingMaskIntoConstraints = false
     container.layer.borderWidth = 0.25
     container.layer.borderColor = UIColor.lightGray.cgColor
     return container
+  }()
+  
+  private var profilePicturesScrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.backgroundColor = .white
+    scrollView.isPagingEnabled = true
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.showsHorizontalScrollIndicator = false
+    scrollView.layer.borderColor = UIColor.white.cgColor
+    scrollView.layer.borderWidth = 5
+    scrollView.layer.masksToBounds = true
+    return scrollView
   }()
   
   private lazy var profilePicture: UIImageView = {
@@ -47,7 +61,6 @@ class ProfilePreviewPopup: UIView, Popup {
     picture.translatesAutoresizingMaskIntoConstraints = false
     picture.isUserInteractionEnabled = true
     picture.layer.borderColor = UIColor.white.cgColor
-    picture.layer.borderWidth = 4.75
     return picture
   }()
   
@@ -189,21 +202,6 @@ class ProfilePreviewPopup: UIView, Popup {
     }
   }
   
-  private func getRemoteUserFieldsFromFirebase() {
-    // TODO: Get the bio and name fields as well instead of passing them as a parameter of the class
-    let db = Firestore.firestore()
-    db.collection("users").document(remoteUserUID!).getDocument { (snapshot, error) in
-      if let document = snapshot {
-        self.aboutRemoteUserLabel.text = "    About \(document.get("firstName") ?? "")"
-        self.basicInfoLabel.text = "    Basic info about \(document.get("firstName") ?? "")"
-        self.genderButton.setTitle("I am a \(document.get("gender") ?? "")", for: .normal)
-        self.preferredGenderButton.setTitle("I am interested in \(document.get("preferredGender") ?? "")", for: .normal)
-        self.hometownButton.setTitle("I am from \(document.get("hometown") ?? "")", for: .normal)
-        self.currentLocationButton.setTitle("I am living in \(document.get("currentLcoation") ?? "")", for: .normal)
-      }
-    }
-  }
-  
   internal func setUpSubviews() {
     
     self.addSubview(scrollView)
@@ -219,30 +217,35 @@ class ProfilePreviewPopup: UIView, Popup {
     container.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     
-    scrollView.addSubview(profilePictureContainer)
-    profilePictureContainer.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    NSLayoutConstraint(item: profilePictureContainer, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
-    profilePictureContainer.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
-    profilePictureContainer.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
-    profilePictureContainer.contentMode = .scaleAspectFill
-    profilePictureContainer.layer.cornerRadius = UIScreen.main.bounds.width / 5
-    profilePictureContainer.layer.masksToBounds = true
     
-    profilePictureContainer.addSubview(profilePicture)
-    profilePicture.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
-    NSLayoutConstraint(item: profilePicture, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
-    profilePicture.leadingAnchor.constraint(equalTo: profilePictureContainer.leadingAnchor, constant: profilePictureContainer.layer.borderWidth).isActive = true
-    profilePicture.topAnchor.constraint(equalTo: profilePictureContainer.topAnchor, constant: profilePictureContainer.layer.borderWidth).isActive = true
-    profilePicture.trailingAnchor.constraint(equalTo: profilePictureContainer.trailingAnchor, constant: -profilePictureContainer.layer.borderWidth).isActive = true
-    profilePicture.bottomAnchor.constraint(equalTo: profilePictureContainer.bottomAnchor, constant: -profilePictureContainer.layer.borderWidth).isActive = true
-    profilePicture.contentMode = .scaleAspectFill
-    profilePicture.layer.cornerRadius = UIScreen.main.bounds.width / 5
-    profilePicture.layer.masksToBounds = true
+    scrollView.addSubview(profilePicturesContainer)
+    profilePicturesContainer.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    NSLayoutConstraint(item: profilePicturesContainer, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
+    profilePicturesContainer.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
+    profilePicturesContainer.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
+    profilePicturesContainer.contentMode = .scaleAspectFill
+    profilePicturesContainer.layer.cornerRadius = UIScreen.main.bounds.width / 5
+    profilePicturesContainer.layer.masksToBounds = true
+    
+    scrollView.addSubview(profilePicturesScrollView)
+    profilePicturesScrollView.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    NSLayoutConstraint(item: profilePicturesScrollView, attribute: .centerY, relatedBy: .equal, toItem: container, attribute: .centerY, multiplier: 0.5, constant: 0).isActive = true
+    profilePicturesScrollView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
+    profilePicturesScrollView.heightAnchor.constraint(equalTo: container.widthAnchor, multiplier: 0.5).isActive = true
+    profilePicturesScrollView.contentMode = .scaleAspectFill
+    profilePicturesScrollView.layer.cornerRadius = UIScreen.main.bounds.width / 5
+    profilePicturesScrollView.layer.masksToBounds = true
+    scrollView.contentSize = CGSize(width: profilePicturesScrollView.frame.width*3, height: profilePicturesScrollView.frame.height)
+    
+    // Add profile pictures to profilePicturesScrollView
+    profilePictures = [UIImageView]()
+    for _ in 0..<6 { profilePictures.append(UIImageView()) }
+    downloadRemoteProfilePicturesFromFirebase()
     
     scrollView.addSubview(nameLabel)
     nameLabel.heightAnchor.constraint(equalToConstant: 23).isActive = true
-    nameLabel.centerXAnchor.constraint(equalTo: profilePicture.centerXAnchor).isActive = true
-    nameLabel.topAnchor.constraint(equalTo: profilePicture.bottomAnchor, constant: 20).isActive = true
+    nameLabel.centerXAnchor.constraint(equalTo: profilePicturesContainer.centerXAnchor).isActive = true
+    nameLabel.topAnchor.constraint(equalTo: profilePicturesContainer.bottomAnchor, constant: 20).isActive = true
     
     scrollView.addSubview(aboutRemoteUserLabel)
     aboutRemoteUserLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -265,12 +268,50 @@ class ProfilePreviewPopup: UIView, Popup {
     scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: self.frame.width * 0.64 + (self.frame.height-90) * 0.125 + 550)
   }
   
+  private func getRemoteUserFieldsFromFirebase() {
+    // TODO: Get the bio and name fields as well instead of passing them as a parameter of the class
+    let db = Firestore.firestore()
+    db.collection("users").document(remoteUserUID!).getDocument { (snapshot, error) in
+      if let document = snapshot {
+        self.aboutRemoteUserLabel.text = "    About \(document.get("firstName") ?? "")"
+        self.basicInfoLabel.text = "    Basic info about \(document.get("firstName") ?? "")"
+        self.genderButton.setTitle("I am a \(document.get("gender") ?? "")", for: .normal)
+        self.preferredGenderButton.setTitle("I am interested in \(document.get("preferredGender") ?? "")", for: .normal)
+        self.hometownButton.setTitle("I am from \(document.get("hometown") ?? "")", for: .normal)
+        self.currentLocationButton.setTitle("I am living in \(document.get("currentLcoation") ?? "")", for: .normal)
+      }
+    }
+  }
+  
+  private func downloadRemoteProfilePicturesFromFirebase() {
+
+    var imageIndex = 0
+    for i in 0..<6 {
+      let aProfilePictureRef = Storage.storage().reference().child("profilePictures/\(remoteUserUID!)/picture\(i)")
+      // Download profile picture in memory  with a maximum allowed size of 1MB
+      aProfilePictureRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+        if error != nil {
+          return
+        } else {
+          let aProfilePicture = UIImage(data: data!)
+          self.profilePictures[i].image = aProfilePicture
+          self.profilePictures[imageIndex].frame = CGRect(x: CGFloat(imageIndex) * 0.8*self.safeAreaLayoutGuide.layoutFrame.width/2, y: 0, width: 0.8*UIScreen.main.bounds.width/2, height: 0.8*UIScreen.main.bounds.width/2)
+          self.profilePictures[imageIndex].contentMode = .scaleAspectFill
+          self.profilePictures[imageIndex].clipsToBounds = true
+          self.profilePicturesScrollView.addSubview(self.profilePictures[imageIndex])
+          self.profilePicturesScrollView.contentSize.width += (self.profilePicturesContainer.frame.width - 0.5)
+          imageIndex += 1
+        }
+      }
+    }
+  }
+  
   internal func animateIn() {
     container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
     self.alpha = 0
     self.scrollView.alpha = 0
     self.container.alpha = 0
-    profilePictureContainer.alpha = 0
+    profilePicturesContainer.alpha = 0
     profilePicture.alpha = 0
     nameLabel.alpha = 0
     aboutRemoteUserTextView.alpha = 0
@@ -278,7 +319,7 @@ class ProfilePreviewPopup: UIView, Popup {
       self.alpha = 1
       self.container.alpha = 1
       self.scrollView.alpha = 1
-      self.profilePictureContainer.alpha = 1
+      self.profilePicturesContainer.alpha = 1
       self.profilePicture.alpha = 1
       self.nameLabel.alpha = 1
       self.aboutRemoteUserTextView.alpha = 1
@@ -294,7 +335,7 @@ class ProfilePreviewPopup: UIView, Popup {
       self.alpha = 0
       self.container.alpha = 0
       self.scrollView.alpha = 0
-      self.profilePictureContainer.alpha = 0
+      self.profilePicturesContainer.alpha = 0
       self.profilePicture.alpha = 0
       self.nameLabel.alpha = 0
       self.aboutRemoteUserTextView.alpha = 0
@@ -314,9 +355,4 @@ extension ProfilePreviewPopup : UIScrollViewDelegate {
       animateOut()
     }
   }
-//  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//    if scrollView.contentOffset.x>0 || scrollView.contentOffset.x<0 {
-//          scrollView.contentOffset.x = 0
-//      }
-//  }
 }

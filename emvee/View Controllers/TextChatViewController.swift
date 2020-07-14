@@ -34,7 +34,7 @@ final class TextChatViewController: MessagesViewController {
   private var messageListener: ListenerRegistration?
   private var userJoinedListener: ListenerRegistration?
   
-  private var timeLeft = 5
+  private var timeLeft = 300
   private var timer: Timer?
   private var localUserLeftChat: Bool?
   
@@ -252,7 +252,6 @@ final class TextChatViewController: MessagesViewController {
   
   @objc func counter() {
     
-    print("time left: \(timeLeft)")
     if timeLeft > 0 {
       timeLeft -= 1
       if timeLeft <= 50 {
