@@ -39,6 +39,7 @@ class SettingsViewController: UIViewController {
   }
   
   @objc func transitionToProfile() {
+    UserDefaults.standard.set(false, forKey: "isProfileLoaded")
     navigationController?.popViewControllerToLeft()
   }
   

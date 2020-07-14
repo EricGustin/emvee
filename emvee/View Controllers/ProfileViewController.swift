@@ -79,6 +79,17 @@ class ProfileViewController: UIViewController {
         self.currentLocationButton.setTitle("Living in \(document.get("currentLcoation") ?? "a city on earth")", for: .normal)
       }
     }
+    if UserDefaults.standard.bool(forKey: "isProfileLoaded") { // i.e coming from EditProfileVC or SettingsVC
+      UserDefaults.standard.set(false, forKey: "isProfileLoaded")
+      profilePicturesPageControl.numberOfPages = 0
+      profilePicturesScrollView.contentOffset.x = 0
+      self.profilePicturesScrollView.contentSize.width = 0
+      
+      profilePictures.removeAll(keepingCapacity: true)
+      for _ in 0..<6 { profilePictures.append(UIImageView()) }
+      downloadProfilePicturesFromFirebase()
+    }
+    
   }
   
   // MARK: - Navigation
