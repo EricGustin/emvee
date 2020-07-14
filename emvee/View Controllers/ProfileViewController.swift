@@ -167,7 +167,7 @@ class ProfileViewController: UIViewController {
     profilePicturesPageControl = UIPageControl()
     profilePicturesPageControl.currentPageIndicatorTintColor = .white
     profilePicturesPageControl.pageIndicatorTintColor = .lightGray
-    profilePicturesPageControl.numberOfPages = profilePictures.count
+    profilePicturesPageControl.numberOfPages = 0 // Adds 1 each time a profile picture is downloaded from Firebase
     profilePicturesPageControl.hidesForSinglePage = true
     profilePicturesPageControl.translatesAutoresizingMaskIntoConstraints = false
     scrollView.addSubview(profilePicturesPageControl)
@@ -320,6 +320,7 @@ class ProfileViewController: UIViewController {
           self.profilePictures[imageIndex].clipsToBounds = true
           self.profilePicturesScrollView.addSubview(self.profilePictures[imageIndex])
           self.profilePicturesScrollView.contentSize.width += (self.profilePicturesContainer.frame.width - 0.5)
+          self.profilePicturesPageControl.numberOfPages += 1
           imageIndex += 1
         }
       }
@@ -360,6 +361,7 @@ extension ProfileViewController: UITextFieldDelegate {
 
 extension ProfileViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    profilePicturesPageControl.currentPage = Int((scrollView.contentOffset.x + 0.5*scrollView.frame.size.width) / scrollView.frame.size.width)
     if scrollView.contentOffset.x < 0 {
       scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
     } else if scrollView.contentOffset.x > (scrollView.contentSize.width - profilePicturesContainer.frame.width) {
