@@ -268,16 +268,23 @@ class EditableProfileSuperViewController: UIViewController {
   }
   
   @objc private func aDeleteProfilePictureButtonTapped(sender: UIButton) {
-    let confirmDeleteAlert = UIAlertController(title: "Are you sure that you want to delete this picture from your profile?", message: "", preferredStyle: .alert)
-    let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
-      self.profilePictureBeingDeletedIndex = sender.tag
-      self.deleteProfilePicture()
+    if profilePictures[1].image == UIImage(systemName: "plus") {
+      let denyDeleteAlert = UIAlertController(title: "You must have at least one profile picture", message: "", preferredStyle: .alert)
+      let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+      denyDeleteAlert.addAction(okAction)
+      present(denyDeleteAlert, animated: true, completion: nil)
+    } else {
+      let confirmDeleteAlert = UIAlertController(title: "Are you sure that you want to delete this picture from your profile?", message: "", preferredStyle: .alert)
+      let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+        self.profilePictureBeingDeletedIndex = sender.tag
+        self.deleteProfilePicture()
+      }
+      let noAction = UIAlertAction(title: "No", style: .cancel) { _ in
+      }
+      confirmDeleteAlert.addAction(yesAction)
+      confirmDeleteAlert.addAction(noAction)
+      present(confirmDeleteAlert, animated: true, completion: nil)
     }
-    let noAction = UIAlertAction(title: "No", style: .cancel) { _ in
-    }
-    confirmDeleteAlert.addAction(yesAction)
-    confirmDeleteAlert.addAction(noAction)
-    present(confirmDeleteAlert, animated: true, completion: nil)
   }
   
   private func deleteProfilePicture() {
