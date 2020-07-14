@@ -28,6 +28,7 @@ class ProfileViewController: UIViewController {
   private var preferredGenderButton: UIButton!
   private var hometownButton: UIButton!
   private var currentLocationButton: UIButton!
+  private var profilePicturesPageControl: UIPageControl!
   
   private var savedAboutMeText: String?
   
@@ -163,6 +164,17 @@ class ProfileViewController: UIViewController {
     scrollView.addSubview(editProfileButton)
     editProfileButton.addTarget(self, action: #selector(transitionToEditProfile), for: .touchUpInside)
     
+    profilePicturesPageControl = UIPageControl()
+    profilePicturesPageControl.currentPageIndicatorTintColor = .white
+    profilePicturesPageControl.pageIndicatorTintColor = .lightGray
+    profilePicturesPageControl.numberOfPages = profilePictures.count
+    profilePicturesPageControl.hidesForSinglePage = true
+    profilePicturesPageControl.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.addSubview(profilePicturesPageControl)
+    profilePicturesPageControl.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    profilePicturesPageControl.topAnchor.constraint(equalTo: profilePicturesScrollView.bottomAnchor).isActive = true
+    profilePicturesPageControl.heightAnchor.constraint(equalToConstant: 37).isActive = true
+    
     nameAndAgeLabel = UILabel()
     nameAndAgeLabel.translatesAutoresizingMaskIntoConstraints = false
     nameAndAgeLabel.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 18), size: 18)
@@ -171,7 +183,7 @@ class ProfileViewController: UIViewController {
     nameAndAgeLabel.numberOfLines = 0
     scrollView.addSubview(nameAndAgeLabel)
     nameAndAgeLabel.centerXAnchor.constraint(equalTo: profilePicturesContainer.centerXAnchor).isActive = true
-    nameAndAgeLabel.topAnchor.constraint(equalTo: profilePicturesContainer.bottomAnchor, constant: 20).isActive = true
+    nameAndAgeLabel.topAnchor.constraint(equalTo: profilePicturesPageControl.bottomAnchor, constant: 0).isActive = true
     nameAndAgeLabel.heightAnchor.constraint(equalToConstant: 23).isActive = true
     
     aboutMeLabel = UILabel()
@@ -252,7 +264,7 @@ class ProfileViewController: UIViewController {
     hometownButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
     // Lastly, calculate the content size of the scrollView
-    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: view.frame.width * 0.8 + 453)
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: view.frame.width * 0.8 + 490)
   }
   
   private func setUpNavigationBar() {
