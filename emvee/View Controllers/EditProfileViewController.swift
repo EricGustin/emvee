@@ -205,8 +205,10 @@ class EditProfileViewController: EditableProfileSuperViewController {
   }
   
   @objc private func transitionToProfile() {
-    UserDefaults.standard.set(true, forKey: "isProfileLoaded")
-    navigationController?.popViewControllerToBottom()
+    if !activityIndicator.isAnimating {
+      UserDefaults.standard.set(true, forKey: "isProfileLoaded")
+      navigationController?.popViewControllerToBottom()
+    }
   }
   
 }

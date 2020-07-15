@@ -23,6 +23,8 @@ class EditableProfileSuperViewController: UIViewController {
   var aboutMeTextView: UITextView!
   var savedAboutMeText: String?
   private var aboutMeCharsRemainingLabel: UILabel!
+  var activityIndicator: UIActivityIndicatorView!
+  
   //  Variables & constants
   private var profilePictureBeingEditedIndex: Int!  // The index of the profile picture being edited
   private var profilePictureBeingDeletedIndex: Int!  // The index of the profile picture that was deleted
@@ -80,6 +82,13 @@ class EditableProfileSuperViewController: UIViewController {
     scrollView.addSubview(aboutMeCharsRemainingLabel)
     aboutMeCharsRemainingLabel.bottomAnchor.constraint(equalTo: aboutMeTextView.bottomAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
     aboutMeCharsRemainingLabel.trailingAnchor.constraint(equalTo: aboutMeTextView.trailingAnchor, constant: -aboutMeTextView.layer.cornerRadius / 2).isActive = true
+    
+    activityIndicator = UIActivityIndicatorView(style: .large)
+    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+    
+    view.addSubview(activityIndicator)
+    activityIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    activityIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
   }
   
   private func setUpProfilePictures() {
@@ -244,13 +253,14 @@ class EditableProfileSuperViewController: UIViewController {
     }
 
     let aProfilePictureRef = Storage.storage().reference().child("profilePictures/\(userID)/picture\( profilePictureBeingEditedIndex ?? 0)")
-    
+    activityIndicator.startAnimating()
     // upload the picture to Firebase
     aProfilePictureRef.putData(data, metadata: nil) { (metadata, error) in
       if error != nil {
         print("Error putting profilePictureRef data.")
         return
       }
+      self.activityIndicator.stopAnimating()
     }
   }
 
@@ -296,8 +306,7 @@ class EditableProfileSuperViewController: UIViewController {
         changeProfileImageToPlusSignFormat(index: index)
         deleteProfilePictureButtonContainers[index].isHidden = true
         deleteProfilePictureButtons[index].isHidden = true
-        // Delete from Firebase?
- 
+
       } else {
         // Upload the new picture to firebase, effectively deleting the old picture
         profilePictureBeingEditedIndex = index
@@ -318,10 +327,12 @@ class EditableProfileSuperViewController: UIViewController {
           return
         }
         let deletePictureRef = Storage.storage().reference().child("profilePictures/\(userID)/picture\(index)")
+        self.activityIndicator.startAnimating()
         deletePictureRef.delete { (error) in
           if error != nil {
             print("Error deleting profile picture.")
           }
+          self.activityIndicator.stopAnimating()
         }
       }
     }
