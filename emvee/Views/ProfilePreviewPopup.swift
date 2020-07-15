@@ -253,7 +253,7 @@ class ProfilePreviewPopup: UIView, Popup {
     scrollView.addSubview(nameLabel)
     nameLabel.heightAnchor.constraint(equalToConstant: 23).isActive = true
     nameLabel.centerXAnchor.constraint(equalTo: profilePicturesContainer.centerXAnchor).isActive = true
-    nameLabel.topAnchor.constraint(equalTo: profilePicturesContainer.bottomAnchor, constant: 20).isActive = true
+    nameLabel.topAnchor.constraint(equalTo: profilePicturesPageControl.bottomAnchor, constant: 0).isActive = true
     
     scrollView.addSubview(aboutRemoteUserLabel)
     aboutRemoteUserLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -273,7 +273,7 @@ class ProfilePreviewPopup: UIView, Popup {
     basicInfoVerticalStack.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
     
     // Lastly, calculate the content size of the scrollView
-    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: self.frame.width * 0.64 + (self.frame.height-90) * 0.125 + 550)
+    scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: self.frame.width * 0.64 + (self.frame.height-90) * 0.125 + 587)
   }
   
   private func getRemoteUserFieldsFromFirebase() {
@@ -367,7 +367,7 @@ extension ProfilePreviewPopup : UIScrollViewDelegate {
   
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     if scrollView.tag == 0 { // is main scroll view
-      if scrollView.contentOffset.y <= 0 {
+      if scrollView.contentOffset.y <= -UIScreen.main.bounds.height/55 {
         animateOut()
       }
     }
