@@ -30,6 +30,7 @@ class ProfilePreviewPopup: UIView, Popup {
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.translatesAutoresizingMaskIntoConstraints = false
     scrollView.backgroundColor = .clear
+    scrollView.tag = 0
     return scrollView
   }()
   
@@ -51,7 +52,18 @@ class ProfilePreviewPopup: UIView, Popup {
     scrollView.layer.borderColor = UIColor.white.cgColor
     scrollView.layer.borderWidth = 5
     scrollView.layer.masksToBounds = true
+    scrollView.tag = 1
     return scrollView
+  }()
+  
+  private var profilePicturesPageControl: UIPageControl = {
+    let pageControl = UIPageControl()
+    pageControl.currentPageIndicatorTintColor = .white
+    pageControl.pageIndicatorTintColor = .lightGray
+    pageControl.numberOfPages = 0 // Adds 1 each time a profile picture is downloaded from Firebase
+    pageControl.hidesForSinglePage = true
+    pageControl.translatesAutoresizingMaskIntoConstraints = false
+    return pageControl
   }()
   
   private lazy var nameLabel: UILabel = {
@@ -169,10 +181,10 @@ class ProfilePreviewPopup: UIView, Popup {
   deinit {}
   
   private func postInit() {
-    scrollView.delegate = self
     backgroundColor = UIColor.gray.withAlphaComponent(0.7)
     self.frame = UIScreen.main.bounds
     
+    setUpDelegates()
     getRemoteUserFieldsFromFirebase()
     setUpSubviews()
     animateIn()
@@ -186,6 +198,11 @@ class ProfilePreviewPopup: UIView, Popup {
     if !container.frame.contains(location) {
       animateOut()
     }
+  }
+  
+  func setUpDelegates() {
+    scrollView.delegate = self
+    profilePicturesScrollView.delegate = self
   }
   
   internal func setUpSubviews() {
@@ -227,6 +244,11 @@ class ProfilePreviewPopup: UIView, Popup {
     profilePictures = [UIImageView]()
     for _ in 0..<6 { profilePictures.append(UIImageView()) }
     downloadRemoteProfilePicturesFromFirebase()
+    
+    scrollView.addSubview(profilePicturesPageControl)
+    profilePicturesPageControl.centerXAnchor.constraint(equalTo: container.safeAreaLayoutGuide.centerXAnchor).isActive = true
+    profilePicturesPageControl.topAnchor.constraint(equalTo: profilePicturesScrollView.bottomAnchor).isActive = true
+    profilePicturesPageControl.heightAnchor.constraint(equalToConstant: 37).isActive = true
     
     scrollView.addSubview(nameLabel)
     nameLabel.heightAnchor.constraint(equalToConstant: 23).isActive = true
@@ -286,6 +308,7 @@ class ProfilePreviewPopup: UIView, Popup {
           self.profilePictures[imageIndex].clipsToBounds = true
           self.profilePicturesScrollView.addSubview(self.profilePictures[imageIndex])
           self.profilePicturesScrollView.contentSize.width += (self.profilePicturesContainer.frame.width - 0.5)
+          self.profilePicturesPageControl.numberOfPages += 1
           imageIndex += 1
         }
       }
@@ -343,8 +366,21 @@ class ProfilePreviewPopup: UIView, Popup {
 extension ProfilePreviewPopup : UIScrollViewDelegate {
   
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    if scrollView.contentOffset.y <= 0 {
-      animateOut()
+    if scrollView.tag == 0 { // is main scroll view
+      if scrollView.contentOffset.y <= 0 {
+        animateOut()
+      }
+    }
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if scrollView.tag == 1{
+      profilePicturesPageControl.currentPage = Int((scrollView.contentOffset.x + 0.5*scrollView.frame.size.width) / scrollView.frame.size.width)
+      if scrollView.contentOffset.x < 0 {
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+      } else if scrollView.contentOffset.x > (scrollView.contentSize.width - profilePicturesContainer.frame.width) {
+        scrollView.setContentOffset(CGPoint(x: scrollView.contentSize.width - profilePicturesContainer.frame.width, y: 0), animated: false)
+      }
     }
   }
 }
