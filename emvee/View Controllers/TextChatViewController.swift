@@ -34,7 +34,7 @@ final class TextChatViewController: MessagesViewController {
   private var messageListener: ListenerRegistration?
   private var userJoinedListener: ListenerRegistration?
   
-  private var timeLeft = 300
+  private var timeLeft = 60
   private var timer: Timer?
   private var localUserLeftChat: Bool?
   
