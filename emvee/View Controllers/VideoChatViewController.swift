@@ -122,7 +122,7 @@ class VideoChatViewController: UIViewController {
   }
   
   func requestAccessToken() {
-    let tokenURL = "http://2240042d9e2b.ngrok.io"
+    let tokenURL = "https://floating-refuge-31171.herokuapp.com/"
     if let url = URL(string: tokenURL) {
       let task = URLSession.shared.dataTask(with: url) {
         data, response, error in
