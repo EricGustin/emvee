@@ -36,7 +36,7 @@ class InfoPopup : UIView, Popup {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 16), size: 16)
-    label.text = "After your minute is up, take things to a more personal level and talk face-to-face in a 1 on 1 video chat.\n"
+    label.text = "After your 75 seconds are up, take things to a more personal level and talk face-to-face in a 1 on 1 video chat.\n"
     label.textColor = .black
     label.textAlignment = .center
     label.numberOfLines = 0
