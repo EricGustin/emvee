@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#import <FirebaseAuth/FIRAuth.h>
 #import <Foundation/Foundation.h>
+#import "FirebaseAuth/Sources/Public/FirebaseAuth/FIRAuth.h"
 #import "Interop/Auth/Public/FIRAuthInterop.h"
 
 @class FIRAuthRequestConfiguration;

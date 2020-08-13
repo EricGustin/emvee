@@ -78,6 +78,7 @@ class InfoPopup : UIView, Popup {
     
     self.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
     self.frame = UIScreen.main.bounds
+    
     setUpSubviews()
     animateIn()
     setUpGestures()
@@ -149,5 +150,17 @@ class InfoPopup : UIView, Popup {
       self.button.alpha = 1
       self.layoutIfNeeded()
     })
+  }
+}
+
+extension UIView {
+  func findViewController() -> UIViewController? {
+    if let nextResponder = self.next as? UIViewController {
+        return nextResponder
+    } else if let nextResponder = self.next as? UIView {
+        return nextResponder.findViewController()
+    } else {
+        return nil
+    }
   }
 }

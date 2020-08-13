@@ -16,6 +16,10 @@
 - [x] Compatible with all iPhones and iPads
 - [x] RTL Support
 
+### InputBarAccessoryView is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
+
+<a href="https://tracking.gitads.io/?repo=InputBarAccessoryView"><img src="https://images.gitads.io/InputBarAccessoryView" alt="GitAds"/></a>
+
 ### Installation via CocoaPods
 
 ```ruby
@@ -70,6 +74,10 @@ Add your app to the list of apps using this library and make a pull request.
 iMessage style [TypingIndicator](https://github.com/nathantannar4/TypingIndicator) for chat apps
 
 ## Latest Releases
+- 4.3.3
+    - Added support for Swift Package Manager (SPM)
+    - Made `reuseIdentifier` public accessible
+    - Fixed warnings
 - 4.3.2
     - Fixed a bug where editing immediately before a tag prefix would break the tag
 - 4.3.1
