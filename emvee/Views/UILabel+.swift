@@ -11,7 +11,7 @@ import UIKit
 extension UILabel {
   
   func animateTransform(withIncreaseDuration increaseDuration: TimeInterval, withDecreaseDuration decreaseDuration: TimeInterval, withIncreaseScale increaseScale: CGFloat, withDecreaseScale decreaseScale: CGFloat) {
-    
+
     UIView.animate(withDuration: increaseDuration, animations: {
       self.transform = CGAffineTransform(scaleX: increaseScale, y: increaseScale)
     }) { _ in

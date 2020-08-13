@@ -13,6 +13,8 @@ class NavigationController: UINavigationController {
   init(_ rootVC: UIViewController) {
     super.init(nibName: nil, bundle: nil)
     //pushViewController(rootVC, animated: false)
+    self.navigationBar.barTintColor = .systemGray6
+    self.navigationBar.shadowImage = UIImage()
   }
   
   required init?(coder aDecoder: NSCoder) {
