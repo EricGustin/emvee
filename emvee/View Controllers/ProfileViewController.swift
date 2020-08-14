@@ -280,8 +280,6 @@ class ProfileViewController: UIViewController {
   private func setUpNavigationBar() {
     navigationItem.leftBarButtonItem = UIBarButtonItem(customView: settingsButton!)
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: homeButton!)
-    title = "Profile"
-    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
   }
   
   private func transitionToSettings() {

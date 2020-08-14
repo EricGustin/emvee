@@ -121,7 +121,8 @@ class EditBasicInfoViewController: UIViewController {
   
   private func setUpNavigationBar() {
     self.title = navBarTitle
-    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 24), size: 24)]
+    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 16), size: 16), NSAttributedString.Key.foregroundColor: UIColor.systemGray6]
+    //navigationController?.navigationBar.barTintColor = .systemGray6
     navigationController?.hidesBarsWhenKeyboardAppears = true
   }
   

@@ -27,7 +27,6 @@ class EditProfileViewController: EditableProfileSuperViewController {
   
   
   override func viewWillAppear(_ animated: Bool) {
-    title = "EditProfile"
     let userID = Auth.auth().currentUser?.uid
     let db = Firestore.firestore()
     
@@ -64,8 +63,6 @@ class EditProfileViewController: EditableProfileSuperViewController {
   
   
   private func setUpNavigationBar() {
-    title = "Edit  Profile"
-    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 24), size: 24)]
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(transitionToProfile))
     navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 18), size: 18)], for: .normal)
     navigationItem.leftBarButtonItem = UIBarButtonItem()

@@ -70,8 +70,6 @@ class SettingsViewController: UIViewController {
   }
   
   private func setUpNavigationBar() {
-    title = "Settings"
-    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton!)
     navigationItem.leftBarButtonItem = UIBarButtonItem()
   }

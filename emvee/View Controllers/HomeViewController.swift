@@ -83,7 +83,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
   
   override func viewWillAppear(_ animated: Bool) {
     navigationController?.navigationBar.isHidden = false
-    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
+//    navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Bold", size: 28), size: 28)]
   }
   
   override func viewDidLoad() {
