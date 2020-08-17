@@ -57,7 +57,7 @@ class EditBasicInfoViewController: UIViewController {
   
   private func setUpSubviews() {
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter Semibold", size: 16), size: 16)
+    label.font = UIFont(descriptor: UIFontDescriptor(name: "American Typewriter", size: 16), size: 16)
     label.textColor = .black
     view.addSubview(label)
     label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,  constant: UIScreen.main.bounds.width / 20 + 25).isActive = true  // Logic behind the constant: The aboutMeTextView is centered and has a width of 0.9 * view.width, thus the aboutMeTextView's leading is effectively view.width / 20. In addition, adding 25 in order to match the aboutMeTextView's corner radius which is essential for the desired position.
